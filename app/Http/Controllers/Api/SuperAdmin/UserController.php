@@ -90,8 +90,8 @@ class UserController extends Controller
      */
     public function show($slug)
     {
-        $user = User::where('slug', $slug)->with(['position'])->first();
-        return $user;
+        $user = User::where('slug', $slug)->with(['position'])->orderBy('created_at', 'DESC')->team();
+        return $user->first();
     }
 
     /**
@@ -130,7 +130,7 @@ class UserController extends Controller
 
     public function getAdv()
     {
-        $adv = User::where('position_id', '13')->orderBy('name', 'ASC')->get();
+        $adv = User::where('position_id', '13')->with(['position'])->orderBy('name', 'ASC')->get();
         return new UsersCollection($adv);
     }
 }

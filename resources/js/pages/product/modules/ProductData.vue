@@ -99,10 +99,10 @@
                                     {{ row.name }}
                                 </td>
                                 <td>
-                                    {{ row.type_pembelian }}
+                                    <p v-html="row.type_pembelian_label"></p>
                                 </td>
                                 <td>
-                                    {{ row.type_product }}
+                                    <p v-html="row.type_product_label"></p>
                                 </td>
                                 <td>
                                     {{ row.stock }}

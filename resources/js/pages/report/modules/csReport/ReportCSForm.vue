@@ -30,7 +30,7 @@
                                             index) in products.data"
                                             :key="index"
                                             :value="row.id"
-                                            >{{ row.name }}</option
+                                            >{{ row.name }} <p v-html="row.type_pembelian_label"></p></option
                                         >
                                     </select>
                                 </div>
@@ -195,7 +195,7 @@ export default {
         ...mapActions("product", ["getProducts"]),
         ...mapActions("csReport", [
             "getCsReports",
-            "submitTeam",
+            "submitCsReport",
             "editTeam",
             "updateTeam"
         ]),
@@ -217,7 +217,7 @@ export default {
             }
 
             if (this.$route.name == "cs.report.add") {
-                this.submitTeam(form).then(() => {
+                this.submitCsReport(form).then(() => {
                     this.csReport = {
                         chat: "",
                         transaksi: "",

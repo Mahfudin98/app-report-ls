@@ -178,9 +178,11 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import _ from 'lodash'
 import VueMomentsAgo from "vue-moments-ago";
 import RangeDatePicker from "vue-easy-range-date-picker";
 import { parseTime } from "../../../../util";
+import moment from 'moment';
 export default {
     components: { VueMomentsAgo, RangeDatePicker },
     name: "DataReportCS",
@@ -194,7 +196,7 @@ export default {
         return {
             show: false,
             dates: {},
-            search: '',
+            search: moment().format('MM'),
         };
     },
 
@@ -216,7 +218,7 @@ export default {
 
     watch: {
         search() {
-            this.getCsReports("2021-09-01+-+2021-10-09");
+            this.getCsReports(this.search);
         }
     },
 

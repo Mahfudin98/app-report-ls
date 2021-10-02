@@ -17,9 +17,11 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::orderBy('created_at', 'DESC');
+
         if (request()->q != '') {
             $products = $products->where('name', 'LIKE', '%' . request()->q . '%');
         }
+
 
         return new ProductCollection($products->paginate(10));
     }

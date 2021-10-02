@@ -51,8 +51,8 @@ class LoginController extends Controller
 
     public function userLists()
     {
-        $user = User::get();
-        return new UsersCollection($user);
+        $user = User::with(['position'])->orderBy('created_at', 'DESC')->team();
+        return new UsersCollection($user->get());
     }
 
     public function logout()

@@ -37,7 +37,7 @@ const actions = {
         })
     },
 
-    submitTeam({dispatch, commit}, payload) {
+    submitCsReport({dispatch, commit}, payload) {
         return new Promise((resolve, reject) => {
             $axios.post(`/cs-reports`, payload, {
                 headers: {

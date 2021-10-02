@@ -5,42 +5,46 @@
                 <div
                     class="d-flex justify-content-between align-items-center mb-20"
                 >
-                    <div class="input-group">
-                        <button
-                            type="button"
-                            class="btn btn-clean btn-uniform btn-grey-5"
-                            data-toggle="button"
-                            aria-pressed="false"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="feather feather-search rui-icon rui-icon-stroke-1_5"
-                            >
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line
-                                    x1="21"
-                                    y1="21"
-                                    x2="16.65"
-                                    y2="16.65"
-                                ></line>
-                            </svg>
-                        </button>
-                        <input
-                            type="search"
-                            class="form-control form-control-clean"
-                            placeholder="Type to search..."
-                            data-toggle="input"
-                            autocomplete="off"
-                            v-model="search"
-                        />
+                    <div class="row xs-gap">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <button
+                                    type="button"
+                                    class="btn btn-clean btn-uniform btn-grey-5"
+                                    data-toggle="button"
+                                    aria-pressed="false"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-search rui-icon rui-icon-stroke-1_5"
+                                    >
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line
+                                            x1="21"
+                                            y1="21"
+                                            x2="16.65"
+                                            y2="16.65"
+                                        ></line>
+                                    </svg>
+                                </button>
+                                <input
+                                    type="search"
+                                    class="form-control form-control-clean"
+                                    placeholder="Type to search..."
+                                    data-toggle="input"
+                                    autocomplete="off"
+                                    v-model="search"
+                                />
+                            </div>
+                        </div>
                     </div>
                     <router-link
                         :to="{ name: 'teams.add' }"

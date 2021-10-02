@@ -50,7 +50,7 @@
                                             :value="row.id"
                                             :key="index"
                                             >{{ row.name }} ({{
-                                                row.email
+                                                row.position.name
                                             }})</option
                                         >
                                     </select>
