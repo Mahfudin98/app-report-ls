@@ -9,6 +9,7 @@ use App\Models\AdvReport;
 use App\Models\CsReport;
 use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
@@ -18,7 +19,16 @@ class ReportController extends Controller
     //report CS
     public function indexCS()
     {
-        $reports = CsReport::where('user_id', Auth::user()->id)->with(['order.product'])->orderBy('date', 'DESC');
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ' ,request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+
+        $reports = CsReport::where('user_id', Auth::user()->id)->with(['order.product'])->orderBy('date', 'DESC')->whereBetween('date', [$start, $end]);
         if (request()->q != '') {
             $reports = $reports->where('name', 'LIKE', '%' . request()->q . '%');
         }

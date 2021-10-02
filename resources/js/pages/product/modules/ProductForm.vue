@@ -1,66 +1,45 @@
 <template>
-    <div class="col-lg-4">
-        <h3 class="media-sidebar__title">Add Product</h3>
-        <div class="media-sidebar">
-            <div class="main-content new-page-content">
-                <label>
-                    <span class="new-page-label">Nama Produk</span>
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Product name"
-                        v-model="product.name"
-                    />
-                </label>
-                <label>
-                    <span class="new-page-label">Type Pembelian</span>
-                    <select
-                        class="select transparent-btn"
-                        required=""
-                        v-model="product.type_pembelian"
-                    >
-                        <option selected="" value="" disabled=""
-                            >Silahkan Pilih</option
-                        >
-                        <option value="0">Ecer</option>
-                        <option value="1">Paket Komplit</option>
-                        <option value="2">Paket Hemat</option>
-                    </select>
-                </label>
-                <br />
-                <label>
-                    <span class="new-page-label">Type Product</span>
-                    <select
-                        class="select transparent-btn"
-                        required=""
-                        v-model="product.type_product"
-                    >
-                        <option selected="" value="" disabled=""
-                            >Silahkan Pilih</option
-                        >
-                        <option value="0">BPOM</option>
-                        <option value="1">Farma</option>
-                    </select>
-                </label>
-                <br />
-                <button
-                    class="primary-default-btn"
-                    type="submit"
-                    @click.prevent="submit"
-                >
-                    <lord-icon
-                        src="https://cdn.lordicon.com/mecwbjnp.json"
-                        trigger="loop-on-hover"
-                        colors="primary:#ffffff,secondary:#fad1e6"
-                        style="width:30px;height:30px"
-                    >
-                    </lord-icon>
-                    Add new
-                </button>
-            </div>
+    <main>
+        <div class="form-group">
+            <label for="name">Nama Product</label>
+            <input
+                class="form-control"
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Product name"
+                v-model="product.name"
+                required
+            />
         </div>
-    </div>
+        <div class="form-group">
+            <label for="tipe_pembelian">Tipe Pembelian</label>
+            <select
+                id="tipe_pembelian"
+                class="form-control"
+                required
+                v-model="product.type_pembelian"
+            >
+                <option selected="" value="" disabled="">Silahkan Pilih</option>
+                <option value="0">Ecer</option>
+                <option value="1">Paket Komplit</option>
+                <option value="2">Paket Hemat</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="tipe_product">Tipe Product</label>
+            <select
+                class="form-control"
+                id="tipe_product"
+                required
+                v-model="product.type_product"
+            >
+                <option selected="" value="" disabled="">Silahkan Pilih</option>
+                <option value="0">BPOM</option>
+                <option value="1">Farma</option>
+            </select>
+        </div>
+    </main>
 </template>
 
 <script>

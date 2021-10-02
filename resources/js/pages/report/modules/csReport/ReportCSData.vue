@@ -4,12 +4,30 @@
             <div
                 class="d-flex justify-content-between align-items-center mb-20"
             >
-                <input
+                <!-- <input
                     class="rui-daterange form-control w-auto"
                     type="text"
                     placeholder="Select dates"
                     data-daterangepicker-format="MM/DD/YYYY"
-                />
+                    v-model="search"
+                /> -->
+                <div class="range-date-picker-container">
+                    <transition name="panelIn">
+                        <range-date-picker
+                            class="range-date-picker"
+                            v-model="dates"
+                            language="en"
+                            v-show="show"
+                            @closePicker="closePicker"
+                        ></range-date-picker>
+                    </transition>
+                    <input
+                        class="form-control range-date-input"
+                        @click="showPicker"
+                        placeholder="click to use vue-easy-range-datepicker"
+                        :value="rangeDates"
+                    />
+                </div>
                 <router-link
                     :to="{ name: 'cs.report.add' }"
                     class="btn btn-brand"
@@ -161,35 +179,55 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import VueMomentsAgo from "vue-moments-ago";
+import RangeDatePicker from "vue-easy-range-date-picker";
+import { parseTime } from "../../../../util";
 export default {
-    components: { VueMomentsAgo },
+    components: { VueMomentsAgo, RangeDatePicker },
     name: "DataReportCS",
 
     created() {
         this.getCsReports();
+        this.search = this.rangeDates;
     },
 
     data() {
         return {
-            search: "",
             show: false,
-            dates: {}
+            dates: {},
+            search: '',
         };
     },
 
     computed: {
         ...mapState("csReport", {
             csReports: state => state.csReports
-        })
+        }),
+        rangeDates() {
+            if (Object.keys(this.dates).length === 2) {
+                return `${this.parseTime(
+                    this.dates.start,
+                    "y-m-d"
+                )} - ${this.parseTime(this.dates.end, "y-m-d")}`;
+            } else {
+                return "";
+            }
+        },
     },
 
     watch: {
         search() {
-            this.getCsReports(this.search);
+            this.getCsReports("2021-09-01+-+2021-10-09");
         }
     },
 
     methods: {
+        parseTime,
+        closePicker() {
+            this.show = false;
+        },
+        showPicker() {
+            this.show = true;
+        },
         ...mapActions("csReport", ["getCsReports", "removePosition"]),
         deletePosition(id) {
             this.$swal({
@@ -209,3 +247,28 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+.range-date-picker-container {
+    cursor: pointer;
+    font-size: 14px;
+    position: relative;
+    .range-date-picker {
+        position: absolute;
+        top: 50px;
+        left: 0px;
+    }
+    .range-date-input {
+        padding: 10px;
+        width: 300px;
+    }
+}
+.panelIn-enter {
+    transform: translateY(-10px);
+}
+.panelIn-enter-active {
+    transition: transform 0.3s ease;
+}
+.panelIn-enter-to {
+    transform: translateY(0);
+}
+</style>

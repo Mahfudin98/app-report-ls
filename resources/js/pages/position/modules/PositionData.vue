@@ -1,147 +1,188 @@
 <template>
-  <div class="media-content">
     <div class="row">
-      <form-add />
-      <div class="col-lg-8">
-        <div class="sort-bar media-bar">
-          <div class="sort-bar-start">
-            <div class="search-wrapper">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-search"
-                aria-hidden="true"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" placeholder="Search" v-model="search" />
+        <div class="rui-page-content">
+            <div class="container-fluid">
+                <div
+                    class="d-flex justify-content-between align-items-center mb-20"
+                >
+                    <div class="row xs-gap">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <button
+                                    type="button"
+                                    class="btn btn-clean btn-uniform btn-grey-5"
+                                    data-toggle="button"
+                                    aria-pressed="false"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-search rui-icon rui-icon-stroke-1_5"
+                                    >
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line
+                                            x1="21"
+                                            y1="21"
+                                            x2="16.65"
+                                            y2="16.65"
+                                        ></line>
+                                    </svg>
+                                </button>
+                                <input
+                                    type="search"
+                                    class="form-control form-control-clean"
+                                    placeholder="Type to search..."
+                                    data-toggle="input"
+                                    autocomplete="off"
+                                    v-model="search"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row xs-gap">
+                        <div class="col-12">
+                            <form-add />
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr class="users-table-info">
+                                <th scope="col" class="text-center">
+                                    Jumlah Team
+                                </th>
+                                <th scope="col">Posisi</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="row in positions.data" :key="row.id">
+                                <td class="text-center">
+                                    <h5>{{ row.user.length }} Orang</h5>
+                                </td>
+                                <td>
+                                    <div class="library-table-name">
+                                        {{ row.name }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <vue-moments-ago
+                                        prefix="posted"
+                                        suffix="ago"
+                                        :date="row.created_at"
+                                        lang="en"
+                                    />
+                                </td>
+                                <td>
+                                    <div
+                                        class="btn-group dropdown dropdown-triangle"
+                                    >
+                                        <button
+                                            class="btn btn-brand btn-long dropdown-toggle"
+                                            type="button"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                        >
+                                            <span class="text">Action</span>
+                                            <span class="icon">
+                                                <span
+                                                    class="fas fa-angle-down"
+                                                ></span>
+                                            </span>
+                                        </button>
+                                        <ul class="dropdown-menu nav">
+                                            <li>
+                                                <a class="nav-link" href="#"
+                                                    ><span
+                                                        data-feather="plus-circle"
+                                                        class="fas fa-edit"
+                                                    ></span
+                                                    ><span>Edit</span
+                                                    ><span
+                                                        class="rui-nav-circle"
+                                                    ></span
+                                                ></a>
+                                            </li>
+                                            <li>
+                                                <a class="nav-link" href="#"
+                                                    ><span
+                                                        data-feather="x-circle"
+                                                        class="fas fa-trash"
+                                                    ></span
+                                                    ><span>Delete</span
+                                                    ><span
+                                                        class="rui-nav-circle"
+                                                    ></span
+                                                ></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </div>
-          <div class="sort-bar-end">
-            <button class="primary-default-btn" type="button">Cari</button>
-          </div>
         </div>
-        <div class="users-table table-wrapper">
-          <table class="library-table">
-            <thead>
-              <tr class="users-table-info">
-                <th class="text-center">
-                  Jumlah Team
-                </th>
-                <th>Posisi</th>
-                <th>Created At</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="" v-for="row in positions.data" :key="row.id">
-                <td>
-                  <span class="badge-active">{{row.user.length}}</span>
-                </td>
-                <td>
-                  <div class="library-table-name">
-                    {{ row.name }}
-                  </div>
-                </td>
-                <td><vue-moments-ago prefix="posted" suffix="ago" :date="row.created_at" lang="en" /></td>
-                <td>
-                  <span class="p-relative">
-                    <button
-                      class="dropdown-btn transparent-btn"
-                      type="button"
-                      title="More info"
-                    >
-                      <div class="sr-only">More info</div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="feather feather-more-horizontal"
-                        aria-hidden="true"
-                      >
-                        <circle cx="12" cy="12" r="1"></circle>
-                        <circle cx="19" cy="12" r="1"></circle>
-                        <circle cx="5" cy="12" r="1"></circle>
-                      </svg>
-                    </button>
-                    <ul class="users-item-dropdown dropdown">
-                      <li><a href="##">Edit</a></li>
-                      <li>
-                        <a href="##">Quick edit</a>
-                      </li>
-                      <li><a href="##">Trash</a></li>
-                    </ul>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
-  </div>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
 import FormAdd from "./PositionForm.vue";
-import VueMomentsAgo from 'vue-moments-ago';
+import VueMomentsAgo from "vue-moments-ago";
 export default {
-  components: { FormAdd: FormAdd, VueMomentsAgo },
-  name: "DataPosition",
+    components: { FormAdd: FormAdd, VueMomentsAgo },
+    name: "DataPosition",
 
-  created() {
-    this.getPositions();
-  },
-
-  data() {
-    return {
-      search: "",
-    };
-  },
-
-  computed: {
-    ...mapState("position", {
-      positions: state => state.positions
-    }),
-  },
-
-  watch: {
-    search() {
-      this.getPositions(this.search);
+    created() {
+        this.getPositions();
     },
-  },
 
-  methods: {
-    ...mapActions("position", ["getPositions", "removePosition"]),
-    deletePosition(id) {
-      this.$swal({
-        title: "Kamu Yakin?",
-        text: "Tindakan ini akan menghapus secara permanent!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Iya, Lanjutkan!",
-      }).then((result) => {
-        if (result.value) {
-          this.removePosition(id);
+    data() {
+        return {
+            search: ""
+        };
+    },
+
+    computed: {
+        ...mapState("position", {
+            positions: state => state.positions
+        })
+    },
+
+    watch: {
+        search() {
+            this.getPositions(this.search);
         }
-      });
     },
-  },
+
+    methods: {
+        ...mapActions("position", ["getPositions", "removePosition"]),
+        deletePosition(id) {
+            this.$swal({
+                title: "Kamu Yakin?",
+                text: "Tindakan ini akan menghapus secara permanent!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Iya, Lanjutkan!"
+            }).then(result => {
+                if (result.value) {
+                    this.removePosition(id);
+                }
+            });
+        }
+    }
 };
 </script>

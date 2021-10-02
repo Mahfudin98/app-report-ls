@@ -1,119 +1,179 @@
 <template>
-    <div class="row new-page__row">
-        <div class="col-xl-6 col-md-6">
-            <div class="main-content new-page-content">
-                <div class="white-block">
-                    <p class="white-block__title">Roles</p>
-                    <div class="select-wrapper">
-                        <select
-                            class="select transparent-btn"
-                            v-model="role_user.role"
-                        >
-                            <option value="">Pilih</option>
-                            <option
-                                v-for="(row, index) in roles"
-                                :value="row.name"
-                                :key="index"
-                                >{{ row.name }}</option
-                            >
-                        </select>
-                    </div>
+    <div class="rui-page-content">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Assign Role to User</h3>
+                            </div>
 
-                    <p class="text-danger" v-if="role_user.role">
-                        {{ role_user.role[0] }}
-                    </p>
-                </div>
-                <div class="white-block">
-                    <p class="white-block__title">User</p>
-                    <div class="select-wrapper">
-                        <select
-                            class="select transparent-btn"
-                            v-model="role_user.user_id"
-                        >
-                            <option value="">Pilih</option>
-                            <option
-                                v-for="(row, index) in users"
-                                :value="row.id"
-                                :key="index"
-                                >{{ row.name }} ({{ row.email }})</option
-                            >
-                        </select>
-                    </div>
-
-                    <p class="text-danger" v-if="role_user.role">
-                        {{ role_user.role[0] }}
-                    </p>
-                </div>
-                <div class="new-page-content white-block">
-                    <button class="primary-default-btn" @click="setRole">
-                        <lord-icon
-                            src="https://cdn.lordicon.com/xhwleznj.json"
-                            trigger="loop"
-                            colors="primary:#fffff,secondary:#ffffff"
-                            style="width:50px;height:50px"
-                        >
-                        </lord-icon>
-                        Set Roles
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 col-md-6">
-            <div class="white-block">
-                <div class="row new-page__row">
-                    <div class="col-xl-9 col-md-6">
-                        <div class="select-wrapper">
-                            <select
-                                class="select transparent-btn"
-                                v-model="role_selected"
-                            >
-                                <option value="">Pilih Roles</option>
-                                <option
-                                    v-for="(row, index) in roles"
-                                    :value="row.id"
-                                    :key="index"
-                                    >{{ row.name }}</option
+                            <!-- FORM UNTUK MENAMBAHKAN ROLE KE USERS -->
+                            <div class="panel-body">
+                                <div
+                                    class="alert alert-success"
+                                    v-if="alert_role"
                                 >
-                            </select>
+                                    Role Has Been Added
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Role</label>
+                                    <select
+                                        class="form-control"
+                                        v-model="role_user.role"
+                                    >
+                                        <option value="">Pilih</option>
+                                        <option
+                                            v-for="(row, index) in roles"
+                                            :value="row.name"
+                                            :key="index"
+                                            >{{ row.name }}</option
+                                        >
+                                    </select>
+                                    <p
+                                        class="text-danger"
+                                        v-if="errors.role_id"
+                                    >
+                                        {{ errors.role_id[0] }}
+                                    </p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">User</label>
+                                    <select
+                                        class="form-control"
+                                        v-model="role_user.user_id"
+                                    >
+                                        <option value="">Pilih</option>
+                                        <option
+                                            v-for="(row, index) in users"
+                                            :value="row.id"
+                                            :key="index"
+                                            >{{ row.name }} ({{
+                                                row.email
+                                            }})</option
+                                        >
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button
+                                        class="btn btn-danger btn-sm"
+                                        @click="setRole"
+                                    >
+                                        Set Role
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- FORM UNTUK MENAMBAHKAN ROLE KE USERS -->
                         </div>
-
-                        <p class="text-danger" v-if="role_selected">
-                            {{ role_selected[0] }}
-                        </p>
                     </div>
-                    <div class="col-xl-2 col-md-6">
-                        <div class="select-wrapper">
-                            <button
-                                class="primary-default-btn"
-                                @click="checkPermission"
-                            >
-                                {{ loading ? "Loading..." : "Check" }}
-                            </button>
+                    <div class="col-md-7">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Set Permission</h3>
+                            </div>
+                            <!-- FORM UNTUK MENAMBAHKAN PERMISSION KE MASING-MASING ROLE -->
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="">Role</label>
+                                    <select
+                                        class="form-control"
+                                        v-model="role_selected"
+                                    >
+                                        <option value="">Pilih</option>
+                                        <option
+                                            v-for="(row, index) in roles"
+                                            :value="row.id"
+                                            :key="index"
+                                            >{{ row.name }}</option
+                                        >
+                                    </select>
+                                    <p
+                                        class="text-danger"
+                                        v-if="errors.role_id"
+                                    >
+                                        {{ errors.role_id[0] }}
+                                    </p>
+                                </div>
+                                <div class="form-group">
+                                    <button
+                                        class="btn btn-primary btn-sm"
+                                        @click="checkPermission"
+                                    >
+                                        {{ loading ? "Loading..." : "Check" }}
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <div
+                                        class="alert alert-success"
+                                        v-if="alert_permission"
+                                    >
+                                        Permission has been assigned
+                                    </div>
+                                    <div class="nav-tabs-custom">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active">
+                                                <a
+                                                    href="#tab_1"
+                                                    data-toggle="tab"
+                                                    >Permissions</a
+                                                >
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div
+                                                class="tab-pane active"
+                                                id="tab_1"
+                                            >
+                                                <template
+                                                    v-for="(row,
+                                                    index) in permissions"
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        class="minimal-red"
+                                                        :key="index"
+                                                        :value="row.name"
+                                                        :checked="
+                                                            role_permission.findIndex(
+                                                                x =>
+                                                                    x.name ==
+                                                                    row.name
+                                                            ) != -1
+                                                        "
+                                                        @click="
+                                                            addPermission(
+                                                                row.name
+                                                            )
+                                                        "
+                                                    />
+                                                    {{ row.name }}
+                                                    <br :key="'row' + index" />
+                                                    <br
+                                                        :key="'enter' + index"
+                                                        v-if="
+                                                            (index + 1) % 4 == 0
+                                                        "
+                                                    />
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <button
+                                        class="btn btn-primary btn-sm"
+                                        @click="setPermission"
+                                    >
+                                        <i class="fa fa-send"></i> Set
+                                        Permission
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- FORM UNTUK MENAMBAHKAN PERMISSION KE MASING-MASING ROLE -->
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="white-block checkboxes">
-                <p class="white-block__title">Permissions</p>
-                <label v-for="(row, index) in permissions" :key="index">
-                    <input
-                        type="checkbox"
-                        :key="index"
-                        :value="row.name"
-                        :checked="
-                            role_permission.findIndex(
-                                x => x.name == row.name
-                            ) != -1
-                        "
-                        @click="addPermission(row.name)"
-                    />
-                    <span>{{ row.name }}</span> <br :key="'row' + index" />
-                    <br :key="'enter' + index" v-if="(index + 1) % 4 == 0" />
-                </label>
-
-                <button class="primary-default-btn" @click="setPermission">
-                    Send
-                </button>
             </div>
         </div>
     </div>

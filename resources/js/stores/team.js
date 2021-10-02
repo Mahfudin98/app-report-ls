@@ -2,8 +2,10 @@ import $axios from '../api'
 
 const state = () => ({
     teams: [],
+    profile: [],
     page: 1,
-    id: ''
+    id: '',
+    slug: ''
 })
 
 const mutations = {
@@ -17,6 +19,10 @@ const mutations = {
 
     SET_ID_UPDATE(state, payload) {
         state.id = payload
+    },
+
+    ASSIGN_PROFILE(state, payload) {
+        state.profile = payload
     }
 }
 
@@ -55,7 +61,22 @@ const actions = {
                 }
             })
         })
-    }
+    },
+
+    showTeam({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/teams/${payload}`)
+            .then((response) => {
+                commit('ASSIGN_PROFILE',response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error) => {
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+            }
+        })
+    },
 }
 
 export default {

@@ -88,9 +88,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $user = User::where('slug', $slug)->with(['position'])->first();
+        return $user;
     }
 
     /**

@@ -1,12 +1,60 @@
 <template>
-    <div class="media-content">
-        <div class="row">
-            <product-form />
-            <div class="col-lg-8">
-                <div class="sort-bar media-bar">
-                    <div class="sort-bar-start">
-                        <div class="search-wrapper">
-                            <svg
+    <main>
+        <product-add />
+        <div class="rui-page-content">
+            <div class="container-fluid">
+                <div
+                    class="d-flex justify-content-between align-items-center mb-20"
+                >
+                    <div class="row xs-gap">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <button
+                                    type="button"
+                                    class="btn btn-clean btn-uniform btn-grey-5"
+                                    data-toggle="button"
+                                    aria-pressed="false"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-search rui-icon rui-icon-stroke-1_5"
+                                    >
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line
+                                            x1="21"
+                                            y1="21"
+                                            x2="16.65"
+                                            y2="16.65"
+                                        ></line>
+                                    </svg>
+                                </button>
+                                <input
+                                    type="search"
+                                    class="form-control form-control-clean"
+                                    placeholder="Type to search..."
+                                    data-toggle="input"
+                                    autocomplete="off"
+                                    v-model="search"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-brand"
+                        data-toggle="modal"
+                        data-target="#addModal"
+                    >
+                        <span class="icon"
+                            ><svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
                                 height="24"
@@ -16,109 +64,102 @@
                                 stroke-width="2"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
-                                class="feather feather-search"
-                                aria-hidden="true"
+                                class="feather feather-plus rui-icon rui-icon-stroke-1_5"
                             >
-                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line
-                                    x1="21"
-                                    y1="21"
-                                    x2="16.65"
-                                    y2="16.65"
-                                ></line>
-                            </svg>
-                            <input type="text" placeholder="Search" />
-                        </div>
-                    </div>
-                    <div class="sort-bar-end">
-                        <button class="primary-default-btn" type="button">
-                            Cari
-                        </button>
-                    </div>
+                                    x1="5"
+                                    y1="12"
+                                    x2="19"
+                                    y2="12"
+                                ></line></svg
+                        ></span>
+                        <span class="text">Add Product</span>
+                    </button>
                 </div>
-                <div class="users-table table-wrapper">
-                    <table class="library-table">
-                        <thead>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
                             <tr class="users-table-info">
-                                <th>Name</th>
-                                <th>Type Pembelian</th>
-                                <th>Type Product</th>
-                                <th>Stock</th>
-                                <th>Created At</th>
-                                <th>Action</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Type Pembelian</th>
+                                <th scope="col">Type Product</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="" v-for="row in products.data" :key="row.created_at">
+                            <tr
+                                class=""
+                                v-for="row in products.data"
+                                :key="row.created_at"
+                            >
                                 <td>
-                                    <div class="library-table-name">
-                                        {{row.name}}
-                                    </div>
+                                    {{ row.name }}
                                 </td>
                                 <td>
-                                    <div class="library-table-name">
-                                        <span class="badge-active">{{row.type_pembelian}}</span>
-                                    </div>
+                                    {{ row.type_pembelian }}
                                 </td>
                                 <td>
-                                    <div class="library-table-name">
-                                        <span class="badge-active">{{row.type_product}}</span>
-                                    </div>
+                                    {{ row.type_product }}
                                 </td>
                                 <td>
-                                    <div class="library-table-name">
-                                        {{row.stock}}
-                                    </div>
+                                    {{ row.stock }}
                                 </td>
-                                <td><vue-moments-ago prefix="posted" suffix="ago" :date="row.created_at" lang="en" /></td>
                                 <td>
-                                    <span class="p-relative">
+                                    <vue-moments-ago
+                                        prefix="posted"
+                                        suffix="ago"
+                                        :date="row.created_at"
+                                        lang="en"
+                                    />
+                                </td>
+                                <td>
+                                    <div
+                                        class="btn-group dropdown dropdown-triangle"
+                                    >
                                         <button
-                                            class="dropdown-btn transparent-btn"
+                                            class="btn btn-brand btn-long dropdown-toggle"
                                             type="button"
-                                            title="More info"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
                                         >
-                                            <div class="sr-only">More info</div>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="feather feather-more-horizontal"
-                                                aria-hidden="true"
-                                            >
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="1"
-                                                ></circle>
-                                                <circle
-                                                    cx="19"
-                                                    cy="12"
-                                                    r="1"
-                                                ></circle>
-                                                <circle
-                                                    cx="5"
-                                                    cy="12"
-                                                    r="1"
-                                                ></circle>
-                                            </svg>
+                                            <span class="text">Action</span>
+                                            <span class="icon">
+                                                <span
+                                                    class="fas fa-angle-down"
+                                                ></span>
+                                            </span>
                                         </button>
-                                        <ul
-                                            class="users-item-dropdown dropdown"
-                                        >
-                                            <li><a href="##">Edit</a></li>
+                                        <ul class="dropdown-menu nav">
                                             <li>
-                                                <a href="##">Quick edit</a>
+                                                <a class="nav-link" href="#"
+                                                    ><span
+                                                        data-feather="plus-circle"
+                                                        class="fas fa-edit"
+                                                    ></span
+                                                    ><span>Edit</span
+                                                    ><span
+                                                        class="rui-nav-circle"
+                                                    ></span
+                                                ></a>
                                             </li>
-                                            <li><a href="##">Trash</a></li>
+                                            <li>
+                                                <a class="nav-link" href="#"
+                                                    ><span
+                                                        data-feather="x-circle"
+                                                        class="fas fa-trash"
+                                                    ></span
+                                                    ><span>Delete</span
+                                                    ><span
+                                                        class="rui-nav-circle"
+                                                    ></span
+                                                ></a>
+                                            </li>
                                         </ul>
-                                    </span>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -126,14 +167,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import ProductForm from "./ProductForm.vue";
+import ProductAdd from "./ProductAdd.vue";
 import VueMomentsAgo from "vue-moments-ago";
 export default {
-    components: { ProductForm, VueMomentsAgo },
+    components: { ProductAdd, VueMomentsAgo },
     created() {
         this.getProducts();
     },

@@ -39,6 +39,7 @@ import IndexTeam from './pages/team/Index.vue'
 import DataTeam from './pages/team/modules/TeamData.vue'
 import AddTeam from './pages/team/modules/TeamAdd.vue'
 import EditTeam from './pages/team/modules/TeamEdit.vue'
+import ShowTeam from './pages/team/modules/TeamView.vue'
 // setting
 import Setting from './pages/setting/Index.vue'
 import SetPermission from './pages/setting/roles/SetPermissions.vue'
@@ -212,6 +213,12 @@ const router = new Router({
                     name: 'teams.edit',
                     component: EditTeam,
                     meta: { title: 'Edit Team' }
+                },
+                {
+                    path: ':slug',
+                    name: 'teams.show',
+                    component: ShowTeam,
+                    meta: { title: 'Show Team' }
                 }
             ],
         },

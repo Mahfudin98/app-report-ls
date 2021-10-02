@@ -1,21 +1,30 @@
 <template>
-    <div class="">
-        <form-team ref="teamForm"></form-team>
-        <div class="row new-page__row">
-            <div class="col-xl-8 col-md-6">
-                <div class="new-page-content white-block">
-                    <button class="primary-default-btn" @click.prevent="submit">
-                        <lord-icon
-                            src="https://cdn.lordicon.com/xhwleznj.json"
-                            trigger="loop"
-                            colors="primary:#fffff,secondary:#ffffff"
-                            style="width:50px;height:50px"
-                        >
-                        </lord-icon>
-                        Save
-                    </button>
-                </div>
+    <div class="rui-page-content">
+        <div class="container-fluid">
+            <div
+                class="d-flex justify-content-between align-items-center mb-20"
+            >
+                <router-link
+                    :to="{ name: 'teams.data' }"
+                    class="btn btn-secondary"
+                >
+                    <span class="icon">
+                        <span class="fas fa-arrow-alt-circle-left"></span>
+                    </span>
+                    <span class="text">Back</span>
+                </router-link>
+                <button
+
+                    @click.prevent="submit"
+                    class="btn btn-brand"
+                >
+                    <span class="icon">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text">Save</span>
+                </button>
             </div>
+            <form-team ref="teamForm"></form-team>
         </div>
     </div>
 </template>

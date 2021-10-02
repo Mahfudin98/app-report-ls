@@ -35,7 +35,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // superadmin
     Route::resource('/positions', PositionController::class)->except(['show', 'create']);
     Route::resource('/products', ProductController::class)->except(['show']);
-    Route::resource('/teams', UserController::class)->except(['create']);
+    Route::resource('/teams', UserController::class)->except(['create', 'show']);
+    Route::get('/teams/{slug}', [UserController::class, 'show'])->name('teams.show.slug');
 
     // permissions
     Route::get('roles', [RolePermissionController::class, 'getAllRole'])->name('roles');

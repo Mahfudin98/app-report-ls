@@ -24,7 +24,7 @@ const actions = {
     getCsReports({commit}, payload){
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/cs-reports?page=${state.page}&q=${search}`)
+            $axios.get(`/cs-reports?page=${state.page}&date=${search}`)
             .then((response) => {
                 commit('ASSIGN_DATA', response.data)
                 resolve(response.data)
