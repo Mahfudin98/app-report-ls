@@ -4,29 +4,12 @@
             <div
                 class="d-flex justify-content-between align-items-center mb-20"
             >
-                <!-- <input
-                    class="rui-daterange form-control w-auto"
-                    type="text"
-                    placeholder="Select dates"
-                    data-daterangepicker-format="MM/DD/YYYY"
-                    v-model="search"
-                /> -->
-                <div class="range-date-picker-container">
-                    <transition name="panelIn">
-                        <range-date-picker
-                            class="range-date-picker"
-                            v-model="dates"
-                            language="en"
-                            v-show="show"
-                            @closePicker="closePicker"
-                        ></range-date-picker>
-                    </transition>
-                    <input
-                        class="form-control range-date-input"
-                        @click="showPicker"
-                        placeholder="click to use vue-easy-range-datepicker"
-                        :value="rangeDates"
-                    />
+                <div class="row xs-gap">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <date-picker v-model="search" placeholder="Pilih range tanggal" range></date-picker>
+                        </div>
+                    </div>
                 </div>
                 <router-link
                     :to="{ name: 'cs.report.add' }"
@@ -114,7 +97,9 @@
                                 </div>
                             </td>
                             <td>Rp. {{ row.omset | formatNumber }}</td>
-                            <td>{{ row.date }}</td>
+                            <td>
+                                {{ row.date }}
+                            </td>
                             <td>
                                 <vue-moments-ago
                                     prefix="posted"
@@ -178,25 +163,21 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import _ from 'lodash'
+import DatePicker from "vue2-datepicker";
 import VueMomentsAgo from "vue-moments-ago";
-import RangeDatePicker from "vue-easy-range-date-picker";
-import { parseTime } from "../../../../util";
-import moment from 'moment';
+import moment from "moment";
 export default {
-    components: { VueMomentsAgo, RangeDatePicker },
+    components: { VueMomentsAgo, DatePicker },
     name: "DataReportCS",
 
     created() {
         this.getCsReports();
-        this.search = this.rangeDates;
     },
 
     data() {
         return {
-            show: false,
-            dates: {},
-            search: moment().format('MM'),
+            range: {},
+            search: {},
         };
     },
 
@@ -204,31 +185,20 @@ export default {
         ...mapState("csReport", {
             csReports: state => state.csReports
         }),
-        rangeDates() {
-            if (Object.keys(this.dates).length === 2) {
-                return `${this.parseTime(
-                    this.dates.start,
-                    "y-m-d"
-                )} - ${this.parseTime(this.dates.end, "y-m-d")}`;
-            } else {
-                return "";
-            }
-        },
     },
 
     watch: {
         search() {
-            this.getCsReports(this.search);
+            this.getCsReports(this.convert(this.search[0])+'+-+'+this.convert(this.search[1]));
         }
     },
 
     methods: {
-        parseTime,
-        closePicker() {
-            this.show = false;
-        },
-        showPicker() {
-            this.show = true;
+        convert(str) {
+            var date = new Date(str),
+                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                day = ("0" + date.getDate()).slice(-2);
+            return [date.getFullYear(), mnth, day].join("-");
         },
         ...mapActions("csReport", ["getCsReports", "removePosition"]),
         deletePosition(id) {
@@ -249,28 +219,3 @@ export default {
     }
 };
 </script>
-<style lang="scss">
-.range-date-picker-container {
-    cursor: pointer;
-    font-size: 14px;
-    position: relative;
-    .range-date-picker {
-        position: absolute;
-        top: 50px;
-        left: 0px;
-    }
-    .range-date-input {
-        padding: 10px;
-        width: 300px;
-    }
-}
-.panelIn-enter {
-    transform: translateY(-10px);
-}
-.panelIn-enter-active {
-    transition: transform 0.3s ease;
-}
-.panelIn-enter-to {
-    transform: translateY(0);
-}
-</style>

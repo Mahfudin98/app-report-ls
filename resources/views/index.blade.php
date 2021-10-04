@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{{asset('common-assets/vendor/daterangepicker/daterangepicker.css')}}">
     {{-- end --}}
     <link rel="stylesheet" href="{{asset('common-assets/css/rootui.css')}}">
-    <link rel="stylesheet" href="{{asset('common-assets/css/rootui-night.css')}}" media="(night)" class="rui-nightmode-link">
+    <link rel="stylesheet" href="{{asset('common-assets/css/rootui-night.css')}}" media="all" class="rui-nightmode-link">
     <link rel="stylesheet" href="{{asset('common-assets/css/custom.css')}}">
 </head>
 <body data-spy="scroll" data-target=".rui-page-sidebar" data-offset="140"

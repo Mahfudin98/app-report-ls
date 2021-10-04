@@ -16,7 +16,6 @@ import store from './store.js'
 import { BootstrapVue } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'
-import loading from 'vuejs-loading-screen'
 import Permissions from './mixins/permission.js'
 
 
@@ -26,7 +25,6 @@ import DateRangePicker from "vue2-daterange-picker";
 
 Vue.mixin(Permissions)
 
-Vue.use(loading)
 Vue.use(VueSweetalert2);
 Vue.use(BootstrapVue)
 

@@ -100,7 +100,7 @@
 $helper-w: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100 !default;
 @each $item in $helper-w {
     .w-#{$item} {
-        width: #{$item}% !important;
+        width: #{$item} !important;
     }
 }
 

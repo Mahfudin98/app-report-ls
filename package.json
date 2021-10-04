@@ -41,13 +41,12 @@
         "numeral": "^2.0.6",
         "sweetalert2": "^11.1.5",
         "vue-chartjs": "^3.5.1",
-        "vue-easy-range-date-picker": "^1.0.3",
         "vue-moment": "^4.1.0",
         "vue-moments-ago": "^0.2.0",
         "vue-router": "^3.5.2",
         "vue-sweetalert2": "^5.0.2",
+        "vue2-datepicker": "^3.10.2",
         "vue2-daterange-picker": "^0.6.6",
-        "vuejs-loading-screen": "^1.10.0",
         "vuetify": "^2.5.8",
         "vuex": "^3.6.2"
     }
