@@ -24,7 +24,7 @@ const actions = {
     getAdvReports({commit}, payload){
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/adv-reports?page=${state.page}&q=${search}`)
+            $axios.get(`/adv-reports?page=${state.page}&date=${search}`)
             .then((response) => {
                 commit('ASSIGN_DATA', response.data)
                 resolve(response.data)
@@ -37,15 +37,15 @@ const actions = {
         })
     },
 
-    submitTeam({dispatch, commit}, payload) {
+    submitAdvReport({dispatch, commit}, payload) {
         return new Promise((resolve, reject) => {
-            $axios.post(`/cs-reports`, payload, {
+            $axios.post(`/adv-reports`, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
             .then((response) => {
-                dispatch('getCsReports').then(() => {
+                dispatch('getAdvReports').then(() => {
                     resolve(response.data)
                 })
             })

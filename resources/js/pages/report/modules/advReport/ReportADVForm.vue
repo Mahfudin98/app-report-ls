@@ -5,8 +5,22 @@
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body mnt-6 mnb-6">
-                            <h5 class="card-title h2">Order</h5>
-
+                            <h5 class="card-title h2">Lead</h5>
+                            <div class="form-group">
+                                <date-picker
+                                    v-model="search"
+                                    placeholder="Pilih range tanggal"
+                                    range
+                                ></date-picker>
+                            </div>
+                            <div class="form-group">
+                                <label for="chat">Chat</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    :value="leads"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -25,7 +39,10 @@
                                     v-model="advReport.biaya_iklan"
                                     required
                                 />
-                                <p class="text-danger" v-if="errors.biaya_iklan">
+                                <p
+                                    class="text-danger"
+                                    v-if="errors.biaya_iklan"
+                                >
                                     {{ errors.biaya_iklan[0] }}
                                 </p>
                             </div>
@@ -37,7 +54,7 @@
                                     class="form-control"
                                     name="cp_wa"
                                     placeholder="Enter page title"
-                                    v-model="advReport.cp_wa"
+                                    :value="cp_wa.toFixed() || 0"
                                     required
                                 />
                                 <p class="text-danger" v-if="errors.cp_wa">
@@ -68,10 +85,13 @@
 </template>
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import DatePicker from "vue2-datepicker";
 export default {
     name: "ReportADVForm",
+    components: { DatePicker },
     created() {
         this.getAdvReports();
+        this.getLeads();
 
         if (this.$route.name == "adv.report.edit") {
             this.editAdvReport(this.$route.params.id).then(res => {
@@ -85,10 +105,11 @@ export default {
     },
     data() {
         return {
+            search: "",
             advReport: {
                 biaya_iklan: "",
                 cp_wa: "",
-                date: "",
+                date: ""
             }
         };
     },
@@ -97,6 +118,21 @@ export default {
         ...mapState("advReport", {
             advReports: state => state.advReports
         }),
+        ...mapState("order", {
+            leads: state => state.leads
+        }),
+        cp_wa: function() {
+            return this.advReport.biaya_iklan / this.leads
+        },
+    },
+    watch: {
+        search() {
+            this.getLeads(
+                this.convert(this.search[0]) +
+                    "+-+" +
+                    this.convert(this.search[1])
+            );
+        }
     },
     methods: {
         ...mapActions("advReport", [
@@ -106,12 +142,18 @@ export default {
             "updateTeam"
         ]),
         ...mapMutations("advReport", ["SET_ID_UPDATE"]),
-
+        convert(str) {
+            var date = new Date(str),
+                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                day = ("0" + date.getDate()).slice(-2);
+            return [date.getFullYear(), mnth, day].join("-");
+        },
+        ...mapActions("order", ["getLeads"]),
         submit() {
             let form = new FormData();
 
             form.append("biaya_iklan", this.advReport.biaya_iklan);
-            form.append("cp_wa", this.advReport.cp_wa);
+            form.append("cp_wa", this.cp_wa.toFixed());
             form.append("date", this.advReport.date);
 
             if (this.$route.name == "adv.report.add") {
@@ -119,7 +161,7 @@ export default {
                     this.csReport = {
                         biaya_iklan: "",
                         cp_wa: "",
-                        date: "",
+                        date: ""
                     };
 
                     this.$router.push({ name: "adv.report.data" });
@@ -130,7 +172,7 @@ export default {
                     this.advReport = {
                         biaya_iklan: "",
                         cp_wa: "",
-                        date: "",
+                        date: ""
                     };
                     this.$router.push({ name: "adv.report.data" });
                 });

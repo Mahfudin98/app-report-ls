@@ -32,6 +32,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/cs-reports', [ReportController::class, 'storeCS'])->name('store.report.cs');
     // adv report
     Route::get('/adv-reports', [ReportController::class, 'indexADV'])->name('index.report.adv');
+    Route::get('/order', [ReportController::class, 'getOrder'])->name('get.order');
+    Route::get('/lead-masuk', [ReportController::class, 'leadCS'])->name('get.lead');
+    Route::post('/adv-reports', [ReportController::class, 'storeADV'])->name('store.report.adv');
     // superadmin
     Route::resource('/positions', PositionController::class)->except(['show', 'create']);
     Route::resource('/products', ProductController::class)->except(['show']);

@@ -4,12 +4,13 @@
             <div
                 class="d-flex justify-content-between align-items-center mb-20"
             >
-                <input
-                    class="rui-daterange form-control w-auto"
-                    type="text"
-                    placeholder="Select dates"
-                    data-daterangepicker-format="MM/DD/YYYY"
-                />
+                <div class="row xs-gap">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <date-picker v-model="search" placeholder="Pilih range tanggal" range></date-picker>
+                        </div>
+                    </div>
+                </div>
                 <router-link
                     :to="{ name: 'adv.report.add' }"
                     class="btn btn-brand"
@@ -112,9 +113,10 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import DatePicker from "vue2-datepicker";
 import VueMomentsAgo from "vue-moments-ago";
 export default {
-    components: { VueMomentsAgo },
+    components: { VueMomentsAgo, DatePicker },
     name: "DataReportADV",
 
     created() {
@@ -123,9 +125,7 @@ export default {
 
     data() {
         return {
-            search: "",
-            show: false,
-            dates: {}
+            search: {},
         };
     },
 
@@ -137,11 +137,17 @@ export default {
 
     watch: {
         search() {
-            this.getAdvReports(this.search);
+            this.getAdvReports(this.convert(this.search[0])+'+-+'+this.convert(this.search[1]));
         }
     },
 
     methods: {
+        convert(str) {
+            var date = new Date(str),
+                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                day = ("0" + date.getDate()).slice(-2);
+            return [date.getFullYear(), mnth, day].join("-");
+        },
         ...mapActions("advReport", ["getAdvReports", "removePosition"]),
         deletePosition(id) {
             this.$swal({
