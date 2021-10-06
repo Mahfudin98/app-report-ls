@@ -36,11 +36,11 @@
     "dependencies": {
         "@tabler/core": "^1.0.0-beta2",
         "bootstrap-vue": "^2.21.2",
-        "chart.js": "^3.5.1",
+        "chart.js": "^2.7.1",
         "moment": "^2.29.1",
         "numeral": "^2.0.6",
         "sweetalert2": "^11.1.5",
-        "vue-chartjs": "^3.5.1",
+        "vue-chartjs": "^3.4.0",
         "vue-moment": "^4.1.0",
         "vue-moments-ago": "^0.2.0",
         "vue-router": "^3.5.2",

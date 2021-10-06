@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SuperAdmin\PositionController;
 use App\Http\Controllers\Api\SuperAdmin\ProductController;
 use App\Http\Controllers\Api\SuperAdmin\RolePermissionController;
@@ -27,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    // dashboard
+    Route::get('/chart', [DashboardController::class, 'chart'])->name('chart');
     // cs report
     Route::get('/cs-reports', [ReportController::class, 'indexCS'])->name('index.report.cs');
     Route::post('/cs-reports', [ReportController::class, 'storeCS'])->name('store.report.cs');
