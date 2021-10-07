@@ -78,9 +78,8 @@
                                             >
                                                 <li
                                                     class="list-group-item"
-                                                    v-for="(row,
-                                                    index) in omsets"
-                                                    :key="index"
+                                                    v-for="row in omsets"
+                                                    :key="row.total"
                                                 >
                                                     <div
                                                         class="media media-filled media-country"

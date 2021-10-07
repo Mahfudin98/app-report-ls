@@ -52,14 +52,15 @@ class DashboardController extends Controller
         $data = [];
         foreach ($reports as $row) {
             $order = Order::where('cs_report_id', $row->id)->whereBetween('date', [$start, $end])->sum('total_order');
-            $total_order = $row->sum / $order;
+            $total_order = ($order / $row->sum) * 100;
             $data[] = [
                 'name' => $row->user->name,
                 'lead' => $row->sum,
                 'order' => $order,
-                'total_order' => $total_order
+                'total_order' => floor($total_order)
             ];
         }
+
         return $data;
     }
 }

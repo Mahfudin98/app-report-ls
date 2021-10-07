@@ -35,7 +35,7 @@ export default {
                     labels: labelsArray,
                     datasets: [
                         {
-                            label: "Data Omset",
+                            // label: ratioArray + "%",
                             data: ratioArray,
                             backgroundColor: [
                                 "rgba(255, 99, 132, 0.2)",
