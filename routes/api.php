@@ -29,7 +29,8 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // dashboard
-    Route::get('/chart', [DashboardController::class, 'chart'])->name('chart');
+    Route::get('/chart', [DashboardController::class, 'chart'])->name('bar.omset.chart');
+    Route::get('/persentase-cs', [DashboardController::class, 'persentaseCS'])->name('persentase.cs');
     // cs report
     Route::get('/cs-reports', [ReportController::class, 'indexCS'])->name('index.report.cs');
     Route::post('/cs-reports', [ReportController::class, 'storeCS'])->name('store.report.cs');

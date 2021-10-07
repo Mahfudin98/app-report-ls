@@ -2,22 +2,36 @@ import $axios from '../api.js'
 
 const state = () => ({
     omsets: [],
+    persentasecs: []
 })
 
 const mutations = {
 
-    ASSIGN_DATA_TRANSACTION(state, payload) {
+    ASSIGN_DATA_OMSET(state, payload) {
         state.omsets = payload
+    },
+    ASSIGN_DATA_PERSENTASE_CS(state, payload) {
+        state.persentasecs = payload
     }
 }
 
 const actions = {
-    getChartData({ commit }, payload) {
-        let search = typeof payload != 'undefined' ? payload:''
+    getChartBarOmset({ commit }, payload) {
+        let barOmset = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/chart?date=${search}`)
+            $axios.get(`/chart?date=${barOmset}`)
             .then((response) => {
-                commit('ASSIGN_DATA_TRANSACTION', response.data)
+                commit('ASSIGN_DATA_OMSET', response.data)
+                resolve(response.data)
+            })
+        })
+    },
+    getChartPersentaseCS({ commit }, payload) {
+        let persen = typeof payload != 'undefined' ? payload:''
+        return new Promise((resolve, reject) => {
+            $axios.get(`/persentase-cs?date=${persen}`)
+            .then((response) => {
+                commit('ASSIGN_DATA_PERSENTASE_CS', response.data)
                 resolve(response.data)
             })
         })
