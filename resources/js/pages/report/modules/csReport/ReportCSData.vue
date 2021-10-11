@@ -7,7 +7,11 @@
                 <div class="row xs-gap">
                     <div class="col-12">
                         <div class="input-group">
-                            <date-picker v-model="search" placeholder="Pilih range tanggal" range></date-picker>
+                            <date-picker
+                                v-model="search"
+                                placeholder="Pilih range tanggal"
+                                range
+                            ></date-picker>
                         </div>
                     </div>
                 </div>
@@ -155,6 +159,11 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr v-if="csReports.data == 0">
+                            <td class="text-center" colspan="7">
+                                <h5>Data tidak ditemukan</h5>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -177,19 +186,23 @@ export default {
     data() {
         return {
             range: {},
-            search: {},
+            search: {}
         };
     },
 
     computed: {
         ...mapState("csReport", {
             csReports: state => state.csReports
-        }),
+        })
     },
 
     watch: {
         search() {
-            this.getCsReports(this.convert(this.search[0])+'+-+'+this.convert(this.search[1]));
+            this.getCsReports(
+                this.convert(this.search[0]) +
+                    "+-+" +
+                    this.convert(this.search[1])
+            );
         }
     },
 

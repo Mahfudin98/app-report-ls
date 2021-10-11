@@ -20,4 +20,9 @@ class Position extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function used()
+    {
+        return $this->hasMany(InventoriUsed::class);
+    }
 }

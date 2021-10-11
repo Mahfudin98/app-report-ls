@@ -10,6 +10,7 @@ import csReport from './stores/csReport.js'
 import dashboard from './stores/dashboard.js'
 import advReport from './stores/advReport.js'
 import order from './stores/order.js'
+import inventory from './stores/inventory.js'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -23,7 +24,8 @@ const store = new Vuex.Store({
         csReport,
         advReport,
         dashboard,
-        order
+        order,
+        inventory
     },
 
     state: {

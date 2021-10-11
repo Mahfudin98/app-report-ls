@@ -47,6 +47,7 @@
                         </div>
                     </div>
                     <router-link
+                        v-if="$can('create teams')"
                         :to="{ name: 'teams.add' }"
                         class="btn btn-brand"
                     >
@@ -106,7 +107,7 @@
                                 <p class="card-text">
                                     {{ row.position.name }}
                                 </p>
-                                <div class="btn-group">
+                                <div class="btn-group" v-if="$can('edit teams')">
                                     <button
                                         type="button"
                                         class="btn btn-warning"
@@ -120,6 +121,16 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-lg-12"
+                        v-if="teams.data == 0"
+                    >
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="text-center">Data Tidak Ditemukan</h3>
                             </div>
                         </div>
                     </div>

@@ -25,16 +25,16 @@
                             </span>
                         </a>
                         <ul class="yay-submenu dropdown-triangle">
-                            <li>
+                            <li v-if="$can('read reports cs')">
                                 <router-link :to="{ name: 'cs.report.data' }">Report CS</router-link>
                             </li>
-                            <li>
+                            <li v-if="$can('read reports adv')">
                                 <router-link :to="{ name: 'adv.report.data' }">Report ADV</router-link>
                             </li>
                         </ul>
                     </li>
                     <!-- project -->
-                    <li>
+                    <li v-if="$can('read project')">
                         <router-link
                             :to="{ name: 'project.data' }"
                             class="active"
@@ -46,7 +46,7 @@
                         </router-link>
                     </li>
                     <!-- content -->
-                    <li>
+                    <li v-if="$can('read contents')">
                         <router-link
                             :to="{ name: 'content.data' }"
                             class="active"
@@ -58,7 +58,7 @@
                         </router-link>
                     </li>
                     <!-- stock -->
-                    <li>
+                    <li v-if="$can('read stocks')">
                         <router-link
                             :to="{ name: 'stock.data' }"
                             class="active"
@@ -71,19 +71,31 @@
                     </li>
                     <li class="yay-label">Super Admin</li>
                     <!-- teams -->
-                    <li>
+                    <li v-if="$can('read teams')">
                         <router-link
                             :to="{ name: 'teams.data' }"
                             class="active"
                         >
                             <span class="yay-icon">
-                                <span stroke-width="1.5" data-feather="users"></span>
+                                <span class="fas fa-users"></span>
                             </span>
                             <span>Team</span>
                         </router-link>
                     </li>
+                    <!-- inventory -->
+                    <li v-if="$can('read teams')">
+                        <router-link
+                            :to="{ name: 'inventory.data' }"
+                            class="active"
+                        >
+                            <span class="yay-icon">
+                                <span class="fab fa-codepen"></span>
+                            </span>
+                            <span>Inventories</span>
+                        </router-link>
+                    </li>
                     <!-- position -->
-                    <li>
+                    <li v-if="$can('read positions')">
                         <router-link
                             :to="{ name: 'position.data' }"
                             class="active"
@@ -95,7 +107,7 @@
                         </router-link>
                     </li>
                     <!-- product -->
-                    <li>
+                    <li v-if="authenticated.role == 0">
                         <router-link
                             :to="{ name: 'product.data' }"
                             class="active"
@@ -107,7 +119,7 @@
                         </router-link>
                     </li>
                     <!-- permissions -->
-                    <li>
+                    <li v-if="authenticated.role == 0">
                         <router-link
                             :to="{ name: 'role.permissions' }"
                             class="active"
@@ -156,3 +168,27 @@
         </div>
     </div>
 </template>
+<script>
+import { mapState } from 'vuex'
+export default {
+    computed: {
+        ...mapState('user', {
+            authenticated: state => state.authenticated //ME-LOAD STATE AUTHENTICATED
+        })
+    },
+    methods: {
+        //KETIKA TOMBOL LOGOUT DITEKAN, FUNGSI INI DIJALANKAN
+        logout() {
+            return new Promise((resolve, reject) => {
+                localStorage.removeItem('token') //MENGHAPUS TOKEN DARI LOCALSTORAGE
+                resolve()
+            }).then(() => {
+                //MEMPERBAHARUI STATE TOKEN
+                this.$store.state.token = localStorage.getItem('token')
+                this.$router.push('/login') //REDIRECT KE PAGE LOGIN
+            })
+        }
+    }
+}
+
+</script>

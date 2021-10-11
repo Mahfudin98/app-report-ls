@@ -199,24 +199,24 @@ export default {
         };
     },
     created() {
-        //KETIKA COMPONENT DI-LOAD, MAKA KITA AKAN ME-REQUEST 3 DATA BERIKUT
-        this.getRoles(); //DATA ROLES
-        this.getAllPermission(); //DATA PERMISSIONS
-        this.getUserLists(); //DATA USERS
+
+        this.getRoles();
+        this.getAllPermission();
+        this.getUserLists();
     },
     computed: {
-        ...mapState(["errors"]), //ME-LOAD STATE ERRORS
+        ...mapState(["errors"]),
         ...mapState("user", {
-            users: state => state.users, //ME-LOAD STATE USERS
-            roles: state => state.roles, //ME-LOAD STATE ROLES
-            permissions: state => state.permissions, //ME-LOAD STATE PERMISSION
+            users: state => state.users,
+            roles: state => state.roles,
+            permissions: state => state.permissions,
 
-            //STATE YANG MENAMPUNG PERMISSION YG TELAH DI-ASSIGN
+
             role_permission: state => state.role_permission
         })
     },
     methods: {
-        //LOAD SEMUA FUNGSI YANG ADA DI MODULE STORE USER
+
         ...mapActions("user", [
             "getUserLists",
             "getRoles",
@@ -225,63 +225,61 @@ export default {
             "setRolePermission",
             "setRoleUser"
         ]),
-        //LOAD MUTATIONS DARI STORE USER
+
         ...mapMutations("user", ["CLEAR_ROLE_PERMISSION"]),
-        //FUNGSI INI AKAN BERJALAN KETIKA TOMBOL SET ROLE DIKLIK
+
         setRole() {
-            //KIRIM PERMINTAAN KE BACKEND
+
             this.setRoleUser(this.role_user).then(() => {
-                this.alert_role = true; //AKTIFKAN ALERT JIKA BERHASIL
+                this.alert_role = true;
                 setTimeout(() => {
-                    //BEBERAPA DETIK KEMUDIAN, SET DEFAULT ROLE USER
+
                     this.role_user = {
                         role: "",
                         user_id: ""
                     };
-                    //MATIKAN ALERT
+
                     this.alert_role = false;
                 }, 1000);
             });
         },
-        //KETIKA LIST PERMISSION DI CENTANG, MAKA FUNGSI INI BERJALAN
+
         addPermission(name) {
-            //DICEK KE NEW_PERMISSION BERDASARKAN NAME
+
             let index = this.new_permission.findIndex(x => x == name);
-            //APABIL TIDAK TERSEDIA, INDEXNYA -1
+
             if (index == -1) {
-                //MAKA TAMBAHKAN KE LIST
+
                 this.new_permission.push(name);
             } else {
-                //JIKA SUDAH ADA, MAKA HAPUS DARI LIST
+
                 this.new_permission.splice(index, 1);
             }
         },
-        //KETIKA TOMBOL CHECK DITEKAN, MAKA FUNGSI INI BERJALAN
-        //FUNGSI INI UNTUK MENGAMBIL LIST PERMISSION YANG TELAH DI ASSIGN
-        //KE DALAM ROLE YANG DIPILIH
+
         checkPermission() {
-            this.loading = true; //AKTIFKAN LOADING TOMBOL
-            //KIRIM PERMINTAAN KE BACKEND
+            this.loading = true;
+
             this.getRolePermission(this.role_selected).then(() => {
-                //APABILA BERHASIL, MATIKAN LOADING
+
                 this.loading = false;
-                //PERMISSION YANG TELAH DIASSIGN AKAN DI MERGE KE NEW_PERMISSION
+
                 this.new_permission = this.role_permission;
             });
         },
-        //FUNGSI INI BERJALAN KETIKA TOMBOL SET PERMISSION DITEKAN
+
         setPermission() {
-            //KIRIM PERMINTAAN KE SERVER
+
             this.setRolePermission({
                 role_id: this.role_selected,
                 permissions: this.new_permission
             }).then(res => {
-                //APABIL BERHASIL
+
                 if (res.status == "success") {
-                    //NYALAKAN ALERT
+
                     this.alert_permission = true;
                     setTimeout(() => {
-                        //BEBERAPA DETIK KEMUDIAN, KEMBALIKAN KE DEFAULT
+
                         this.role_selected = "";
                         this.new_permission = [];
                         this.loading = false;

@@ -43,6 +43,15 @@ import ShowTeam from './pages/team/modules/TeamView.vue'
 // setting
 import Setting from './pages/setting/Index.vue'
 import SetPermission from './pages/setting/roles/SetPermissions.vue'
+// inventory
+import IndexInventory from './pages/inventory/Index.vue'
+import DataInventory from './pages/inventory/module/InventoryData.vue'
+import AddInventory from './pages/inventory/module/InventoryAdd.vue'
+import EditInventory from './pages/inventory/module/InventoryEdit.vue'
+// inventory usage
+import InventoryUsage from './pages/inventory/components/InventoryUsage.vue'
+import InventoryUsageAdd from './pages/inventory/components/InventoryUsageAdd.vue'
+import InventoryUsageShow from './pages/inventory/components/InventoryUsageShow.vue'
 Vue.use(Router)
 
 //DEFINE ROUTE
@@ -235,7 +244,45 @@ const router = new Router({
                     meta: { title: 'Set Permissions' }
                 },
             ]
-        }
+        },
+        // inventory
+        {
+            path: '/inventory',
+            component: IndexInventory,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'inventory.data',
+                    component: DataInventory,
+                    meta: { title: 'Manage Inventory' }
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'inventory.edit',
+                    component: EditInventory,
+                    meta: { title: 'Edit Inventory' }
+                },
+                {
+                    path: 'usage',
+                    name: 'inventory.usage',
+                    component: InventoryUsage,
+                    meta: { title: 'Inventory Usage' }
+                },
+                {
+                    path: 'usage-add',
+                    name: 'inventory.usage.add',
+                    component: InventoryUsageAdd,
+                    meta: { title: 'Inventory Usage Add' }
+                },
+                {
+                    path: 'usage-show/:slug',
+                    name: 'inventory.usage.show',
+                    component: InventoryUsageShow,
+                    meta: { title: 'Inventory Usage Show' }
+                },
+            ],
+        },
     ]
 });
 

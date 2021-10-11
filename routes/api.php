@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\SuperAdmin\PositionController;
 use App\Http\Controllers\Api\SuperAdmin\ProductController;
 use App\Http\Controllers\Api\SuperAdmin\RolePermissionController;
 use App\Http\Controllers\Api\SuperAdmin\UserController;
+use App\Http\Controllers\Api\User\InventoryController;
 use App\Http\Controllers\Api\User\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -55,4 +56,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // get auth
     Route::get('user-authenticated', [LoginController::class, 'getUserLogin'])->name('user.authenticated');
     Route::get('user-lists', [LoginController::class, 'userLists'])->name('user.index');
+    // inventory
+    Route::resource('/inventorys', InventoryController::class)->except(['show', 'create']);
+    Route::get('/inventorys/usage', [InventoryController::class, 'indexDetail'])->name('inventory.usege.index');
+    Route::post('/inventorys/usage', [InventoryController::class, 'storeDetail'])->name('inventory.usege.store');
+    Route::get('/inventorys/usage/{slug}', [InventoryController::class, 'showDetail'])->name('inventory.usege.show');
+
 });

@@ -105,6 +105,9 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr v-if="advReports.data == 0">
+                            <td class="text-center" colspan="5"><h5>Data tidak ditemukan</h5></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

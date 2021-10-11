@@ -162,6 +162,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="products.data == 0">
+                                <td class="text-center" colspan="6"><h5>Data tidak ditemukan</h5></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

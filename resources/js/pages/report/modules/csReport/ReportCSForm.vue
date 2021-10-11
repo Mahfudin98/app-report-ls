@@ -30,8 +30,14 @@
                                             index) in products.data"
                                             :key="index"
                                             :value="row.id"
-                                            >{{ row.name }} <p v-html="row.type_pembelian_label"></p></option
-                                        >
+                                            >{{ row.name }}
+                                            <p
+                                                v-html="
+                                                    row.type_pembelian_label
+                                                "
+                                            ></p>
+                                            ({{ row.price }})
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -69,6 +75,8 @@
                                 </span>
                                 <span class="text">Add Product</span>
                             </button>
+
+                            <p>{{csReport.product_id}}</p>
                         </div>
                     </div>
                 </div>
@@ -168,12 +176,13 @@ export default {
             csReport: {
                 chat: "",
                 transaksi: "",
-                omset: "",
+                omset: 0,
                 date: "",
                 // for order
                 product_id: [""],
                 total_order: [""]
-            }
+            },
+            price: ""
         };
     },
     computed: {
@@ -183,7 +192,8 @@ export default {
         }),
         ...mapState("product", {
             products: state => state.products
-        })
+        }),
+        // omset: function() {}
     },
     methods: {
         addFind: function() {
