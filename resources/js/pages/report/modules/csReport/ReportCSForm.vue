@@ -29,7 +29,7 @@
                                             v-for="(row,
                                             index) in products.data"
                                             :key="index"
-                                            :value="row.id"
+                                            :value="row"
                                             >{{ row.name }}
                                             <p
                                                 v-html="
@@ -75,8 +75,6 @@
                                 </span>
                                 <span class="text">Add Product</span>
                             </button>
-
-                            <p>{{csReport.product_id}}</p>
                         </div>
                     </div>
                 </div>
@@ -122,8 +120,9 @@
                                     type="number"
                                     name="omset"
                                     placeholder="Enter page title"
-                                    v-model="csReport.omset"
+                                    :value="omsetResult"
                                     required
+                                    disabled
                                 />
                                 <p class="text-danger" v-if="errors.omset">
                                     {{ errors.omset[0] }}
@@ -176,13 +175,12 @@ export default {
             csReport: {
                 chat: "",
                 transaksi: "",
-                omset: 0,
                 date: "",
                 // for order
                 product_id: [""],
                 total_order: [""]
             },
-            price: ""
+            price: [""]
         };
     },
     computed: {
@@ -193,13 +191,44 @@ export default {
         ...mapState("product", {
             products: state => state.products
         }),
-        // omset: function() {}
+        pricesOrder() {
+            var result = this.csReport.product_id;
+            var res = Object.keys(result).map(function(key) {
+                return parseInt(result[key].price);
+            });
+            return res;
+        },
+        idOrder() {
+            var result = this.csReport.product_id;
+            var res = Object.keys(result).map(function(key) {
+                return parseInt(result[key].id);
+            });
+            return res;
+        },
+        omsetOrder() {
+            var harga = this.pricesOrder;
+            var jumlah = this.csReport.total_order;
+            var res = Object.keys(jumlah).map(function(key){
+                return parseInt(jumlah[key]) * harga[key];
+            });
+
+            return res;
+        },
+        omsetResult() {
+            var sum = this.omsetOrder.reduce((acc, item)=> acc + item, 0);
+            return sum;
+        }
     },
     methods: {
         addFind: function() {
             this.finds.push({ value: "" });
         },
         removeFind(index) {
+            this.csReport = {
+                // for order
+                product_id: [""],
+                total_order: [""]
+            };
             this.finds.splice(index, 1);
         },
         ...mapActions("product", ["getProducts"]),
@@ -216,12 +245,12 @@ export default {
 
             form.append("chat", this.csReport.chat);
             form.append("transaksi", this.csReport.transaksi);
-            form.append("omset", this.csReport.omset);
+            form.append("omset", this.omsetResult);
             form.append("date", this.csReport.date);
             // array order
             for (var i = 0; i < this.csReport.total_order.length; i++) {
                 let total_order = this.csReport.total_order[i];
-                let product_id = this.csReport.product_id[i];
+                let product_id = this.idOrder[i];
                 form.append("total_order[" + i + "]", total_order);
                 form.append("product_id[" + i + "]", product_id);
             }

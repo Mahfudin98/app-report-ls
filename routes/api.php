@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/adv-reports', [ReportController::class, 'storeADV'])->name('store.report.adv');
     // superadmin
     Route::resource('/positions', PositionController::class)->except(['show', 'create']);
-    Route::resource('/products', ProductController::class)->except(['show']);
+    Route::resource('/products', ProductController::class);
     Route::resource('/teams', UserController::class)->except(['create', 'show']);
     Route::get('/teams/{slug}', [UserController::class, 'show'])->name('teams.show.slug');
 
