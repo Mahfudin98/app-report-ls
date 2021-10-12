@@ -46,6 +46,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:100',
+            'price' => 'required|integer',
             'type_pembelian' => 'required',
             'type_product' => 'required'
         ]);
@@ -53,6 +54,7 @@ class ProductController extends Controller
         Product::create([
             'name' => $request->name,
             'slug' => $request->name,
+            'price' => $request->price,
             'stock' => 0,
             'type_pembelian' => $request->type_pembelian,
             'type_product' => $request->type_product

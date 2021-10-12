@@ -49,9 +49,7 @@
                                             v-for="(row, index) in users"
                                             :value="row.id"
                                             :key="index"
-                                            >{{ row.name }} ({{
-                                                row.position.name
-                                            }})</option
+                                            >{{ row.name }}</option
                                         >
                                     </select>
                                 </div>

@@ -29,7 +29,17 @@ const actions = {
                 }
             })
         })
-    }
+    },
+    logout({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            localStorage.removeItem('token')
+            resolve()
+            $axios.post('/logout')
+            .then((response) => {
+                resolve(response.data)
+            })
+        })
+    },
 }
 
 export default {

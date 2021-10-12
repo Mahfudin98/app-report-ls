@@ -51,7 +51,7 @@ class LoginController extends Controller
 
     public function userLists()
     {
-        $user = User::with(['position'])->orderBy('created_at', 'DESC')->team();
+        $user = User::orderBy('name', 'ASC');
         return new UsersCollection($user->get());
     }
 

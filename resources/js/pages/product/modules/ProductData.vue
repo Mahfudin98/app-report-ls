@@ -84,6 +84,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Type Pembelian</th>
                                 <th scope="col">Type Product</th>
+                                <th scope="col">Harga</th>
                                 <th scope="col">Stock</th>
                                 <th scope="col">Created At</th>
                                 <th scope="col">Action</th>
@@ -103,6 +104,9 @@
                                 </td>
                                 <td>
                                     <p v-html="row.type_product_label"></p>
+                                </td>
+                                <td>
+                                    Rp. {{ row.price | formatNumber }}
                                 </td>
                                 <td>
                                     {{ row.stock }}

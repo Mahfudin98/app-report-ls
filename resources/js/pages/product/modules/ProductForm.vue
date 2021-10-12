@@ -13,6 +13,18 @@
             />
         </div>
         <div class="form-group">
+            <label for="price">Harga Product</label>
+            <input
+                class="form-control"
+                type="number"
+                name="price"
+                id="price"
+                placeholder="Product price"
+                v-model="product.price"
+                required
+            />
+        </div>
+        <div class="form-group">
             <label for="tipe_pembelian">Tipe Pembelian</label>
             <select
                 id="tipe_pembelian"

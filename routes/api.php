@@ -26,9 +26,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     // dashboard
     Route::get('/chart', [DashboardController::class, 'chart'])->name('bar.omset.chart');
     Route::get('/persentase-cs', [DashboardController::class, 'persentaseCS'])->name('persentase.cs');

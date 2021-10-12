@@ -5,6 +5,7 @@ const state = () => ({
 
     product: {
         name: '',
+        price: '',
         type_pembelian: '',
         type_product: ''
     },
@@ -24,7 +25,7 @@ const mutations = {
     ASSIGN_FORM(state, payload){
         state.product = {
             name: payload.name,
-            image: payload.image,
+            price: payload.price,
             type_pembelian: payload.type_pembelian,
             type_product: payload.type_product
         }
@@ -33,6 +34,7 @@ const mutations = {
     CLEAR_FORM(state, payload){
         state.product = {
             name: '',
+            price: '',
             type_pembelian: '',
             type_product: ''
         }

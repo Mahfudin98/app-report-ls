@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <router-link
-                        v-if="$can('create teams')"
+                        v-if="authenticated.role == 0 && $can('create teams')"
                         :to="{ name: 'teams.add' }"
                         class="btn btn-brand"
                     >
@@ -152,6 +152,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('user', {
+            authenticated: state => state.authenticated //ME-LOAD STATE AUTHENTICATED
+        }),
         ...mapState("team", {
             teams: state => state.teams
         }),

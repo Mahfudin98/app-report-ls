@@ -51,8 +51,8 @@
                                 data-offset="0,20"
                                 ><span class="btn btn-custom-round"
                                     ><span
-                                        data-feather="bell"
-                                        class="rui-icon rui-icon-stroke-1_5 mr-0"
+                                        class="fas fa-bell"
+                                         style="font-size: 15px;"
                                     ></span>
                                     <span class="badge badge-circle badge-brand"
                                         >3</span
@@ -201,7 +201,7 @@
                                     ></a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)" @click="logout" class="nav-link"
+                                    <a href="javascript:void(0)" @click="logoutPost" class="nav-link"
                                         ><span
                                             data-feather="log-out"
                                             class="rui-icon rui-icon-stroke-1_5"
@@ -920,7 +920,7 @@
     </main>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
     name: "NavBar",
     computed: {
@@ -929,14 +929,12 @@ export default {
         })
     },
     methods: {
-        logout() {
-            return new Promise((resolve, reject) => {
-                localStorage.removeItem('token')
-                resolve()
-            }).then(() => {
+        ...mapActions("auth", ["logout"]),
+        logoutPost() {
+            this.logout().then(() => {
                 this.$store.state.token = localStorage.getItem('token')
                 this.$router.push('/login')
-            })
+            });
         },
     }
 }

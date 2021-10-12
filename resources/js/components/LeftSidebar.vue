@@ -6,7 +6,7 @@
                     <li class="yay-item-active">
                         <router-link :to="{ name: 'home' }">
                             <span class="yay-icon">
-                                <span data-feather="home" class="rui-icon rui-icon-stroke-1_5"></span>
+                                <span class="fas fa-home"></span>
                             </span>
                             <span>Dashboard</span>
                             <span class="rui-yaybar-circle"></span>
@@ -16,12 +16,12 @@
                     <li class="">
                         <a href="#" class="yay-sub-toggle">
                             <span class="yay-icon">
-                                <span data-feather="layers" class="rui-icon rui-icon-stroke-1_5"></span>
+                                <span class="fas fa-layer-group"></span>
                             </span>
                             <span>Report</span>
                             <span class="rui-yaybar-circle"></span>
                             <span class="yay-icon-collapse">
-                                <span data-feather="chevron-right" class="rui-icon rui-icon-collapse rui-icon-stroke-1_5"></span>
+                                <span class="fas fa-chevron-circle-right"></span>
                             </span>
                         </a>
                         <ul class="yay-submenu dropdown-triangle">
@@ -34,13 +34,13 @@
                         </ul>
                     </li>
                     <!-- project -->
-                    <li v-if="$can('read project')">
+                    <li v-if="$can('read projects')">
                         <router-link
                             :to="{ name: 'project.data' }"
                             class="active"
                         >
                             <span class="yay-icon">
-                            <span data-feather="book" class="rui-icon rui-icon-stroke-1_5"></span>
+                            <span class="fab fa-git-alt"></span>
                             </span> <span>Project Management</span>
                             <span class="rui-yaybar-circle"></span>
                         </router-link>
@@ -52,7 +52,7 @@
                             class="active"
                         >
                             <span class="yay-icon">
-                                <span stroke-width="1.5" data-feather="film"></span>
+                                <span class="fas fa-film"></span>
                             </span>
                             <span>Conent</span>
                         </router-link>
@@ -64,7 +64,7 @@
                             class="active"
                         >
                             <span class="yay-icon">
-                                <span stroke-width="1.5" data-feather="truck"></span>
+                                <span class="fas fa-people-carry"></span>
                             </span>
                             <span>Stock</span>
                         </router-link>
@@ -83,7 +83,7 @@
                         </router-link>
                     </li>
                     <!-- inventory -->
-                    <li v-if="$can('read teams')">
+                    <li v-if="$can('read inventories')">
                         <router-link
                             :to="{ name: 'inventory.data' }"
                             class="active"
@@ -101,19 +101,19 @@
                             class="active"
                         >
                             <span class="yay-icon">
-                                <span stroke-width="1.5" data-feather="airplay"></span>
+                                <span class="fas fa-vote-yea"></span>
                             </span>
                             <span>Positions</span>
                         </router-link>
                     </li>
                     <!-- product -->
-                    <li v-if="authenticated.role == 0">
+                    <li v-if="$can('read products')">
                         <router-link
                             :to="{ name: 'product.data' }"
                             class="active"
                         >
                             <span class="yay-icon">
-                                <span stroke-width="1.5" data-feather="box"></span>
+                                <span class="fas fa-box"></span>
                             </span>
                             <span>Product</span>
                         </router-link>
@@ -125,7 +125,7 @@
                             class="active"
                         >
                             <span class="yay-icon">
-                                <span stroke-width="1.5" data-feather="settings"></span>
+                                <span class="fas fa-users-cog"></span>
                             </span>
                             <span>Settings</span>
                         </router-link>

@@ -34,7 +34,7 @@
                         {{ errors.password[0] }}
                     </p>
                 </div>
-
+                <p class="text-danger" v-if="errors.invalid">{{ errors.invalid }}</p>
                 <div class="col-sm-6">
                     <div
                         class="custom-control custom-checkbox d-flex justify-content-start"
