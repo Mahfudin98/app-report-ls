@@ -17,8 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->date('date');
             $table->unsignedBigInteger('cs_report_id');
-            $table->unsignedBigInteger('product_id');
-            $table->integer('total_order');
+            $table->boolean('status')->comment('0:retur, 1:success');
             $table->timestamps();
         });
     }

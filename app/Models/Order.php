@@ -10,13 +10,18 @@ class Order extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function product()
+    public function customer()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function csReport()
     {
         return $this->belongsTo(CsReport::class);
+    }
+
+    public function orderDetail()
+    {
+        return $this->hasMany(DetailOrder::class);
     }
 }

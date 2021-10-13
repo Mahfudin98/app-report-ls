@@ -16,6 +16,16 @@ export default {
             deep: true
         }
     },
+    computed: {
+        colorBG() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++ ) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        },
+    },
     methods: {
         barRenderChart() {
             var length = this.data.length;
@@ -37,16 +47,12 @@ export default {
                         {
                             label: "Data Omset",
                             data: ratioArray,
-                            backgroundColor: [
-                                "rgba(255, 99, 132, 0.2)",
-                                "rgba(54, 162, 235, 0.2)",
-                                "rgba(255, 206, 86, 0.2)"
-                            ],
-                            borderColor: [
-                                "rgba(255, 99, 132, 1)",
-                                "rgba(54, 162, 235, 1)",
-                                "rgba(255, 206, 86, 1)"
-                            ],
+                            backgroundColor: this.colorBG,
+                            // borderColor: [
+                            //     "rgba(255, 99, 132, 1)",
+                            //     "rgba(54, 162, 235, 1)",
+                            //     "rgba(255, 206, 86, 1)"
+                            // ],
                             borderWidth: 1
                         }
                     ]

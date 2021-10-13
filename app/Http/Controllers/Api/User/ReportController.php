@@ -7,6 +7,8 @@ use App\Http\Resources\AdvReportCollection;
 use App\Http\Resources\CsReportCollection;
 use App\Models\AdvReport;
 use App\Models\CsReport;
+use App\Models\Customer;
+use App\Models\DetailOrder;
 use App\Models\Order;
 use App\Models\User;
 use Carbon\Carbon;
@@ -60,19 +62,39 @@ class ReportController extends Controller
             ]);
 
             $reports = CsReport::find($csreport['id']);
-
-            foreach ($data['total_order'] as $item => $value) {
-                $data2 = array(
-                    'date' => $request->date,
-                    'cs_report_id' => $reports->id,
-                    'product_id' => $data['product_id'][$item],
-                    'total_order' => $data['total_order'][$item]
+            foreach ($data['customer_name'] as $item => $value) {
+                $dataCustomer = array(
+                    'name' => $data['customer_name'][$item],
+                    'phone' => $data['customer_phone'][$item],
+                    'address' => $data['customer_address'][$item],
                 );
 
-                $order = Order::create($data2);
+                $customers[] = Customer::create($dataCustomer);
+            }
+            foreach ($data['customer_name'] as $item => $value) {
+                $val[] = $customers[$item]['id'];
+            }
+            foreach ($data['customer_name'] as $item => $value) {
+                $dataOrder = array(
+                    'waybill' => $data['waybill'][$item],
+                    'date' => $request->date,
+                    'cs_report_id' => $reports->id,
+                    'customer_id' => $customers[$item]['id'],
+                );
+
+                $order[] = Order::create($dataOrder);
+                foreach ($data['waybill'] as $items => $value) {
+                    $dataOrderDetail = array(
+                        'order_id' => $order[$item]['id'],
+                        'product_id' => $data['product_id'][$item][$items],
+                        'total_order' => $data['total_order'][$item][$items]
+                    );
+
+                    $orderDetail[] = DetailOrder::create($dataOrderDetail);
+                }
             }
 
-            return response()->json(['status' => 'success'], 200);
+            return response()->json(['status' => 'success', 'data' => $orderDetail], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
