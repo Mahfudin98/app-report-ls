@@ -22,7 +22,7 @@ class DashboardController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
 
-        $reports = CsReport::with(['user','order.product'])->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(omset) as sum')->get();
+        $reports = CsReport::with(['user','order.orderDetail.product'])->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(omset) as sum')->get();
 
         $data = [];
         foreach ($reports as $row) {
@@ -47,7 +47,7 @@ class DashboardController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
 
-        $reports = CsReport::with(['user','order.product'])->orderBy('omset', 'ASC')->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(chat) as sum')->get();
+        $reports = CsReport::with(['user','order.orderDetail.product'])->orderBy('omset', 'ASC')->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(chat) as sum')->get();
         // $order = Order::groupBy('cs_report_id')->selectRaw('*, sum(total_order) as order')->get();
         $data = [];
         foreach ($reports as $row) {

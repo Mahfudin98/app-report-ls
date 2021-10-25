@@ -3,7 +3,9 @@ import $axios from '../api'
 const state = () => ({
     csReports: [],
     page: 1,
-    id: ''
+    id: '',
+    date: '',
+    reportcs: []
 })
 
 const mutations = {
@@ -17,6 +19,14 @@ const mutations = {
 
     SET_ID_UPDATE(state, payload) {
         state.id = payload
+    },
+
+    SET_DATE_UPDATE(state, payload) {
+        state.date = payload
+    },
+
+    ASSIGN_REPORTCS(state, payload) {
+        state.reportcs = payload
     }
 }
 
@@ -37,15 +47,51 @@ const actions = {
         })
     },
 
+    //view
+    viewCsReport({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/cs-reports/${payload}`)
+            .then((response) => {
+                commit('ASSIGN_REPORTCS',response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error) => {
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+            }
+        })
+    },
+
     submitCsReport({dispatch, commit}, payload) {
         return new Promise((resolve, reject) => {
-            $axios.post(`/cs-reports`, payload, {
+            $axios.post(`/cs-reports/add`, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
             .then((response) => {
-                dispatch('getCsReports').then(() => {
+                dispatch('viewCsReport').then(() => {
+                    resolve(response.data)
+                })
+            })
+            .catch((error) => {
+                if (error.response.status == 422) {
+                    commit('SET_ERRORS', error.response.data.errors, { root: true })
+                }
+            })
+        })
+    },
+
+    submitCustomer({dispatch, commit}, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.post(`/cs-reports/customers`, payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                dispatch('viewCsReport').then(() => {
                     resolve(response.data)
                 })
             })
@@ -84,7 +130,7 @@ const actions = {
                 dispatch('getPosition').then(() => resolve())
             })
         })
-    }
+    },
 }
 
 export default {

@@ -16,8 +16,11 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('price')->default(0);
             $table->string('slug');
             $table->integer('stock')->nullable();
+            $table->boolean('type_pembelian')->comment('0: ecer, 1: paket komplit, 2: paket hemat');
+            $table->boolean('type_product')->comment('0: BPOM, 1: farma');
             $table->timestamps();
         });
     }

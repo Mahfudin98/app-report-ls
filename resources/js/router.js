@@ -19,8 +19,9 @@ import IndexReport from './pages/report/Index.vue'
 import DataReport from './pages/report/modules/ReportData.vue'
 // csReport
 import DataCSReport from './pages/report/modules/csReport/ReportCSData.vue'
-import AddCSReport from './pages/report/modules/csReport/ReportCSAdd.vue'
+// import AddCSReport from './pages/report/modules/csReport/ReportCSAdd.vue'
 import EditCSReport from './pages/report/modules/csReport/ReportCSEdit.vue'
+import ViewCSReport from './pages/report/modules/csReport/ReportCSView.vue'
 // advReport
 import DataADVReport from './pages/report/modules/advReport/ReportADVData.vue'
 import AddADVReport from './pages/report/modules/advReport/ReportADVAdd.vue'
@@ -131,6 +132,12 @@ const router = new Router({
                     component: DataReport,
                     meta: { title: 'Manage Report' }
                 },
+                {
+                    path: '/cs-report/:date',
+                    name: 'report.data.date',
+                    component: ViewCSReport,
+                    meta: { title: 'Manage Report' }
+                },
                 // cs report
                 {
                     path: '/cs-report',
@@ -138,12 +145,12 @@ const router = new Router({
                     component: DataCSReport,
                     meta: { title: 'Manage Report CS' }
                 },
-                {
-                    path: '/cs-report/add',
-                    name: 'cs.report.add',
-                    component: AddCSReport,
-                    meta: { title: 'Add Report CS' }
-                },
+                // {
+                //     path: '/cs-report/add',
+                //     name: 'cs.report.add',
+                //     component: AddCSReport,
+                //     meta: { title: 'Add Report CS' }
+                // },
                 {
                     path: '/cs-report/edit/:id',
                     name: 'cs.report.edit',

@@ -23,7 +23,7 @@ class ProductController extends Controller
         }
 
 
-        return new ProductCollection($products->paginate(10));
+        return new ProductCollection($products->get());
     }
 
     /**

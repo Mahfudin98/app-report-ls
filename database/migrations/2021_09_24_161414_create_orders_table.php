@@ -15,9 +15,13 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
             $table->unsignedBigInteger('cs_report_id');
-            $table->boolean('status')->comment('0:retur, 1:success');
+            $table->string('waybill')->unique();
+            $table->string('customer_name');
+            $table->string('customer_phone');
+            $table->string('customer_address');
+            $table->date('date');
+            $table->boolean('status')->default(1)->comment('0:retur, 1:success');
             $table->timestamps();
         });
     }

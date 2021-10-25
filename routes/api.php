@@ -34,7 +34,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/persentase-cs', [DashboardController::class, 'persentaseCS'])->name('persentase.cs');
     // cs report
     Route::get('/cs-reports', [ReportController::class, 'indexCS'])->name('index.report.cs');
-    Route::post('/cs-reports', [ReportController::class, 'storeCS'])->name('store.report.cs');
+    Route::get('/cs-reports/{date}', [ReportController::class, 'indexDateCS'])->name('index.report.cs.date');
+    Route::post('/cs-reports/customers', [ReportController::class, 'addCustomerCS'])->name('store.report.cs');
+    Route::post('/cs-reports/add', [ReportController::class, 'addReportCS'])->name('store.report.cs.add');
     // adv report
     Route::get('/adv-reports', [ReportController::class, 'indexADV'])->name('index.report.adv');
     Route::get('/order', [ReportController::class, 'getOrder'])->name('get.order');

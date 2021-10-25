@@ -18,7 +18,6 @@ class CreateCsReportsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('chat');
             $table->integer('transaksi');
-            $table->integer('omset');
             $table->date('date');
             $table->timestamps();
         });

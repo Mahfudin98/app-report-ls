@@ -7,7 +7,6 @@ use App\Http\Resources\AdvReportCollection;
 use App\Http\Resources\CsReportCollection;
 use App\Models\AdvReport;
 use App\Models\CsReport;
-use App\Models\Customer;
 use App\Models\DetailOrder;
 use App\Models\Order;
 use App\Models\User;
@@ -26,75 +25,74 @@ class ReportController extends Controller
         $end = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         if (request()->date != '') {
-            $date = explode(' - ' ,request()->date);
+            $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d');
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
 
-        $reports = CsReport::where('user_id', Auth::user()->id)->with(['order.product'])->orderBy('date', 'DESC')->whereBetween('date', [$start, $end]);
+        $reports = CsReport::where('user_id', Auth::user()->id)->with(['order.orderDetail.product'])->orderBy('date', 'DESC')->whereBetween('date', [$start, $end]);
         if (request()->q != '') {
             $reports = $reports->where('name', 'LIKE', '%' . request()->q . '%');
         }
         return new CsReportCollection($reports->paginate(10));
-
+    }
+    public function indexDateCS($date)
+    {
+        $csReport = CsReport::where('user_id', Auth::user()->id)->with(['order.orderDetail.product'])->where('date', $date)->first();
+        return $csReport;
     }
 
-    public function storeCS(Request $request)
+    public function addReportCS(Request $request)
     {
         $this->validate($request, [
-            'chat' => 'required|integer',
+            'chat'      => 'required|integer',
             'transaksi' => 'required|integer',
-            'omset' => 'required|integer',
-            'date' => 'required|date'
+            'date'      => 'required|date',
             // 'keterangan' => 'nullable'
+        ]);
+
+        $user = request()->user();
+
+        $csreport = CsReport::create([
+            'user_id'   => $user->id,
+            'chat'      => $request->chat,
+            'transaksi' => $request->transaksi,
+            'date'      => $request->date
+        ]);
+
+        return response()->json(['status' => 'success'], 200);
+    }
+
+    public function addCustomerCS(Request $request)
+    {
+        $this->validate($request, [
+            'customer_name'     => 'required|string',
+            'customer_phone'    => 'required|string',
+            'customer_address'  => 'required|string',
+            'waybill'  => 'required|string',
         ]);
 
         try {
             $data = $request->all();
-            $user = request()->user();
-
-            $csreport = CsReport::create([
-                'user_id' => $user->id,
-                'chat' => $request->chat,
-                'transaksi' => $request->transaksi,
-                'omset' => $request->omset,
-                'date' => $request->date
+            $order = Order::create([
+                'cs_report_id'      => $request->cs_report_id,
+                'customer_name'     => $request->customer_name,
+                'customer_phone'    => $request->customer_phone,
+                'customer_address'  => $request->customer_address,
+                'waybill'           => $request->waybill,
+                'date'              => $request->date
             ]);
-
-            $reports = CsReport::find($csreport['id']);
-            foreach ($data['customer_name'] as $item => $value) {
-                $dataCustomer = array(
-                    'name' => $data['customer_name'][$item],
-                    'phone' => $data['customer_phone'][$item],
-                    'address' => $data['customer_address'][$item],
+            $orders = Order::find($order['id']);
+            foreach ($data['qty'] as $item => $value) {
+                $product = array(
+                    'order_id' => $orders->id,
+                    'product_id' => $data['product_id'][$item],
+                    'price' => $data['price'][$item],
+                    'qty' => $data['qty'][$item]
                 );
-
-                $customers[] = Customer::create($dataCustomer);
+                $detail = DetailOrder::create($product);
             }
-            foreach ($data['customer_name'] as $item => $value) {
-                $val[] = $customers[$item]['id'];
-            }
-            foreach ($data['customer_name'] as $item => $value) {
-                $dataOrder = array(
-                    'waybill' => $data['waybill'][$item],
-                    'date' => $request->date,
-                    'cs_report_id' => $reports->id,
-                    'customer_id' => $customers[$item]['id'],
-                );
-
-                $order[] = Order::create($dataOrder);
-                foreach ($data['waybill'] as $items => $value) {
-                    $dataOrderDetail = array(
-                        'order_id' => $order[$item]['id'],
-                        'product_id' => $data['product_id'][$item][$items],
-                        'total_order' => $data['total_order'][$item][$items]
-                    );
-
-                    $orderDetail[] = DetailOrder::create($dataOrderDetail);
-                }
-            }
-
-            return response()->json(['status' => 'success', 'data' => $orderDetail], 200);
+            return response()->json(['status' => 'success'], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
@@ -107,7 +105,7 @@ class ReportController extends Controller
         $end = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         if (request()->date != '') {
-            $date = explode(' - ' ,request()->date);
+            $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d');
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
@@ -129,7 +127,7 @@ class ReportController extends Controller
         $end = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         if (request()->date != '') {
-            $date = explode(' - ' ,request()->date);
+            $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d');
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
@@ -148,7 +146,7 @@ class ReportController extends Controller
         $end = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         if (request()->date != '') {
-            $date = explode(' - ' ,request()->date);
+            $date = explode(' - ', request()->date);
             $start = Carbon::parse($date[0])->format('Y-m-d');
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
