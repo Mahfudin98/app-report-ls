@@ -1,16 +1,20 @@
 <template>
     <main>
+        <page-loader/>
         <ReportsCSAdd />
         <customer-add />
         <div class="rui-page-content">
             <div class="container-fluid">
                 <div class="row xs-gap" v-if="reportcs == ''">
                     <div class="col-sm-12 text-center">
-                        <button data-toggle="modal" data-target="#addReportCS" type="button" class="btn btn-brand btn-long">
+                        <button
+                            data-toggle="modal"
+                            data-target="#addReportCS"
+                            type="button"
+                            class="btn btn-brand btn-long"
+                        >
                             <span class="icon"
-                                ><span
-                                    class="fas fa-plus"
-                                ></span></span
+                                ><span class="fas fa-plus"></span></span
                             ><span class="text">Add Report CS</span>
                         </button>
                     </div>
@@ -62,7 +66,7 @@
                                                 <h4
                                                     class="rui-profile-number-title h2"
                                                 >
-                                                    419
+                                                    Rp. {{ getOmset | formatNumber }}
                                                 </h4>
                                                 <small class="text-grey-6"
                                                     >Omset</small
@@ -128,14 +132,20 @@
                                             class="collapse-link collapsed"
                                             :href="
                                                 '#' +
-                                                    row.customer_name.replace(/\s/g, '') +
+                                                    row.customer_name.replace(
+                                                        /\s/g,
+                                                        ''
+                                                    ) +
                                                     row.waybill
                                             "
                                             id="headingTwo"
                                             data-toggle="collapse"
                                             aria-expanded="false"
                                             :aria-controls="
-                                                row.customer_name.replace(/\s/g, '') + row.waybill
+                                                row.customer_name.replace(
+                                                    /\s/g,
+                                                    ''
+                                                ) + row.waybill
                                             "
                                         >
                                             {{ row.customer_name }} [<span
@@ -145,7 +155,10 @@
                                         </a>
                                         <div
                                             :id="
-                                                row.customer_name.replace(/\s/g, '') + row.waybill
+                                                row.customer_name.replace(
+                                                    /\s/g,
+                                                    ''
+                                                ) + row.waybill
                                             "
                                             class="collapse"
                                             aria-labelledby="headingTwo"
@@ -228,8 +241,9 @@
 import { mapActions, mapState } from "vuex";
 import CustomerAdd from "./module/CustomerAdd.vue";
 import ReportsCSAdd from "./module/ReportCSAdd.vue";
+import PageLoader from "../../../../components/PageLoader.vue"
 export default {
-    components: { CustomerAdd, ReportsCSAdd },
+    components: { CustomerAdd, ReportsCSAdd, PageLoader },
     name: "ViewReportsCS",
     created() {
         this.viewCsReport(this.$route.params.date);
@@ -238,17 +252,20 @@ export default {
         ...mapState("csReport", {
             reportcs: state => state.reportcs
         }),
-        getPrice() {
-            for (let i = 0; i < this.reportcs.length; i++) {
-                var results = this.getChildren(i);
-                var res = Object.keys(results).map(function(key) {
-                    var harga = results[key].product_id["id"];
-                    var total = results[key].total_order;
-                    return harga;
+        getOrder() {
+            return this.reportcs.order.reduce((prev, obj) => {
+                let flatted = obj.order_detail.map(item => {
+                    let order_detail = {};
+                    order_detail["price"] = item.price;
+                    order_detail["qty"] = item.qty;
+                    let subtotal = order_detail["price"] * order_detail["qty"];
+                    return subtotal;
                 });
-
-                return results;
-            }
+                return [...prev, ...flatted];
+            }, []);
+        },
+        getOmset() {
+            return this.getOrder.reduce((acc, item) => acc + item, 0);
         }
     },
     methods: {

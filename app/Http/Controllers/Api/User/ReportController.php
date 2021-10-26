@@ -92,6 +92,13 @@ class ReportController extends Controller
                 );
                 $detail = DetailOrder::create($product);
             }
+
+            $csReport = CsReport::where('date', $request->date)->first();
+            $orderget = Order::where('cs_report_id', $csReport->id)->get();
+            $csReport->update([
+                'transaksi' => $orderget->count()
+            ]);
+
             return response()->json(['status' => 'success'], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()]);
