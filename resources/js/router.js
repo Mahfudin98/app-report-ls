@@ -53,12 +53,19 @@ import EditInventory from './pages/inventory/module/InventoryEdit.vue'
 import InventoryUsage from './pages/inventory/components/InventoryUsage.vue'
 import InventoryUsageAdd from './pages/inventory/components/InventoryUsageAdd.vue'
 import InventoryUsageShow from './pages/inventory/components/InventoryUsageShow.vue'
+// not found
+import NotFound from './components/NotFound.vue'
 Vue.use(Router)
 
 //DEFINE ROUTE
 const router = new Router({
     mode: 'history',
     routes: [
+        // not found
+        {
+            path: '*',
+            component: NotFound
+        },
         // dashboard route
         {
             path: '/',

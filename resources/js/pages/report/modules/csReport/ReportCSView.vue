@@ -8,8 +8,7 @@
                 <div class="row xs-gap" v-if="reportcs == ''">
                     <div class="col-sm-12 text-center">
                         <button
-                            data-toggle="modal"
-                            data-target="#addReportCS"
+                            v-b-modal.addReportCS
                             type="button"
                             class="btn btn-brand btn-long"
                         >
@@ -87,8 +86,7 @@
                                         Current tasks
                                     </h2>
                                     <button
-                                        data-toggle="modal"
-                                        data-target="#addCustomer"
+                                        v-b-modal.addCustomer
                                         class="btn btn-brand btn-uniform btn-round btn-sm mnt-8 mnb-8"
                                         type="button"
                                     >

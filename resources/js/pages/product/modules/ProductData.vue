@@ -81,21 +81,22 @@
                     <table class="table">
                         <thead class="thead-dark">
                             <tr class="users-table-info">
+                                <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Type Pembelian</th>
                                 <th scope="col">Type Product</th>
                                 <th scope="col">Harga</th>
                                 <th scope="col">Stock</th>
-                                <th scope="col">Created At</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr
                                 class=""
-                                v-for="row in products.data"
-                                :key="row.created_at"
+                                v-for="(row, index) in products.data"
+                                :key="index"
                             >
+                                <td>{{index + 1}}</td>
                                 <td>
                                     {{ row.name }}
                                 </td>
@@ -110,14 +111,6 @@
                                 </td>
                                 <td>
                                     {{ row.stock }}
-                                </td>
-                                <td>
-                                    <vue-moments-ago
-                                        prefix="posted"
-                                        suffix="ago"
-                                        :date="row.created_at"
-                                        lang="en"
-                                    />
                                 </td>
                                 <td>
                                     <div
