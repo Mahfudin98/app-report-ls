@@ -2,7 +2,8 @@ import $axios from '../api.js'
 
 const state = () => ({
     omsets: [],
-    persentasecs: []
+    persentasecs: [],
+    allOmsets: []
 })
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
     },
     ASSIGN_DATA_PERSENTASE_CS(state, payload) {
         state.persentasecs = payload
+    },
+    ASSIGN_DATA_ALL_OMSET(state, payload) {
+        state.allOmsets = payload
     }
 }
 
@@ -36,6 +40,17 @@ const actions = {
             })
         })
     },
+    getChartAllOrder({commit}, payload) {
+        return new Promise((resolve, reject) => {
+            //MINTA DATA CHART TRANSAKSI KE SERVER BERDASARKAN BULAN DAN TAHUN
+            $axios.get(`/omset?month=${payload.month}&year=${payload.year}`)
+            .then((response) => {
+                //KEMUDIAN KIRIM DATA NYA KE MUTATION UNTUK KEMUDIAN DISIMPAN KE STATE
+                commit('ASSIGN_DATA_ALL_OMSET', response.data)
+                resolve(response.data)
+            })
+        })
+    }
 }
 
 export default {

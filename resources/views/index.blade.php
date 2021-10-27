@@ -18,13 +18,13 @@
     {{-- plugin --}}
 
     <link rel="stylesheet" href="{{asset('common-assets/vendor/fancybox/dist/jquery.fancybox.css')}}">
-    <link rel="stylesheet" href="{{asset('common-assets/vendor/emojionearea/dist/emojionearea.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('common-assets/vendor/emojionearea/dist/emojionearea.css')}}"> --}}
     <link rel="stylesheet" href="{{asset('common-assets/vendor/swiper/swiper-bundle.min.css')}}">
-    <link rel="stylesheet" href="{{asset('common-assets/vendor/chartist/dist/chartist.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('common-assets/vendor/chartist/dist/chartist.css')}}"> --}}
     <link rel="stylesheet" href="{{asset('common-assets/vendor/jqvmap/dist/jqvmap.css')}}">
     <link rel="stylesheet" href="{{asset('common-assets/vendor/highlightjs/styles/default.css')}}">
     <link rel="stylesheet" href="{{asset('common-assets/vendor/fullcalendar/main.min.css')}}">
-    <link rel="stylesheet" href="{{asset('common-assets/vendor/daterangepicker/daterangepicker.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('common-assets/vendor/daterangepicker/daterangepicker.css')}}"> --}}
     {{-- end --}}
     <link rel="stylesheet" href="{{asset('common-assets/css/rootui.css')}}">
     <link rel="stylesheet" href="{{asset('common-assets/css/rootui-night.css')}}" media="all" class="rui-nightmode-link">
@@ -46,17 +46,17 @@ class="rui-no-transition rui-navbar-autohide rui-section-lines">
     <script src="{{asset('common-assets/js/yaybar.js')}}"></script>
     <script src="{{asset('common-assets/vendor/object-fit-images/dist/ofi.min.js')}}"></script>
     <script src="{{asset('common-assets/vendor/fancybox/dist/jquery.fancybox.min.js')}}"></script>
-    <script src="{{asset('common-assets/vendor/emojione/lib/js/emojione.min.js')}}"></script>
-    <script src="{{asset('common-assets/vendor/emojionearea/dist/emojionearea.min.js')}}"></script>
+    {{-- <script src="{{asset('common-assets/vendor/emojione/lib/js/emojione.min.js')}}"></script> --}}
+    {{-- <script src="{{asset('common-assets/vendor/emojionearea/dist/emojionearea.min.js')}}"></script> --}}
     <script src="{{asset('common-assets/vendor/moment/min/moment.min.js')}}"></script>
     <script src="{{asset('common-assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
     <script src="{{asset('common-assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
-    <script src="{{asset('common-assets/vendor/chartist/dist/chartist.min.js')}}"></script>
+    {{-- <script src="{{asset('common-assets/vendor/chartist/dist/chartist.min.js')}}"></script> --}}
     {{-- <script src="{{asset('common-assets/vendor/jqvmap/dist/jquery.vmap.min.js')}}"></script> --}}
     {{-- <script src="{{asset('common-assets/vendor/jqvmap/dist/maps/jquery.vmap.usa.js')}}"></script> --}}
     <script src="{{asset('common-assets/vendor/fullcalendar/main.min.js')}}"></script>
     <script src="{{asset('common-assets/vendor/highlightjs/highlight.pack.min.js')}}"></script>
-    <script src="{{asset('common-assets/vendor/daterangepicker/daterangepicker.js')}}"></script>
+    {{-- <script src="{{asset('common-assets/vendor/daterangepicker/daterangepicker.js')}}"></script> --}}
 
     <script src="{{asset('common-assets/js/rootui.js')}}"></script>
     <script src="{{asset('common-assets/js/rootui-init.js')}}"></script>

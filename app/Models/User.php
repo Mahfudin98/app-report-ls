@@ -99,4 +99,9 @@ class User extends Authenticatable
     public function reportCsAdv(){
         return $this->hasMany(CsReport::class, 'parent_id');
     }
+    // detail
+    public function orderDetail()
+    {
+        return $this->hasMany(DetailOrder::class);
+    }
 }

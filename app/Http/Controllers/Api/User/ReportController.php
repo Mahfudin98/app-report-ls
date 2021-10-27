@@ -73,6 +73,7 @@ class ReportController extends Controller
         ]);
 
         try {
+            $user = request()->user();
             $data = $request->all();
             $order = Order::create([
                 'cs_report_id'      => $request->cs_report_id,
@@ -85,10 +86,14 @@ class ReportController extends Controller
             $orders = Order::find($order['id']);
             foreach ($data['qty'] as $item => $value) {
                 $product = array(
+                    'user_id'   => $user->id,
                     'order_id' => $orders->id,
+                    'cs_report_id' => $request->cs_report_id,
                     'product_id' => $data['product_id'][$item],
                     'price' => $data['price'][$item],
-                    'qty' => $data['qty'][$item]
+                    'qty' => $data['qty'][$item],
+                    'date' => $request->date,
+                    'subtotal' => $data['qty'][$item] * $data['price'][$item]
                 );
                 $detail = DetailOrder::create($product);
             }

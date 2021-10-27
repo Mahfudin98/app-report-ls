@@ -215,8 +215,7 @@
                                                                 </td>
                                                                 <td>
                                                                     {{
-                                                                        rows.qty *
-                                                                            rows.price
+                                                                        rows.subtotal
                                                                     }}
                                                                 </td>
                                                             </tr>
@@ -254,9 +253,8 @@ export default {
             return this.reportcs.order.reduce((prev, obj) => {
                 let flatted = obj.order_detail.map(item => {
                     let order_detail = {};
-                    order_detail["price"] = item.price;
-                    order_detail["qty"] = item.qty;
-                    let subtotal = order_detail["price"] * order_detail["qty"];
+                    order_detail["subtotal"] = item.subtotal;
+                    let subtotal = order_detail["subtotal"];
                     return subtotal;
                 });
                 return [...prev, ...flatted];

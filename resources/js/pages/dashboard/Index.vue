@@ -15,6 +15,54 @@
         </div>
         <div class="rui-page-content">
             <div class="container-fluid">
+                <!-- line Chart Omset -->
+                <h2>All Omset</h2>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="">Bulan</label>
+                            <select v-model="month" class="form-control">
+                                <option value="01">Januari</option>
+                                <option value="02">Februari</option>
+                                <option value="03">Maret</option>
+                                <option value="04">April</option>
+                                <option value="05">Mei</option>
+                                <option value="06">Juni</option>
+                                <option value="07">Juli</option>
+                                <option value="08">Agustus</option>
+                                <option value="09">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="">Tahun</label>
+                            <select v-model="year" class="form-control">
+                                <option
+                                    v-for="(y, i) in years"
+                                    :key="i"
+                                    :value="y"
+                                    >{{ y }}</option
+                                >
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row vertical-gap">
+                    <div class="col-lg-12">
+                        <div class="rui-widget p-0">
+                            <line-chart
+                                v-if="allOmsets.length > 0"
+                                :data="allOrder_data"
+                                :options="chartOptions"
+                                :labels="labels"
+                            />
+                        </div>
+                    </div>
+                </div>
                 <!--Omset CS Chart-->
                 <h2>Omset CS</h2>
                 <div
@@ -218,16 +266,23 @@
     </main>
 </template>
 <script>
+import moment from "moment";
 import _ from "lodash";
+
 import BarChart from "./components/BarChart.vue";
 import DonatChart from "./components/DonatChart.vue";
 import DatePicker from "vue2-datepicker";
+import LineChart from "./components/LineChart.vue";
 import { mapActions, mapState } from "vuex";
 export default {
-    components: { BarChart, DonatChart, DatePicker },
+    components: { BarChart, DonatChart, DatePicker, LineChart },
     created() {
         this.getChartBarOmset();
         this.getChartPersentaseCS();
+        this.getChartAllOrder({
+            month: this.month,
+            year: this.year
+        });
     },
     data() {
         return {
@@ -236,7 +291,10 @@ export default {
                 maintainAspectRatio: false
             },
             barOmset: {},
-            persen: {}
+            persen: {},
+
+            month: moment().format("MM"),
+            year: moment().format("Y")
         };
     },
     watch: {
@@ -253,13 +311,46 @@ export default {
                     "+-+" +
                     this.convert(this.persen[1])
             );
+        },
+
+        month() {
+            this.getChartAllOrder({
+                month: this.month,
+                year: this.year
+            });
+        },
+        year() {
+            this.getChartAllOrder({
+                month: this.month,
+                year: this.year
+            });
         }
     },
     computed: {
         ...mapState("dashboard", {
             omsets: state => state.omsets,
-            persentasecs: state => state.persentasecs
-        })
+            persentasecs: state => state.persentasecs,
+            allOmsets: state => state.allOmsets
+        }),
+        years() {
+            return _.range(
+                2019,
+                moment()
+                    .add(1, "years")
+                    .format("Y")
+            );
+        },
+
+        labels() {
+            return _.map(this.allOmsets, function(o) {
+                return moment(o.date).format("DD");
+            });
+        },
+        allOrder_data() {
+            return _.map(this.allOmsets, function(o) {
+                return o.total;
+            });
+        },
     },
 
     methods: {
@@ -271,8 +362,10 @@ export default {
         },
         ...mapActions("dashboard", [
             "getChartBarOmset",
-            "getChartPersentaseCS"
+            "getChartPersentaseCS",
+            "getChartAllOrder"
         ]),
+
         exportData() {}
     }
 };

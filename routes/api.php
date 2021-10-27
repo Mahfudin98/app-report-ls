@@ -30,6 +30,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     // dashboard
+    Route::get('/omset', [DashboardController::class, 'allOmsets'])->name('omset');
     Route::get('/chart', [DashboardController::class, 'chart'])->name('bar.omset.chart');
     Route::get('/persentase-cs', [DashboardController::class, 'persentaseCS'])->name('persentase.cs');
     // cs report
