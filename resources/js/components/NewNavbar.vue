@@ -19,63 +19,41 @@
                     <ul class="nav">
                         <li
                             class="dropdown dropdown-hover dropdown-keep-open dropdown-triangle"
-                        >
-                        </li>
+                        ></li>
                     </ul>
                     <ul class="nav rui-navbar-right">
-                        <li class="nav-item">
-                            <a
-                                class="d-flex"
-                                data-fancybox
-                                data-touch="false"
-                                data-close-existing="true"
-                                data-src="#search"
-                                data-auto-focus="true"
-                                href="javascript:;"
-                                ><span class="btn btn-custom-round"
-                                    ><span
-                                        data-feather="search"
-                                        class="rui-icon rui-icon-stroke-1_5"
-                                    ></span></span
-                            ></a>
-                        </li>
                         <li
                             class="dropdown dropdown-hover dropdown-triangle dropdown-keep-open"
                         >
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-offset="0,20"
-                                ><span class="btn btn-custom-round"
+                            <b-link id="notifikasi" variant="primary" href="#">
+                                <span class="btn btn-custom-round"
                                     ><span
                                         class="fas fa-bell"
-                                         style="font-size: 15px;"
+                                        style="font-size: 15px;"
                                     ></span>
                                     <span class="badge badge-circle badge-brand"
                                         >3</span
                                     ></span
-                                ></a
-                            >
-                            <ul class="nav dropdown-menu rui-navbar-dropdown-notice">
-                                <li class="rui-navbar-dropdown-title mb-10">
-                                    <div class="d-flex align-items-center">
-                                        <h2 class="h4 mb-0 mr-auto">
-                                            Notifications
-                                        </h2>
-                                        <a
-                                            class="btn btn-custom-round"
-                                            href="profile.html"
-                                            ><span
-                                                data-feather="link-2"
-                                                class="rui-icon rui-icon-stroke-1_5"
-                                            ></span
-                                        ></a>
-                                    </div>
-                                </li>
-                                <li>
+                                >
+                                <b-popover
+                                    target="notifikasi"
+                                    placement="bottom"
+                                    triggers="hover focus"
+                                >
+                                    <template #title>
+                                        <div class="d-flex align-items-center">
+                                            <h2 class="h4 mb-0 mr-auto">
+                                                Notifications
+                                            </h2>
+                                            <a
+                                                class="btn btn-custom-round"
+                                                href="profile.html"
+                                                ><span
+                                                    class="rui-icon fas fa-link"
+                                                ></span
+                                            ></a>
+                                        </div>
+                                    </template>
                                     <div
                                         class="media media-success media-filled mnl-30 mnr-30"
                                     >
@@ -100,8 +78,7 @@
                                             ></span
                                         ></a>
                                     </div>
-                                </li>
-                                <li>
+
                                     <div
                                         class="media media-filled mnl-30 mnr-30"
                                     >
@@ -124,8 +101,7 @@
                                             ></span
                                         ></a>
                                     </div>
-                                </li>
-                                <li>
+
                                     <div
                                         class="media media-filled mnl-30 mnr-30"
                                     >
@@ -153,116 +129,93 @@
                                             ></span
                                         ></a>
                                     </div>
-                                </li>
-                            </ul>
+                                </b-popover>
+                            </b-link>
                         </li>
                         <li
                             class="dropdown dropdown-hover dropdown-triangle dropdown-keep-open"
                         >
-                            <a
-                                class="dropdown-item rui-navbar-avatar mnr-6"
+                            <b-link
+                                id="popover-1-bottom"
+                                variant="primary"
                                 href="#"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data
-                                ><img v-show="authenticated.image != null" :src="'../storage/teams/' + authenticated.image" :alt="authenticated.name" />
-                            </a>
-
-                            <ul class="nav dropdown-menu">
-                                <li>
-                                    <a href="profile.html" class="nav-link"
-                                        ><span
-                                            data-feather="plus-circle"
-                                            class="rui-icon rui-icon-stroke-1_5"
+                            >
+                                <b-img
+                                    v-if="authenticated.image != null"
+                                    v-bind="mainProps"
+                                    rounded="circle"
+                                    :src="
+                                        '../storage/teams/' +
+                                            authenticated.image
+                                    "
+                                    :alt="authenticated.name"
+                                ></b-img>
+                                <b-img
+                                    v-if="authenticated.image == null"
+                                    v-bind="mainProps"
+                                    rounded="circle"
+                                    src="https://picsum.photos/250/250/?image=54"
+                                    :alt="authenticated.name"
+                                ></b-img>
+                                <b-popover
+                                    target="popover-1-bottom"
+                                    placement="bottom"
+                                    triggers="hover focus"
+                                >
+                                    <template #title>
+                                        <router-link
+                                            :to="{
+                                                name: 'teams.show',
+                                                params: {
+                                                    slug: authenticated.slug
+                                                }
+                                            }"
+                                        >
+                                            {{ authenticated.name }}
+                                        </router-link>
+                                    </template>
+                                    <b-link href="#" @click="logoutPost">
+                                        <span
+                                            class="fas fa-sign-out-alt"
                                         ></span>
-                                        <span>Create new Post</span>
-                                        <span class="rui-nav-circle"></span
-                                    ></a>
-                                </li>
-                                <li>
-                                    <a href="profile.html" class="nav-link"
-                                        ><span
-                                            data-feather="users"
-                                            class="rui-icon rui-icon-stroke-1_5"
-                                        ></span>
-                                        <span>{{ authenticated.name }}</span>
-                                        <span class="rui-nav-circle"></span
-                                    ></a>
-                                </li>
-                                <li>
-                                    <a href="profile.html" class="nav-link"
-                                        ><span
-                                            data-feather="check-circle"
-                                            class="rui-icon rui-icon-stroke-1_5"
-                                        ></span>
-                                        <span>Check Updates</span>
-                                        <span class="rui-nav-circle"></span
-                                    ></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" @click="logoutPost" class="nav-link"
-                                        ><span
-                                            data-feather="log-out"
-                                            class="rui-icon rui-icon-stroke-1_5"
-                                        ></span>
-                                        <span>Exit</span>
-                                        <span class="rui-nav-circle"></span
-                                    ></a>
-                                </li>
-                            </ul>
+                                        Log Out
+                                    </b-link>
+                                </b-popover>
+                            </b-link>
                         </li>
                         <li
                             class="dropdown dropdown-hover dropdown-triangle dropdown-keep-open"
                         >
-                            <a
-                                class="dropdown-item mnr-5"
-                                href="#"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-offset="0,12"
-                                ><span class="btn btn-custom-round"
-                                    ><span
-                                        data-feather="more-vertical"
-                                        class="rui-icon rui-icon-stroke-1_5"
-                                    ></span></span
-                            ></a>
-                            <ul class="nav dropdown-menu">
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                            <b-link id="setting" variant="primary" href="#">
+                                <span class="fas fa-ellipsis-v"></span>
+                                <b-popover
+                                    target="setting"
+                                    placement="bottom"
+                                    triggers="hover focus"
+                                >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-nightmode-toggle"
                                             id="toggleNightMode"
+                                            checked
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
+                                            class="custom-control-label"
                                             for="toggleNightMode"
-                                            ><span
-                                                data-feather="moon"
-                                                class="rui-icon rui-icon-stroke-1_5"
-                                            ></span>
-                                            <span>Night Mode</span>
-                                            <span
-                                                class="rui-dropdown-circle"
-                                            ></span
-                                        ></label>
+                                        >
+                                            Night Mode
+                                            <span class="fas fa-moon"></span>
+                                        </label>
                                     </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-spotlightmode-toggle"
                                             id="toggleSpotlightMode"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
+                                            class="custom-control-label"
                                             for="toggleSpotlightMode"
                                             ><span
                                                 data-feather="square"
@@ -274,18 +227,15 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-sectionLines-toggle"
                                             id="toggleSectionLines"
+                                            checked
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
+                                            class="custom-control-label"
                                             for="toggleSectionLines"
                                             ><span
                                                 data-feather="layout"
@@ -297,19 +247,15 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li class="dropdown-menu-label">Sidebar</li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div>Sidebar</div>
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-darkSidebar-toggle"
                                             id="toggleDarkSidebar"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
+                                            class="custom-control-label"
                                             for="toggleDarkSidebar"
                                             ><span
                                                 data-feather="sidebar"
@@ -321,18 +267,14 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-staticSidebar-toggle"
                                             id="toggleStaticSidebar"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
+                                            class="custom-control-label"
                                             for="toggleStaticSidebar"
                                             ><span
                                                 data-feather="sidebar"
@@ -344,19 +286,15 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li class="dropdown-menu-label">Navbar</li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div>Navbar</div>
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-darkNavbar-toggle"
                                             id="toggleDarkNavbar"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
+                                            class="custom-control-label"
                                             for="toggleDarkNavbar"
                                             ><span
                                                 data-feather="menu"
@@ -368,8 +306,8 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                            </ul>
+                                </b-popover>
+                            </b-link>
                         </li>
                     </ul>
                 </div>
@@ -384,7 +322,9 @@
                 >
                     <span></span>
                 </button>
-                <router-link class="rui-navbar-logo mr-auto" :to="{ name: 'home' }"
+                <router-link
+                    class="rui-navbar-logo mr-auto"
+                    :to="{ name: 'home' }"
                     ><img
                         :src="'/images/logo.svg'"
                         :data-src-night="'/images/logo-white.svg'"
@@ -394,57 +334,36 @@
                 /></router-link>
 
                 <div class="dropdown dropdown-triangle">
-                    <a
-                        class="dropdown-item rui-navbar-avatar"
-                        href="#"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        ><img v-show="authenticated.image != null" :src="'../storage/teams/' + authenticated.image" :alt="authenticated.name"
-                    /></a>
-
-                    <ul class="dropdown-menu nav">
-                        <li>
-                            <a href="profile.html" class="nav-link"
-                                ><span
-                                    data-feather="plus-circle"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Create new Post</span>
-                                <span class="rui-nav-circle"></span
-                            ></a>
-                        </li>
-                        <li>
-                            <a href="profile.html" class="nav-link"
-                                ><span
-                                    data-feather="users"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Manage Users</span>
-                                <span class="rui-nav-circle"></span
-                            ></a>
-                        </li>
-                        <li>
-                            <a href="profile.html" class="nav-link"
-                                ><span
-                                    data-feather="check-circle"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Check Updates</span>
-                                <span class="rui-nav-circle"></span
-                            ></a>
-                        </li>
-                        <li>
-                            <a href="profile.html" class="nav-link"
-                                ><span
-                                    data-feather="log-out"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Exit</span>
-                                <span class="rui-nav-circle"></span
-                            ></a>
-                        </li>
-                    </ul>
+                    <b-link id="profile-mobile" variant="primary" href="#">
+                        <b-img
+                            v-bind="mainProps"
+                            rounded="circle"
+                            :src="'../storage/teams/' + authenticated.image"
+                            :alt="authenticated.name"
+                        ></b-img>
+                        <b-popover
+                            target="profile-mobile"
+                            placement="bottom"
+                            triggers="hover focus"
+                        >
+                            <template #title>
+                                <router-link
+                                    :to="{
+                                        name: 'teams.show',
+                                        params: {
+                                            slug: authenticated.slug
+                                        }
+                                    }"
+                                >
+                                    {{ authenticated.name }}
+                                </router-link>
+                            </template>
+                            <b-link href="#" @click="logoutPost">
+                                <span class="fas fa-sign-out-alt"></span>
+                                Log Out
+                            </b-link>
+                        </b-popover>
+                    </b-link>
                 </div>
                 <button
                     class="navbar-toggler rui-navbar-toggle"
@@ -464,172 +383,13 @@
             >
                 <div class="rui-navbar-content">
                     <ul class="nav">
-                        <!-- <li class="dropdown dropdown-keep-open">
-                            <a
-                                href="#actions"
-                                class="dropdown-item"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                ><span
-                                    data-feather="layers"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Actions</span>
-                                <span class="rui-dropdown-circle"></span
-                            ></a>
-                            <ul class="nav dropdown-menu">
-                                <li>
-                                    <a href="#create-post" class="nav-link"
-                                        ><span
-                                            data-feather="plus-circle"
-                                            class="rui-icon rui-icon-stroke-1_5"
-                                        ></span>
-                                        <span>Create Post</span>
-                                        <span class="rui-nav-circle"></span
-                                    ></a>
-                                </li>
-                                <li>
-                                    <a href="#create-page" class="nav-link"
-                                        ><span
-                                            data-feather="plus-circle"
-                                            class="rui-icon rui-icon-stroke-1_5"
-                                        ></span>
-                                        <span>Create Page</span>
-                                        <span class="rui-nav-circle"></span
-                                    ></a>
-                                </li>
-                                <li>
-                                    <a href="#manage-users" class="nav-link"
-                                        ><span
-                                            data-feather="users"
-                                            class="rui-icon rui-icon-stroke-1_5"
-                                        ></span>
-                                        <span>Manage Users</span>
-                                        <span class="rui-nav-circle"></span
-                                    ></a>
-                                </li>
-                                <li class="dropdown dropdown-keep-open">
-                                    <a
-                                        href="#manage-sites"
-                                        class="dropdown-item"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                        ><span
-                                            data-feather="sidebar"
-                                            class="rui-icon rui-icon-stroke-1_5"
-                                        ></span>
-                                        <span>Manage Sites</span>
-                                        <span class="rui-dropdown-circle"></span
-                                    ></a>
-                                    <ul class="nav dropdown-menu">
-                                        <li>
-                                            <a
-                                                href="#my-site-1"
-                                                class="nav-link"
-                                                >My Site 1</a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="#my-site-2"
-                                                class="nav-link"
-                                                >My Site 2</a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="#my-site-3"
-                                                class="nav-link"
-                                                >My Site 3</a
-                                            >
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li> -->
-                        <li class="nav-item">
-                            <a
-                                class="nav-link d-flex"
-                                data-fancybox
-                                data-touch="false"
-                                data-close-existing="true"
-                                data-src="#search"
-                                data-auto-focus="true"
-                                href="javascript:;"
-                                ><span
-                                    data-feather="search"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Search</span>
-                                <span class="rui-nav-circle"></span
-                            ></a>
-                        </li>
-                        <!-- <li class="dropdown dropdown-keep-open">
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                ><span
-                                    data-feather="flag"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Language</span>
-                                <span class="rui-dropdown-circle"></span
-                            ></a>
-                            <ul
-                                class="nav dropdown-menu rui-navbar-dropdown-language"
-                            >
-                                <li>
-                                    <a
-                                        href="#"
-                                        class="rui-navbar-language active"
-                                        ><span class="rui-navbar-language-img"
-                                            ><img src="" alt=""/></span
-                                        >USA</a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#" class="rui-navbar-language"
-                                        ><span class="rui-navbar-language-img"
-                                            ><img src="" alt=""/></span
-                                        >China</a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#" class="rui-navbar-language"
-                                        ><span class="rui-navbar-language-img"
-                                            ><img src="" alt=""/></span
-                                        >Germany</a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#" class="rui-navbar-language"
-                                        ><span class="rui-navbar-language-img"
-                                            ><img src="" alt=""/></span
-                                        >Japan</a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="#" class="rui-navbar-language"
-                                        ><span class="rui-navbar-language-img"
-                                            ><img src="" alt=""/></span
-                                        >Spain</a
-                                    >
-                                </li>
-                            </ul>
-                        </li> -->
                         <li class="dropdown dropdown-keep-open">
-                            <a
-                                class="dropdown-item nav-link"
+                            <b-link
+                                id="notifikasi-mobile"
+                                variant="primary"
                                 href="#"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                ><span
+                            >
+                                <span
                                     data-feather="bell"
                                     class="rui-icon rui-icon-stroke-1_5"
                                 ></span>
@@ -637,27 +397,26 @@
                                 <span class="badge badge-circle badge-brand"
                                     >3</span
                                 >
-                                <span class="rui-dropdown-circle"></span
-                            ></a>
-                            <ul
-                                class="nav dropdown-menu rui-navbar-dropdown-notice"
-                            >
-                                <li class="rui-navbar-dropdown-title mb-10">
-                                    <div class="d-flex align-items-center">
-                                        <h2 class="h4 mb-0 mr-auto">
-                                            Notifications
-                                        </h2>
-                                        <a
-                                            class="btn btn-custom-round"
-                                            href="profile.html"
-                                            ><span
-                                                data-feather="link-2"
-                                                class="rui-icon rui-icon-stroke-1_5"
-                                            ></span
-                                        ></a>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
+                                <span class="rui-dropdown-circle"></span>
+                                <b-popover
+                                    target="notifikasi-mobile"
+                                    placement="bottom"
+                                    triggers="hover focus"
+                                >
+                                    <template #title>
+                                        <div class="d-flex align-items-center">
+                                            <h2 class="h4 mb-0 mr-auto">
+                                                Notifications
+                                            </h2>
+                                            <a
+                                                class="btn btn-custom-round"
+                                                href="profile.html"
+                                                ><span
+                                                    class="rui-icon fas fa-link"
+                                                ></span
+                                            ></a>
+                                        </div>
+                                    </template>
                                     <div
                                         class="media media-success media-filled mnl-30 mnr-30"
                                     >
@@ -682,8 +441,7 @@
                                             ></span
                                         ></a>
                                     </div>
-                                </li>
-                                <li class="nav-item">
+
                                     <div
                                         class="media media-filled mnl-30 mnr-30"
                                     >
@@ -706,8 +464,7 @@
                                             ></span
                                         ></a>
                                     </div>
-                                </li>
-                                <li class="nav-item">
+
                                     <div
                                         class="media media-filled mnl-30 mnr-30"
                                     >
@@ -735,77 +492,47 @@
                                             ></span
                                         ></a>
                                     </div>
-                                </li>
-                            </ul>
+                                </b-popover>
+                            </b-link>
                         </li>
-                        <!-- <li class="nav-item">
-                            <a
-                                class="nav-link d-flex"
-                                data-fancybox
-                                data-keyboard="false"
-                                data-auto-focus="false"
-                                data-touch="false"
-                                data-close-existing="true"
-                                data-src="#messenger"
-                                href="javascript:;"
-                                ><span
-                                    data-feather="message-circle"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
-                                <span>Messenger</span>
-                                <span class="rui-nav-circle"></span
-                            ></a>
-                        </li> -->
                         <li class="dropdown dropdown-keep-open">
-                            <a
-                                class="dropdown-item"
+                            <b-link
+                                id="setting-mobile"
+                                variant="primary"
                                 href="#"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                ><span
-                                    data-feather="more-vertical"
-                                    class="rui-icon rui-icon-stroke-1_5"
-                                ></span>
+                            >
+                                <span class="fas fa-ellipsis-v"></span>
                                 <span>More</span>
-                                <span class="rui-dropdown-circle"></span
-                            ></a>
-                            <ul class="nav dropdown-menu">
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                <span class="rui-dropdown-circle"></span>
+                                <b-popover
+                                    target="setting-mobile"
+                                    placement="bottom"
+                                    triggers="hover focus"
+                                >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-nightmode-toggle"
-                                            id="toggleMobileNightMode"
+                                            id="toggleNightMode"
+                                            checked
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
-                                            for="toggleMobileNightMode"
-                                            ><span
-                                                data-feather="moon"
-                                                class="rui-icon rui-icon-stroke-1_5"
-                                            ></span>
-                                            <span>Night Mode</span>
-                                            <span
-                                                class="rui-dropdown-circle"
-                                            ></span
-                                        ></label>
+                                            class="custom-control-label"
+                                            for="toggleNightMode"
+                                        >
+                                            Night Mode
+                                            <span class="fas fa-moon"></span>
+                                        </label>
                                     </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-spotlightmode-toggle"
-                                            id="toggleMobileSpotlightMode"
+                                            id="toggleSpotlightMode"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
-                                            for="toggleMobileSpotlightMode"
+                                            class="custom-control-label"
+                                            for="toggleSpotlightMode"
                                             ><span
                                                 data-feather="square"
                                                 class="rui-icon rui-icon-stroke-1_5"
@@ -816,19 +543,16 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-sectionLines-toggle"
-                                            id="toggleMobileSectionLines"
+                                            id="toggleSectionLines"
+                                            checked
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
-                                            for="toggleMobileSectionLines"
+                                            class="custom-control-label"
+                                            for="toggleSectionLines"
                                             ><span
                                                 data-feather="layout"
                                                 class="rui-icon rui-icon-stroke-1_5"
@@ -839,20 +563,16 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li class="dropdown-menu-label">Sidebar</li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div>Sidebar</div>
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-darkSidebar-toggle"
-                                            id="toggleMobileDarkSidebar"
+                                            id="toggleDarkSidebar"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
-                                            for="toggleMobileDarkSidebar"
+                                            class="custom-control-label"
+                                            for="toggleDarkSidebar"
                                             ><span
                                                 data-feather="sidebar"
                                                 class="rui-icon rui-icon-stroke-1_5"
@@ -863,19 +583,15 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-staticSidebar-toggle"
-                                            id="toggleMobileStaticSidebar"
+                                            id="toggleStaticSidebar"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
-                                            for="toggleMobileStaticSidebar"
+                                            class="custom-control-label"
+                                            for="toggleStaticSidebar"
                                             ><span
                                                 data-feather="sidebar"
                                                 class="rui-icon rui-icon-stroke-1_5"
@@ -886,20 +602,16 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                                <li class="dropdown-menu-label">Navbar</li>
-                                <li>
-                                    <div
-                                        class="custom-control custom-switch dropdown-item-switch"
-                                    >
+                                    <div>Navbar</div>
+                                    <div class="custom-control custom-switch">
                                         <input
                                             type="checkbox"
                                             class="custom-control-input rui-darkNavbar-toggle"
-                                            id="toggleMobileDarkNavbar"
+                                            id="toggleDarkNavbar"
                                         />
                                         <label
-                                            class="dropdown-item custom-control-label"
-                                            for="toggleMobileDarkNavbar"
+                                            class="custom-control-label"
+                                            for="toggleDarkNavbar"
                                             ><span
                                                 data-feather="menu"
                                                 class="rui-icon rui-icon-stroke-1_5"
@@ -910,8 +622,8 @@
                                             ></span
                                         ></label>
                                     </div>
-                                </li>
-                            </ul>
+                                </b-popover>
+                            </b-link>
                         </li>
                     </ul>
                 </div>
@@ -920,11 +632,16 @@
     </main>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
 export default {
     name: "NavBar",
+    data() {
+        return {
+            mainProps: { width: 40, height: 40, class: "m1" }
+        };
+    },
     computed: {
-        ...mapState('user', {
+        ...mapState("user", {
             authenticated: state => state.authenticated
         })
     },
@@ -932,10 +649,10 @@ export default {
         ...mapActions("auth", ["logout"]),
         logoutPost() {
             this.logout().then(() => {
-                this.$store.state.token = localStorage.getItem('token')
-                this.$router.push('/login')
+                this.$store.state.token = localStorage.getItem("token");
+                this.$router.push("/login");
             });
-        },
+        }
     }
-}
+};
 </script>

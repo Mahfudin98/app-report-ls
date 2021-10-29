@@ -20,7 +20,7 @@
                         </router-link>
                     </li>
                     <!-- report -->
-                    <li :class="this.$route.name == 'cs.report.data' || 'adv.report.data' || 'report.data.date' ? 'yay-item-active yay-submenu-open' : ''">
+                    <li :class="this.$route.name == 'cs.report.data' || this.$route.name == 'adv.report.data' || this.$route.name == 'report.data.date' ? 'yay-item-active yay-submenu-open' : 'yay-submenu-close'">
                         <a href="#" class="yay-sub-toggle">
                             <span class="yay-icon">
                                 <span
@@ -37,7 +37,7 @@
                             </span>
                         </a>
                         <ul class="yay-submenu dropdown-triangle">
-                            <li v-if="$can('read reports cs')" :class="this.$route.name == 'cs.report.data' || 'report.data.date' ? 'yay-item-active' : ''">
+                            <li v-if="$can('read reports cs')" :class="this.$route.name == 'cs.report.data' || this.$route.name == 'report.data.date' ? 'yay-item-active' : ''">
                                 <router-link :to="{ name: 'cs.report.data' }"
                                     >Report CS</router-link
                                 >
@@ -48,6 +48,29 @@
                                 >
                             </li>
                         </ul>
+                    </li>
+                    <!-- return -->
+                    <li
+                        v-if="$can('read reports returns')"
+                        :class="
+                            this.$route.name == 'return.data'
+                                ? 'yay-item-active'
+                                : ''
+                        "
+                    >
+                        <router-link
+                            :to="{ name: 'return.data' }"
+                            class="active"
+                        >
+                            <span class="yay-icon">
+                                <span
+                                    data-feather="git"
+                                    class="rui-icon fas fa-exchange-alt"
+                                ></span>
+                            </span>
+                            <span>Report Return</span>
+                            <span class="rui-yaybar-circle"></span>
+                        </router-link>
                     </li>
                     <!-- project -->
                     <li
@@ -211,96 +234,6 @@
                         </router-link>
                     </li>
                 </ul>
-            </div>
-        </div>
-        <div class="rui-yaybar-icons">
-            <div class="row no-gutters justify-content-around">
-                <div class="col-auto">
-                    <a class="btn btn-custom-round" href="#"
-                        ><span data-feather="settings" class="rui-icon"></span
-                    ></a>
-                </div>
-                <div class="col-auto">
-                    <a class="btn btn-custom-round" href="#"
-                        ><span data-feather="bell" class="rui-icon"></span
-                    ></a>
-                </div>
-                <div class="col-auto d-flex">
-                    <div
-                        class="dropdown dropdown-hover dropdown-triangle dropdown-keep-open dropup"
-                    >
-                        <a
-                            class="btn btn-custom-round dropdown-item"
-                            href="#"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                            data-offset="-30"
-                            ><span
-                                data-feather="plus-circle"
-                                class="rui-icon rui-icon-stroke-1_5"
-                            ></span
-                        ></a>
-                        <ul class="dropdown-menu nav">
-                            <li>
-                                <a href="#" class="nav-link"
-                                    ><span
-                                        data-feather="plus-circle"
-                                        class="rui-icon rui-icon-stroke-1_5"
-                                    ></span>
-                                    <span>Create new Post</span>
-                                    <span class="rui-nav-circle"></span
-                                ></a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link"
-                                    ><span
-                                        data-feather="book"
-                                        class="rui-icon rui-icon-stroke-1_5"
-                                    ></span>
-                                    <span>Project</span>
-                                    <span class="rui-nav-circle"></span
-                                ></a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link"
-                                    ><span
-                                        data-feather="message-circle"
-                                        class="rui-icon rui-icon-stroke-1_5"
-                                    ></span>
-                                    <span>Message</span>
-                                    <span class="rui-nav-circle"></span
-                                ></a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link"
-                                    ><span
-                                        data-feather="mail"
-                                        class="rui-icon rui-icon-stroke-1_5"
-                                    ></span>
-                                    <span>Mail</span>
-                                    <span class="rui-nav-circle"></span
-                                ></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <a class="btn btn-custom-round" href="#"
-                        ><span
-                            data-feather="clock"
-                            class="rui-icon rui-icon-stroke-1_5"
-                        ></span
-                    ></a>
-                </div>
-                <div class="col-auto">
-                    <a class="btn btn-custom-round" href="#"
-                        ><span
-                            data-feather="heart"
-                            class="rui-icon rui-icon-stroke-1_5"
-                        ></span
-                    ></a>
-                </div>
             </div>
         </div>
     </div>

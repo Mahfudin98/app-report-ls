@@ -53,6 +53,11 @@ import EditInventory from './pages/inventory/module/InventoryEdit.vue'
 import InventoryUsage from './pages/inventory/components/InventoryUsage.vue'
 import InventoryUsageAdd from './pages/inventory/components/InventoryUsageAdd.vue'
 import InventoryUsageShow from './pages/inventory/components/InventoryUsageShow.vue'
+// return
+import IndexReturn from './pages/return/Index.vue'
+import DataReturn from './pages/return/modules/ReturnData.vue'
+import AddReturn from './pages/return/modules/ReturnAdd.vue'
+import EditReturn from './pages/return/modules/ReturnEdit.vue'
 // not found
 import NotFound from './components/NotFound.vue'
 Vue.use(Router)
@@ -297,6 +302,32 @@ const router = new Router({
                 },
             ],
         },
+        // return
+        {
+            path: '/return',
+            component: IndexReturn,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'return.data',
+                    component: DataReturn,
+                    meta: { title: 'Manage Return' }
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'return.edit',
+                    component: EditReturn,
+                    meta: { title: 'Edit Return' }
+                },
+                {
+                    path: 'add',
+                    name: 'return.add',
+                    component: AddReturn,
+                    meta: { title: 'Add Return' }
+                },
+            ],
+        }
     ],
     scrollBehavior (to, from, savedPosition) {
         if (savedPosition) {

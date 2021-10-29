@@ -18,7 +18,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'
 import Permissions from './mixins/permission.js'
 
-
+Vue.use(require('vue-moment'));
 // import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
 // import DateRangePicker from "vue2-daterange-picker";
 

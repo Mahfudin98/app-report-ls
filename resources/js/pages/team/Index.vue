@@ -1,5 +1,6 @@
 <template>
     <main>
+        <page-loader/>
         <div class="rui-page-title">
             <div
                 class="container-fluid"
@@ -19,7 +20,9 @@
     </main>
 </template>
 <script>
+import PageLoader from '../../components/PageLoader.vue'
 export default {
-    name: "IndexTeam"
+    name: "IndexTeam",
+    components: {PageLoader}
 };
 </script>

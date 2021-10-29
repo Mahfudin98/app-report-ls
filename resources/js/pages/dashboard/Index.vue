@@ -1,5 +1,6 @@
 <template>
     <main>
+        <page-loader/>
         <div class="rui-page-title">
             <div class="container-fluid">
                 <nav aria-label="breadcrumb">
@@ -274,8 +275,9 @@ import DonatChart from "./components/DonatChart.vue";
 import DatePicker from "vue2-datepicker";
 import LineChart from "./components/LineChart.vue";
 import { mapActions, mapState } from "vuex";
+import PageLoader from '../../components/PageLoader.vue'
 export default {
-    components: { BarChart, DonatChart, DatePicker, LineChart },
+    components: { BarChart, DonatChart, DatePicker, LineChart, PageLoader },
     created() {
         this.getChartBarOmset();
         this.getChartPersentaseCS();

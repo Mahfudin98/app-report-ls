@@ -14,26 +14,9 @@
                                     data-toggle="button"
                                     aria-pressed="false"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="feather feather-search rui-icon rui-icon-stroke-1_5"
-                                    >
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <line
-                                            x1="21"
-                                            y1="21"
-                                            x2="16.65"
-                                            y2="16.65"
-                                        ></line>
-                                    </svg>
+                                    <span style="font-size: 17px;"
+                                        class="rui-icon fas fa-search"
+                                    ></span>
                                 </button>
                                 <input
                                     type="search"
@@ -53,87 +36,57 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr class="users-table-info">
-                                <th scope="col" class="text-center">
-                                    Jumlah Team
-                                </th>
-                                <th scope="col">Posisi</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="row in positions.data" :key="row.id">
-                                <td class="text-center">
-                                    <h5>{{ row.user.length }} Orang</h5>
-                                </td>
-                                <td>
-                                    <div class="library-table-name">
-                                        {{ row.name }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <vue-moments-ago
-                                        prefix="posted"
-                                        suffix="ago"
-                                        :date="row.created_at"
-                                        lang="en"
-                                    />
-                                </td>
-                                <td>
-                                    <div
-                                        class="btn-group dropdown dropdown-triangle"
-                                    >
-                                        <button
-                                            class="btn btn-brand btn-long dropdown-toggle"
-                                            type="button"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                        >
-                                            <span class="text">Action</span>
-                                            <span class="icon">
-                                                <span
-                                                    class="fas fa-angle-down"
-                                                ></span>
-                                            </span>
-                                        </button>
-                                        <ul class="dropdown-menu nav">
-                                            <li>
-                                                <a class="nav-link" href="#"
-                                                    ><span
-                                                        data-feather="plus-circle"
-                                                        class="fas fa-edit"
-                                                    ></span
-                                                    ><span>Edit</span
-                                                    ><span
-                                                        class="rui-nav-circle"
-                                                    ></span
-                                                ></a>
-                                            </li>
-                                            <li>
-                                                <a class="nav-link" href="#"
-                                                    ><span
-                                                        data-feather="x-circle"
-                                                        class="fas fa-trash"
-                                                    ></span
-                                                    ><span>Delete</span
-                                                    ><span
-                                                        class="rui-nav-circle"
-                                                    ></span
-                                                ></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr v-if="positions.data == 0">
-                                <td class="text-center" colspan="4"><h5>Data tidak ditemukan</h5></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <b-table
+                        :items="positions.data"
+                        :fields="fields"
+                        striped
+                        hover
+                    >
+                        <template #cell(index)="row">
+                            {{row.item.user.length }} Orang
+                        </template>
+                        <template #cell(created_at)="row">
+                            <span class="text-light">{{ row.item.created_at | moment("MMMM/DD/YYYY") }}</span>
+                        </template>
+                        <template #cell(action)>
+                            <div class="btn-group dropdown dropdown-triangle">
+                                <button
+                                    class="btn btn-brand btn-long dropdown-toggle"
+                                    type="button"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                >
+                                    <span class="text">Action</span>
+                                    <span class="icon">
+                                        <span class="fas fa-angle-down"></span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu nav">
+                                    <li>
+                                        <a class="nav-link" href="#"
+                                            ><span
+                                                data-feather="plus-circle"
+                                                class="fas fa-edit"
+                                            ></span
+                                            ><span>Edit</span
+                                            ><span class="rui-nav-circle"></span
+                                        ></a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" href="#"
+                                            ><span
+                                                data-feather="x-circle"
+                                                class="fas fa-trash"
+                                            ></span
+                                            ><span>Delete</span
+                                            ><span class="rui-nav-circle"></span
+                                        ></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
+                    </b-table>
                 </div>
             </div>
         </div>
@@ -141,6 +94,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import moment from 'moment'
 import FormAdd from "./PositionForm.vue";
 import VueMomentsAgo from "vue-moments-ago";
 export default {
@@ -153,7 +107,13 @@ export default {
 
     data() {
         return {
-            search: ""
+            search: "",
+            fields: [
+                { key: "index", label: "Jumlah Team" },
+                { key: "name", label: "Posisi" },
+                { key: "created_at", label: "Created At" },
+                { key: "action", label: "Aksi" }
+            ]
         };
     },
 

@@ -1,18 +1,22 @@
 <template>
-    <div class="rui-page-content">
-        <div class="container-fluid">
-            <calender/>
+    <main>
+        <page-loader/>
+        <div class="rui-page-content">
+            <div class="container-fluid">
+                <calender/>
+            </div>
         </div>
-    </div>
+    </main>
 </template>
 <script>
+import PageLoader from '../../../../components/PageLoader.vue'
 import { mapActions, mapState } from "vuex";
 import DatePicker from "vue2-datepicker";
 import VueMomentsAgo from "vue-moments-ago";
 import moment from "moment";
 import Calender from "./module/Calendar.vue";
 export default {
-    components: { VueMomentsAgo, DatePicker, Calender },
+    components: { VueMomentsAgo, DatePicker, Calender, PageLoader },
     name: "DataReportCS",
 
     created() {

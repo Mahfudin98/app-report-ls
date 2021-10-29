@@ -9,6 +9,7 @@ class Order extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $appends = ['status_label'];
 
     public function csReport()
     {
@@ -18,5 +19,13 @@ class Order extends Model
     public function orderDetail()
     {
         return $this->hasMany(DetailOrder::class);
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        if ($this->status == 0) {
+            return '<span class="badge badge-pill badge-secondary">Retur</span>';
+        }
+        return '<span class="badge badge-pill badge-brand">Success</span>';
     }
 }

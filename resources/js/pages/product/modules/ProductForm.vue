@@ -84,9 +84,6 @@ export default {
                 });
             });
         }
-    },
-    destroyed() {
-        this.CLEAR_FORM();
     }
 };
 </script>

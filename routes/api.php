@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\SuperAdmin\RolePermissionController;
 use App\Http\Controllers\Api\SuperAdmin\UserController;
 use App\Http\Controllers\Api\User\InventoryController;
 use App\Http\Controllers\Api\User\ReportController;
+use App\Http\Controllers\Api\User\ReturnController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -64,5 +65,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/inventorys/usage', [InventoryController::class, 'indexDetail'])->name('inventory.usege.index');
     Route::post('/inventorys/usage', [InventoryController::class, 'storeDetail'])->name('inventory.usege.store');
     Route::get('/inventorys/usage/{slug}', [InventoryController::class, 'showDetail'])->name('inventory.usege.show');
+    // return
+    Route::get('/get-order', [ReturnController::class, 'index'])->name('get.order');
 
 });

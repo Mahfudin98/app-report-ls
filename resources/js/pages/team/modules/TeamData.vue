@@ -14,26 +14,10 @@
                                     data-toggle="button"
                                     aria-pressed="false"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="feather feather-search rui-icon rui-icon-stroke-1_5"
-                                    >
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <line
-                                            x1="21"
-                                            y1="21"
-                                            x2="16.65"
-                                            y2="16.65"
-                                        ></line>
-                                    </svg>
+                                    <span
+                                        style="font-size: 17px;"
+                                        class="rui-icon fas fa-search"
+                                    ></span>
                                 </button>
                                 <input
                                     type="search"
@@ -46,33 +30,13 @@
                             </div>
                         </div>
                     </div>
-                    <router-link
-                        v-if="authenticated.role == 0 && $can('create teams')"
-                        :to="{ name: 'teams.add' }"
-                        class="btn btn-brand"
-                    >
+                    <router-link class="btn btn-brand btn-long" v-if="authenticated.role == 0 && $can('create teams')"
+                        :to="{ name: 'teams.add' }">
                         <span class="icon"
-                            ><svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="feather feather-plus rui-icon rui-icon-stroke-1_5"
-                            >
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <line
-                                    x1="5"
-                                    y1="12"
-                                    x2="19"
-                                    y2="12"
-                                ></line></svg
-                        ></span>
-                        <span class="text">New</span>
+                            ><span
+                                class="rui-icon fas fa-plus"
+                            ></span></span
+                        ><span class="text">New</span>
                     </router-link>
                 </div>
                 <div class="rui-profile row vertical-gap">
@@ -107,7 +71,10 @@
                                 <p class="card-text">
                                     {{ row.position.name }}
                                 </p>
-                                <div class="btn-group" v-if="$can('edit teams')">
+                                <div
+                                    class="btn-group"
+                                    v-if="$can('edit teams')"
+                                >
                                     <button
                                         type="button"
                                         class="btn btn-warning"
@@ -124,13 +91,12 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="col-lg-12"
-                        v-if="teams.data == 0"
-                    >
+                    <div class="col-lg-12" v-if="teams.data == 0">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="text-center">Data Tidak Ditemukan</h3>
+                                <h3 class="text-center">
+                                    Data Tidak Ditemukan
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -152,7 +118,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('user', {
+        ...mapState("user", {
             authenticated: state => state.authenticated //ME-LOAD STATE AUTHENTICATED
         }),
         ...mapState("team", {

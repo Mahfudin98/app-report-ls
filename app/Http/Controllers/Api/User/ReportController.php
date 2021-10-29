@@ -98,7 +98,7 @@ class ReportController extends Controller
                 $detail = DetailOrder::create($product);
             }
 
-            $csReport = CsReport::where('date', $request->date)->first();
+            $csReport = CsReport::where('date', $request->date)->where('user_id', $user->id)->first();
             $orderget = Order::where('cs_report_id', $csReport->id)->get();
             $csReport->update([
                 'transaksi' => $orderget->count()
