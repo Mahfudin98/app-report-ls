@@ -56,6 +56,7 @@
                                     placeholder="Enter page title"
                                     :value="cp_wa.toFixed() || 0"
                                     required
+                                    readonly
                                 />
                                 <p class="text-danger" v-if="errors.cp_wa">
                                     {{ errors.cp_wa[0] }}

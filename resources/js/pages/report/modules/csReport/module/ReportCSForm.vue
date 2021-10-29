@@ -99,6 +99,7 @@ export default {
                     showConfirmButton: false,
                     timer: 2000
                 });
+                window.location.reload();
             });
         }
     }

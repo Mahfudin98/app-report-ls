@@ -107,6 +107,7 @@ export default {
             this.submit(this.data).then(() => {
                 if (this.isAuth) {
                     this.CLEAR_ERRORS();
+                    window.location.reload();
                     this.$router.push({ name: "home" });
                 }
             });
