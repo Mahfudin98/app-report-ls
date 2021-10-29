@@ -1,5 +1,6 @@
 <template>
     <div class="rui-page-content">
+        <page-loader/>
         <div class="container-fluid">
             <div
                 class="d-flex justify-content-between align-items-center mb-20"
@@ -28,7 +29,7 @@
                                                 '../storage/teams/' +
                                                     profile.image
                                             "
-                                            :alt="profile.name"
+                                            :alt="profile.slug"
                                         />
                                     </div>
                                 </div>
@@ -37,9 +38,9 @@
                                         <h3 class="rui-profile-info-title h4">
                                             {{ profile.name }}
                                         </h3>
-                                        <small class="text-grey-6 mt-2 mb-15">{{
-                                            profile.position.name
-                                        }}</small>
+                                        <small class="text-grey-6 mt-2 mb-15" v-if="profile.position">
+                                            {{ profile.position['name'] }}
+                                        </small>
                                         <a
                                             class="rui-profile-info-mail"
                                             href="#"
@@ -1231,6 +1232,7 @@
     </div>
 </template>
 <script>
+import PageLoader from '../../../components/PageLoader.vue'
 import { mapActions, mapState } from "vuex";
 export default {
     name: "ShowTeams",
@@ -1244,7 +1246,8 @@ export default {
     },
     methods: {
         ...mapActions("team", ["showTeam"])
-    }
+    },
+    components: { PageLoader }
 };
 </script>
 <style>

@@ -1,5 +1,6 @@
 <template>
     <div class="row">
+    <page-loader/>
         <div class="rui-page-content">
             <div class="container-fluid">
                 <div
@@ -106,6 +107,7 @@
     </div>
 </template>
 <script>
+import PageLoader from '../../../components/PageLoader.vue'
 import { mapActions, mapState } from "vuex";
 export default {
     name: "DataUser",
@@ -158,7 +160,8 @@ export default {
                 }
             });
         }
-    }
+    },
+    components: { PageLoader }
 };
 </script>
 
