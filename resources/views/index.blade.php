@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>RootUI | Welcome to RootUI</title>
+    <title>App Report</title>
     <meta name="description" content="RootUI - clean and powerful solution for your Dashboards, Administration areas.">
     <meta name="keywords" content="admin, dashboard, template, react, reactjs, html, jquery, clean">
     <meta name="author" content="nK">

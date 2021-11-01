@@ -22,7 +22,7 @@ class DashboardController extends Controller
             $start = Carbon::parse($date[0])->format('Y-m-d');
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
-        $orders = DetailOrder::with(['user', 'order'])->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(subtotal) as sum')->get(['user_id', 'qty', 'price', 'date']);
+        $orders = DetailOrder::with(['user', 'order'])->where('status', 1)->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(subtotal) as sum')->get(['user_id', 'qty', 'price', 'date']);
         $data = [];
         foreach ($orders as $row) {
             $data[] = [
@@ -50,7 +50,7 @@ class DashboardController extends Controller
 
         $data = [];
         foreach ($reports as $row) {
-            $order = DetailOrder::where('user_id', $row->user_id)->whereBetween('date', [$start, $end])->sum('qty');
+            $order = DetailOrder::where('user_id', $row->user_id)->where('status', 1)->whereBetween('date', [$start, $end])->sum('qty');
             $total_order = ($order / $row->sum) * 100;
             $data[] = [
                 'name' => $row->user->name,
@@ -72,7 +72,7 @@ class DashboardController extends Controller
         $parse = Carbon::parse($filter);
         $array_date = range($parse->startOfMonth()->format('d'), $parse->endOfMonth()->format('d'));
 
-        $orders = DetailOrder::where('created_at', 'LIKE', '%' . $filter . '%')->groupBy('date')->selectRaw('*, sum(subtotal) as total')->get();
+        $orders = DetailOrder::where('created_at', 'LIKE', '%' . $filter . '%')->where('status', 1)->groupBy('date')->selectRaw('*, sum(subtotal) as total')->get();
 
         $data = [];
         foreach ($array_date as $row) {

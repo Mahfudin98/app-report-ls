@@ -15,6 +15,15 @@ class CreateReturnOrdersTable extends Migration
     {
         Schema::create('return_orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('cs_name');
+            $table->string('customer_name');
+            $table->string('customer_address');
+            $table->string('waybill')->unique();
+            $table->date('date_order');
+            $table->date('date_return');
+            $table->text('alasan')->nullable();
             $table->timestamps();
         });
     }

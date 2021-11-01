@@ -149,7 +149,7 @@
                                             {{ row.customer_name }} [<span
                                                 class="text-brand"
                                                 >{{ row.waybill }}</span
-                                            >]
+                                            >]<span v-html="row.status_label"></span>
                                         </a>
                                         <div
                                             :id="

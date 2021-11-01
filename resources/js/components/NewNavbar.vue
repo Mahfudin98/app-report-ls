@@ -5,8 +5,8 @@
                 <a href="dashboard.html" class="rui-navbar-logo"
                     ><img
                         :src="'/images/logo.svg'"
-                        :data-src-night="'/images/logo-white.svg'"
-                        :data-src-day="'/images/logo.svg'"
+                        :data-src-night="'/images/logo_putih.png'"
+                        :data-src-day="'/images/logo_hitam.png'"
                         alt="logo"
                         width="45"
                     /> </a
@@ -325,10 +325,11 @@
                 <router-link
                     class="rui-navbar-logo mr-auto"
                     :to="{ name: 'home' }"
-                    ><img
+                >
+                    <img
                         :src="'/images/logo.svg'"
-                        :data-src-night="'/images/logo-white.svg'"
-                        :data-src-day="'/images/logo.svg'"
+                        :data-src-night="'/images/logo_putih.png'"
+                        :data-src-day="'/images/logo_hitam.png'"
                         alt="logo"
                         width="45"
                 /></router-link>
@@ -336,9 +337,17 @@
                 <div class="dropdown dropdown-triangle">
                     <b-link id="profile-mobile" variant="primary" href="#">
                         <b-img
+                            v-if="authenticated.image != null"
                             v-bind="mainProps"
                             rounded="circle"
                             :src="'../storage/teams/' + authenticated.image"
+                            :alt="authenticated.name"
+                        ></b-img>
+                        <b-img
+                            v-if="authenticated.image == null"
+                            v-bind="mainProps"
+                            rounded="circle"
+                            src="https://picsum.photos/250/250/?image=54"
                             :alt="authenticated.name"
                         ></b-img>
                         <b-popover

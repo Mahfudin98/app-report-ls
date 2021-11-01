@@ -321,7 +321,7 @@ const router = new Router({
                     meta: { title: 'Edit Return' }
                 },
                 {
-                    path: 'add',
+                    path: 'add/:waybill',
                     name: 'return.add',
                     component: AddReturn,
                     meta: { title: 'Add Return' }

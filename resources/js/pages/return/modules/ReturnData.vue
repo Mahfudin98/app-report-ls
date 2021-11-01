@@ -40,7 +40,7 @@
                         <template #cell(status)="row">
                             <span v-html="row.item.status_label"></span>
                         </template>
-                        <template #cell(action)>
+                        <template #cell(action)="row">
                             <div class="btn-group dropdown dropdown-triangle">
                                 <button
                                     class="btn btn-brand btn-long dropdown-toggle"
@@ -56,24 +56,19 @@
                                 </button>
                                 <ul class="dropdown-menu nav">
                                     <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
+                                        <router-link
+                                            :to="{
+                                                name: 'return.add',
+                                                params: { waybill: row.item.waybill }
+                                            }"
+                                        >
+                                            <span
                                                 data-feather="plus-circle"
-                                                class="fas fa-edit"
+                                                class="fas fa-plus"
                                             ></span
-                                            ><span>Edit</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
-                                                data-feather="x-circle"
-                                                class="fas fa-trash"
-                                            ></span
-                                            ><span>Delete</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
+                                            ><span>Add Return</span
+                                            ><span class="rui-nav-circle"></span>
+                                        </router-link>
                                     </li>
                                 </ul>
                             </div>
@@ -105,7 +100,7 @@ export default {
         };
     },
     computed: {
-        ...mapState("order", {
+        ...mapState("returnOrder", {
             getOrders: state => state.getOrders
         }),
         page: {
@@ -126,7 +121,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions("order", ["getOrdersReturn"])
+        ...mapActions("returnOrder", ["getOrdersReturn"])
     }
 };
 </script>
