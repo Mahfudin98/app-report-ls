@@ -63,6 +63,36 @@ const actions = {
         })
     },
 
+    editTeam({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.get(`/teams/${payload}/edit`)
+            .then((response) => {
+                resolve(response.data)
+            })
+        })
+    },
+    updateTeam({ state }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.post(`/teams-update/${state.id}`, payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                resolve(response.data)
+            })
+        })
+    },
+
+    removeCourier({ dispatch }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.delete(`/teams/${payload}`)
+            .then((response) => {
+                dispatch('getTeams').then(() => resolve(response.data))
+            })
+        })
+    },
+
     showTeam({commit}, payload){
         return new Promise((resolve, reject) => {
             $axios.get(`/teams/${payload}`)

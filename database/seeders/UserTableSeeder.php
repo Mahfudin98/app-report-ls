@@ -23,7 +23,7 @@ class UserTableSeeder extends Seeder
             'email' => 'admin@larossa.id',
             'email_verified_at' => now(),
             'gender' => 'Laki-laki',
-            'password' => 'admin123',
+            'password' => bcrypt('admin123'),
             'role' => 0
         ]);
     }

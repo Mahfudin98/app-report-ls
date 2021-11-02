@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -43,6 +44,8 @@ class UserController extends Controller
             'name' => 'required|string|max:150',
             'position_id' => 'required|exists:positions,id',
             'parent_id' => 'nullable|exists:users,id',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
             'address' => 'required',
             'phone' => 'required',
             'username' => 'required|unique:users,username',
@@ -67,9 +70,11 @@ class UserController extends Controller
                 'parent_id' => $request->parent_id,
                 'address' => $request->address,
                 'phone' => $request->phone,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
                 'username' => $request->username,
                 'email' => $request->email,
-                'password' => $request->password,
+                'password' => bcrypt($request->password),
                 'gender' => $request->gender,
                 'image' => $name,
                 'role' => 2
@@ -102,7 +107,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return response()->json(['status' => 'success', 'data' => $user], 200);
     }
 
     /**
@@ -114,7 +120,53 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $users = User::find($id);
+        $this->validate($request, [
+            'name' => 'required|string|max:150',
+            'position_id' => 'required|exists:positions,id',
+            'parent_id' => 'nullable|exists:users,id',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'username' => 'unique:users,username,'.$users->id,
+            'email' => 'unique:users,email,'.$users->id,
+            'password' => 'nullable|min:6|string',
+            'gender' => 'required',
+            'image' => 'nullable|image'
+        ]);
+
+        try {
+            $user = User::find($id);
+            $password = $request->password != '' ? bcrypt($request->password):$user->password;
+            $filename = $user->image;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                File::delete(storage_path('app/public/teams/' . $filename));
+                $filename = $request->email . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/teams', $filename);
+            }
+
+            $user->update([
+                'name' => $request->name,
+                'slug' => $request->name,
+                'position_id' => $request->position_id,
+                'parent_id' => $request->parent_id,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => $password,
+                'gender' => $request->gender,
+                'image' => $filename,
+                'role' => 2
+            ]);
+            return response()->json(['status' => 'success'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'data' => $e->getMessage()], 200);
+        }
     }
 
     /**
@@ -125,7 +177,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        File::delete(storage_path('app/public/teams/' . $user->image));
+        $user->delete();
+        return response()->json(['status' => 'success']);
     }
 
     public function getAdv()

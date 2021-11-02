@@ -23,7 +23,7 @@ class LoginController extends Controller
         ]);
 
         $auth = $request->except(['remember_me']);
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->where('status', 1)->first();
         if (Hash::check($request->password, $user->getAuthPassword())) {
             $token = $user->createToken(time());
             return response()->json(['status' => 'success', 'data' => $token->plainTextToken], 200);

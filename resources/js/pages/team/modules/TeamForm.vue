@@ -5,7 +5,7 @@
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
+                            <div class="form-group" :class="{ 'has-error': errors.name }">
                                 <label for="name">Name</label>
                                 <input
                                     class="form-control"
@@ -19,21 +19,21 @@
                                     {{ errors.name[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
-                                <label for="alamat">Alamat Team</label>
+                            <div class="form-group" :class="{ 'has-error': errors.address }">
+                                <label for="address">Alamat Team</label>
                                 <input
                                     class="form-control"
-                                    id="alamat"
+                                    id="address"
                                     required
                                     type="text"
-                                    placeholder="Enter alamat"
+                                    placeholder="Enter Address"
                                     v-model="team.address"
                                 />
                                 <p class="text-danger" v-if="errors.address">
                                     {{ errors.address[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" :class="{ 'has-error': errors.phone }">
                                 <label for="phone">Phone Team</label>
                                 <input
                                     class="form-control"
@@ -47,21 +47,35 @@
                                     {{ errors.phone[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email Team</label>
+                            <div class="form-group" :class="{ 'has-error': errors.tempat_lahir }">
+                                <label for="tempat_lahir">Tempat Lahir Team</label>
                                 <input
                                     class="form-control"
-                                    id="email"
+                                    id="tempat_lahir"
                                     required
-                                    type="email"
-                                    placeholder="Enter email"
-                                    v-model="team.email"
+                                    type="text"
+                                    placeholder="Enter Tempat Lahir"
+                                    v-model="team.tempat_lahir"
                                 />
-                                <p class="text-danger" v-if="errors.email">
-                                    {{ errors.email[0] }}
+                                <p class="text-danger" v-if="errors.tempat_lahir">
+                                    {{ errors.tempat_lahir[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" :class="{ 'has-error': errors.tanggal_lahir }">
+                                <label for="tanggal_lahir">Tanggal Lahir Team</label>
+                                <input
+                                    class="form-control"
+                                    id="tanggal_lahir"
+                                    required
+                                    type="date"
+                                    placeholder="Enter Tanggal Lahir"
+                                    v-model="team.tanggal_lahir"
+                                />
+                                <p class="text-danger" v-if="errors.tanggal_lahir">
+                                    {{ errors.tanggal_lahir[0] }}
+                                </p>
+                            </div>
+                            <div class="form-group" :class="{ 'has-error': errors.gender }">
                                 <label for="gender">Gender</label>
                                 <select
                                     id="gender"
@@ -85,13 +99,27 @@
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
+                            <div class="form-group" :class="{ 'has-error': errors.email }">
+                                <label for="email">Email Team</label>
+                                <input
+                                    class="form-control"
+                                    id="email"
+                                    required
+                                    type="email"
+                                    placeholder="Enter email"
+                                    v-model="team.email"
+                                />
+                                <p class="text-danger" v-if="errors.email">
+                                    {{ errors.email[0] }}
+                                </p>
+                            </div>
+                            <div class="form-group" :class="{ 'has-error': errors.username }">
                                 <label for="username">Username</label>
                                 <input
                                     class="form-control"
                                     id="username"
-                                    required
                                     type="text"
+                                    required
                                     placeholder="Enter username"
                                     v-model="team.username"
                                 />
@@ -99,24 +127,24 @@
                                     {{ errors.username[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" :class="{ 'has-error': errors.password }">
                                 <label for="password">Password</label>
                                 <input
                                     class="form-control"
                                     id="password"
-                                    required
                                     type="password"
                                     placeholder="Enter password"
                                     v-model="team.password"
                                 />
+                                <p v-if="this.$route.name == `teams.edit`">*Kosongkan jika tidak ingin mengganti</p>
                                 <p class="text-danger" v-if="errors.password">
                                     {{ errors.password[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
-                                <label for="position">Position</label>
+                            <div class="form-group" :class="{ 'has-error': errors.position_id }">
+                                <label for="position_id">Position</label>
                                 <select
-                                    id="position"
+                                    id="position_id"
                                     class="form-control"
                                     required
                                     v-model="team.position_id"
@@ -139,15 +167,14 @@
                                     {{ errors.position_id[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" v-if="team.position_id == 12 || team.position_id == 14 || team.position_id == 15" :class="{ 'has-error': errors.parent_id }">
                                 <label for="parent_id">Nama ADV</label>
                                 <select
                                     id="parent_id"
                                     class="form-control"
-                                    required
                                     v-model="team.parent_id"
                                 >
-                                    <option selected disabled value=""
+                                    <option selected value=""
                                         >Select ADV</option
                                     >
                                     <option
@@ -161,7 +188,7 @@
                                     {{ errors.parent_id[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" :class="{ 'has-error': errors.image }">
                                 <label for="file-input">Image</label>
                                 <input
                                     type="file"
@@ -170,6 +197,7 @@
                                     @change="uploadImage($event)"
                                     id="file-input"
                                 />
+                                <p v-if="this.$route.name == `teams.edit`">*Kosongkan jika tidak ingin mengganti</p>
                                 <p class="text-danger" v-if="errors.image">
                                     {{ errors.image[0] }}
                                 </p>
@@ -194,14 +222,16 @@ export default {
                 this.team = {
                     name: res.data.name,
                     image: "",
-                    position_id: res.position_id,
-                    parent_id: res.parent_id,
-                    address: res.address,
-                    phone: res.phone,
-                    email: res.email,
-                    username: res.username,
+                    position_id: res.data.position_id,
+                    parent_id: res.data.parent_id,
+                    address: res.data.address,
+                    phone: res.data.phone,
+                    tempat_lahir: res.data.tempat_lahir,
+                    tanggal_lahir: res.data.tanggal_lahir,
+                    email: res.data.email,
+                    username: res.data.username,
                     password: "",
-                    gender: res.gender
+                    gender: res.data.gender
                 };
             });
         }
@@ -215,9 +245,11 @@ export default {
                 parent_id: "",
                 address: "",
                 phone: "",
+                tempat_lahir: "",
+                tanggal_lahir: "",
                 email: "",
                 username: "",
-                password: "",
+                password: '',
                 gender: ""
             }
         };
@@ -246,10 +278,16 @@ export default {
 
             form.append("name", this.team.name);
             form.append("position_id", this.team.position_id);
-            form.append("parent_id", this.team.parent_id);
+            if (this.team.parent_id == null) {
+                form.append("parent_id", "");
+            } else {
+                form.append("parent_id", this.team.parent_id);
+            }
             form.append("address", this.team.address);
             form.append("phone", this.team.phone);
             form.append("email", this.team.email);
+            form.append("tempat_lahir", this.team.tempat_lahir);
+            form.append("tanggal_lahir", this.team.tanggal_lahir);
             form.append("username", this.team.username);
             form.append("password", this.team.password);
             form.append("gender", this.team.gender);
@@ -263,6 +301,8 @@ export default {
                         position_id: "",
                         parent_id: "",
                         address: "",
+                        tempat_lahir: "",
+                        tanggal_lahir: "",
                         phone: "",
                         email: "",
                         username: "",
@@ -281,6 +321,8 @@ export default {
                         position_id: "",
                         parent_id: "",
                         address: "",
+                        tempat_lahir: "",
+                        tanggal_lahir: "",
                         phone: "",
                         email: "",
                         username: "",

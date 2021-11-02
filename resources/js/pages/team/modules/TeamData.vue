@@ -31,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <router-link class="btn btn-brand btn-long" v-if="authenticated.role == 0 && $can('create teams')"
+                    <router-link class="btn btn-brand btn-long" v-if="authenticated.role == 0 || $can('create teams')"
                         :to="{ name: 'teams.add' }">
                         <span class="icon"
                             ><span
@@ -76,12 +76,14 @@
                                     class="btn-group"
                                     v-if="$can('edit teams')"
                                 >
-                                    <button
-                                        type="button"
+                                    <router-link :to="{
+                                        name: 'teams.edit',
+                                        params: { id: row.id }
+                                    }"
                                         class="btn btn-warning"
                                     >
                                         <i class="fas fa-edit"></i>
-                                    </button>
+                                    </router-link>
                                     <button
                                         type="button"
                                         class="btn btn-danger"

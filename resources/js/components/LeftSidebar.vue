@@ -216,7 +216,7 @@
                     </li>
                     <!-- permissions -->
                     <li
-                        v-if="authenticated.role == 0"
+                        v-if="authenticated.role == 0 || $can('create teams')"
                         :class="
                             this.$route.name == 'role.permissions'
                                 ? 'yay-item-active'
