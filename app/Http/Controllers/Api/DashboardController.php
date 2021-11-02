@@ -9,6 +9,8 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Exports\OmsetExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -86,5 +88,11 @@ class DashboardController extends Controller
         }
 
         return $data;
+    }
+
+    public function exportData(Request $request)
+    {
+        $omset = $this->allOmsets();
+        return Excel::download(new OmsetExport($omset, request()->month, request()->year), 'omset'.request()->month.'-'.request()->year.'.xlsx');
     }
 }

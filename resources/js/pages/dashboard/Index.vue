@@ -1,6 +1,6 @@
 <template>
     <main>
-        <page-loader/>
+        <page-loader />
         <div class="rui-page-title">
             <div class="container-fluid">
                 <nav aria-label="breadcrumb">
@@ -50,6 +50,15 @@
                                 >
                             </select>
                         </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Export To Excel</label>
+                        <button
+                            class="btn btn-primary btn-sm pull-right"
+                            @click="exportData"
+                        >
+                            Export
+                        </button>
                     </div>
                 </div>
                 <div class="row vertical-gap">
@@ -275,7 +284,7 @@ import DonatChart from "./components/DonatChart.vue";
 import DatePicker from "vue2-datepicker";
 import LineChart from "./components/LineChart.vue";
 import { mapActions, mapState } from "vuex";
-import PageLoader from '../../components/PageLoader.vue'
+import PageLoader from "../../components/PageLoader.vue";
 export default {
     components: { BarChart, DonatChart, DatePicker, LineChart, PageLoader },
     created() {
@@ -352,7 +361,7 @@ export default {
             return _.map(this.allOmsets, function(o) {
                 return o.total;
             });
-        },
+        }
     },
 
     methods: {
@@ -368,7 +377,9 @@ export default {
             "getChartAllOrder"
         ]),
 
-        exportData() {}
+        exportData() {
+            window.open(`/api/export?api_token=${this.token}&month=${this.month}&year=${this.year}`)
+        }
     }
 };
 </script>
