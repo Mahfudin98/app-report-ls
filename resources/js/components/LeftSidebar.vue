@@ -88,10 +88,10 @@
                             <span class="yay-icon">
                                 <span
                                     data-feather="git"
-                                    class="rui-icon fab fa-git-alt"
+                                    class="rui-icon fas fa-chart-area"
                                 ></span>
                             </span>
-                            <span>Project Management</span>
+                            <span>Web Statistik</span>
                             <span class="rui-yaybar-circle"></span>
                         </router-link>
                     </li>

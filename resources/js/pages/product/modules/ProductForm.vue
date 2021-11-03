@@ -62,6 +62,7 @@ export default {
             url: null
         };
     },
+
     name: "FormProduct",
     computed: {
         ...mapState(["errors"]),
@@ -71,18 +72,8 @@ export default {
     },
     methods: {
         ...mapMutations("product", ["CLEAR_FORM"]),
-        ...mapActions("product", ["submitProduct"]),
-        submit() {
-            this.submitProduct().then(() => {
-                this.$swal({
-                    background: "#FFFFFF",
-                    title: "Ditambah!",
-                    text: "Data Berhasil ditambah!",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-            });
+         destroyed() {
+            this.CLEAR_FORM()
         }
     }
 };

@@ -14,6 +14,7 @@ import EditPosition from './pages/position/modules/PositionEdit.vue'
 // product
 import IndexProduct from './pages/product/Index.vue'
 import DataProduct from './pages/product/modules/ProductData.vue'
+import EditProduct from './pages/product/modules/ProductEdit.vue'
 // report
 import IndexReport from './pages/report/Index.vue'
 import DataReport from './pages/report/modules/ReportData.vue'
@@ -115,7 +116,13 @@ const router = new Router({
                     name: 'product.data',
                     component: DataProduct,
                     meta: { title: 'Manage Product' }
-                }
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'product.edit',
+                    component: EditProduct,
+                    meta: { title: 'Edit Product' }
+                },
             ],
         },
         // stock route

@@ -31,11 +31,13 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-brand btn-long" v-b-modal.addModal>
+                    <button
+                        type="button"
+                        class="btn btn-brand btn-long"
+                        v-b-modal.addModal
+                    >
                         <span class="icon"
-                            ><span
-                                class="rui-icon fas fa-plus"
-                            ></span></span
+                            ><span class="rui-icon fas fa-plus"></span></span
                         ><span class="text">Add Product</span>
                     </button>
                 </div>
@@ -43,7 +45,6 @@
                     <b-table
                         :items="products.data"
                         :fields="fields"
-                        striped
                         hover
                     >
                         <template #cell(index)="data">
@@ -58,7 +59,7 @@
                         <template #cell(price)="row">
                             Rp. {{ row.item.price | formatNumber }}
                         </template>
-                        <template #cell(action)>
+                        <template #cell(action)="row">
                             <div class="btn-group dropdown dropdown-triangle">
                                 <button
                                     class="btn btn-brand btn-long dropdown-toggle"
@@ -74,29 +75,64 @@
                                 </button>
                                 <ul class="dropdown-menu nav">
                                     <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
+                                        <router-link
+                                            class="nav-link"
+                                            :to="{
+                                                name: 'product.edit',
+                                                params: { id: row.item.id }
+                                            }"
+                                        >
+                                            <span
                                                 data-feather="plus-circle"
                                                 class="fas fa-edit"
                                             ></span
                                             ><span>Edit</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
+                                            ><span
+                                                class="rui-nav-circle"
+                                            ></span>
+                                        </router-link>
                                     </li>
                                     <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
+                                        <a
+                                            class="nav-link"
+                                            @click="deleteProduct(row.item.id)"
+                                        >
+                                            <span
                                                 data-feather="x-circle"
                                                 class="fas fa-trash"
-                                            ></span
-                                            ><span>Delete</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
+                                            ></span>
+                                            <span>Delete</span>
+                                            <span class="rui-nav-circle"></span>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
                         </template>
                     </b-table>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p v-if="products.data">
+                                <i class="fa fa-bars"></i>
+                                {{ products.data.length }} item dari
+                                {{ products.meta.total }} total data
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pull-right">
+                                <b-pagination
+                                    v-model="page"
+                                    :total-rows="products.meta.total"
+                                    :per-page="products.meta.per_page"
+                                    aria-controls="products"
+                                    v-if="
+                                        products.data &&
+                                            products.data.length > 0
+                                    "
+                                ></b-pagination>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,10 +166,21 @@ export default {
     computed: {
         ...mapState("product", {
             products: state => state.products
-        })
+        }),
+        page: {
+            get() {
+                return this.$store.state.product.page;
+            },
+            set(val) {
+                this.$store.commit("product/SET_PAGE", val);
+            }
+        }
     },
 
     watch: {
+        page() {
+            this.getProducts();
+        },
         search() {
             this.getProducts(this.search);
         }
@@ -142,17 +189,22 @@ export default {
     methods: {
         ...mapActions("product", ["getProducts", "removeProduct"]),
         deleteProduct(id) {
-            this.$swal({
+            this.$swal.fire({
                 title: "Kamu Yakin?",
                 text: "Tindakan ini akan menghapus secara permanent!",
-                type: "warning",
+                icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Iya, Lanjutkan!"
+                confirmButtonText: "Yes, delete it!"
             }).then(result => {
-                if (result.value) {
+                if (result.isConfirmed) {
                     this.removeProduct(id);
+                    this.$swal(
+                        "Terhapus!",
+                        "Produk sudah dihapus.",
+                        "success"
+                    );
                 }
             });
         }

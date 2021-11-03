@@ -1,19 +1,29 @@
 <template>
     <b-modal id="addModal" title="Add Report CS" @ok="submit">
-        <product-form ref="productForm"/>
+        <product-form></product-form>
     </b-modal>
 </template>
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
-import ProductForm from './ProductForm.vue'
+import { mapActions, mapState } from "vuex";
+import ProductForm from "./ProductForm.vue";
 export default {
     components: {
         ProductForm
     },
     name: "FormProduct",
     methods: {
+        ...mapActions("product", ["submitProduct"]),
         submit() {
-            this.$refs.productForm.submit();
+            this.submitProduct().then(() => {
+                this.$swal({
+                    background: "#FFFFFF",
+                    title: "Ditambah!",
+                    text: "Data Berhasil ditambah!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
         }
     }
 };
