@@ -41,6 +41,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/cs-reports/{date}', [ReportController::class, 'indexDateCS'])->name('index.report.cs.date');
     Route::post('/cs-reports/customers', [ReportController::class, 'addCustomerCS'])->name('store.report.cs');
     Route::post('/cs-reports/add', [ReportController::class, 'addReportCS'])->name('store.report.cs.add');
+    Route::get('/add-product-form/{id}', [ReportController::class, 'addProductForm'])->name('add.product.form');
+    Route::post('/add-product-form',[ReportController::class, 'submitProductOrder'])->name('add.product.submit');
     // adv report
     Route::get('/adv-reports', [ReportController::class, 'indexADV'])->name('index.report.adv');
     Route::get('/order', [ReportController::class, 'getOrder'])->name('get.order');
@@ -49,6 +51,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // superadmin
     Route::resource('/positions', PositionController::class)->except(['show', 'create']);
     Route::resource('/products', ProductController::class);
+    Route::get('/all-product', [ProductController::class, 'allProduct'])->name('get.all.product');
     Route::resource('/teams', UserController::class)->except(['create', 'show', 'update']);
     Route::get('/teams/{slug}', [UserController::class, 'show'])->name('teams.show.slug');
     Route::post('/teams-update/{id}', [UserController::class, 'update'])->name('teams.update');

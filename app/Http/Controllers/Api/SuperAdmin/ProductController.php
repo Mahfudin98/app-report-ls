@@ -126,4 +126,11 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(['status' => 'success'], 200);
     }
+
+    public function allProduct()
+    {
+        $products = Product::orderBy('created_at', 'DESC');
+
+        return new ProductCollection($products->get());
+    }
 }

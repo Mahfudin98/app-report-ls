@@ -125,6 +125,17 @@
                                         v-model="customers.qty[index]"
                                     />
                                 </div>
+                                <br>
+                                <button
+                                    class="btn btn-brand"
+                                    type="button"
+                                    @click="removeParent(index)"
+                                >
+                                    <span class="icon">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Remove Product</span>
+                                </button>
                             </section>
                         </div>
                         <div class="card-footer">
@@ -150,7 +161,7 @@ import { mapState, mapActions, mapMutations } from "vuex";
 export default {
     name: "ReportCSForm",
     created() {
-        this.getProducts();
+        this.getAllProducts();
         this.viewCsReport(this.$route.params.date);
     },
     data() {
@@ -198,13 +209,12 @@ export default {
         },
         removeParent(index) {
             this.customers = {
-                // for order
                 product_id: [""],
-                total_order: [""]
-            };
+                qty: [""]
+            },
             this.order.splice(index, 1);
         },
-        ...mapActions("product", ["getProducts"]),
+        ...mapActions("product", ["getAllProducts"]),
         ...mapActions("csReport", ["viewCsReport", "submitCustomer"]),
 
         submit() {

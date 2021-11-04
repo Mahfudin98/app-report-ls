@@ -102,7 +102,22 @@ const actions = {
                 dispatch('getProducts').then(() => resolve())
             })
         })
-    }
+    },
+
+    getAllProducts({commit, state}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/all-product`)
+            .then((response) => {
+                commit('ASSIGN_DATA', response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error)=>{
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, {root:true})
+            }
+        })
+    },
 }
 
 export default {

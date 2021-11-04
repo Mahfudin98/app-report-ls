@@ -5,7 +5,8 @@ const state = () => ({
     page: 1,
     id: '',
     date: '',
-    reportcs: []
+    reportcs: [],
+    orderProduct: ''
 })
 
 const mutations = {
@@ -27,6 +28,10 @@ const mutations = {
 
     ASSIGN_REPORTCS(state, payload) {
         state.reportcs = payload
+    },
+
+    ASSIGN_ORDER_PRODUCT(state, payload){
+        state.orderProduct = payload
     }
 }
 
@@ -128,6 +133,36 @@ const actions = {
             $axios.delete(`/positions/${payload}`)
             .then((response) => {
                 dispatch('getPosition').then(() => resolve())
+            })
+        })
+    },
+
+    addProductOrder({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.get(`/add-product-form/${payload}`)
+            .then((response) => {
+                commit('ASSIGN_ORDER_PRODUCT', response.data)
+                resolve(response.data)
+            })
+        })
+    },
+
+    submitProductOrder({dispatch, commit}, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.post(`/add-product-form`, payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                dispatch('viewCsReport').then(() => {
+                    resolve(response.data)
+                })
+            })
+            .catch((error) => {
+                if (error.response.status == 422) {
+                    commit('SET_ERRORS', error.response.data.errors, { root: true })
+                }
             })
         })
     },

@@ -110,6 +110,35 @@ class ReportController extends Controller
         }
     }
 
+    public function addProductForm($id)
+    {
+        $order = Order::find($id);
+        return $order;
+    }
+
+    public function submitProductOrder(Request $request)
+    {
+        try {
+            $user = request()->user();
+            $data = $request->all();
+            foreach ($data['qty'] as $item => $value) {
+                $product = array(
+                    'user_id'   => $user->id,
+                    'order_id' => $request->order_id,
+                    'cs_report_id' => $request->cs_report_id,
+                    'product_id' => $data['product_id'][$item],
+                    'price' => $data['price'][$item],
+                    'qty' => $data['qty'][$item],
+                    'date' => $request->date,
+                    'subtotal' => $data['qty'][$item] * $data['price'][$item]
+                );
+                $detail = DetailOrder::create($product);
+            }
+            return response()->json(['status' => 'success'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
     //report adv
     public function indexADV()
     {

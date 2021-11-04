@@ -2,7 +2,8 @@ import $axios from '../api'
 
 const state = () => ({
     orders: [],
-    leads: []
+    leads: [],
+    orderProduct: ''
 })
 
 const mutations = {
@@ -11,7 +12,7 @@ const mutations = {
     },
     ASSIGN_LEAD_DATA(state, payload){
         state.leads = payload
-    }
+    },
 }
 
 const actions = {
@@ -44,7 +45,8 @@ const actions = {
                 commit('SET_ERRORS', error.response.data.errors, {root:true})
             }
         })
-    }
+    },
+
 }
 
 export default {

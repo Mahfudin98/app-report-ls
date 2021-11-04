@@ -1,6 +1,6 @@
 <template>
     <main>
-        <page-loader/>
+        <page-loader />
         <ReportsCSAdd />
         <customer-add />
         <div class="rui-page-content">
@@ -65,7 +65,10 @@
                                                 <h4
                                                     class="rui-profile-number-title h2"
                                                 >
-                                                    Rp. {{ getOmset | formatNumber }}
+                                                    Rp.
+                                                    {{
+                                                        getOmset | formatNumber
+                                                    }}
                                                 </h4>
                                                 <small class="text-grey-6"
                                                     >Omset</small
@@ -149,7 +152,9 @@
                                             {{ row.customer_name }} [<span
                                                 class="text-brand"
                                                 >{{ row.waybill }}</span
-                                            >]<span v-html="row.status_label"></span>
+                                            >]<span
+                                                v-html="row.status_label"
+                                            ></span>
                                         </a>
                                         <div
                                             :id="
@@ -164,63 +169,165 @@
                                         >
                                             <div class="collapse-content">
                                                 <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">
-                                                                    #
-                                                                </th>
-                                                                <th scope="col">
-                                                                    Product Name
-                                                                </th>
-                                                                <th scope="col">
-                                                                    Price
-                                                                </th>
-                                                                <th scope="col">
-                                                                    QTY
-                                                                </th>
-                                                                <th scope="col">
-                                                                    Total
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr
-                                                                v-for="(rows,
-                                                                indexs) in row.order_detail"
-                                                                :key="indexs"
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center mb-20"
+                                                    >
+                                                        <div class="row xs-gap">
+                                                            <div class="col-12">
+                                                                <h4>
+                                                                    Add Product
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row xs-gap">
+                                                            <div class="col-12">
+                                                                <router-link
+                                                                    :to="{
+                                                                        name:
+                                                                            'cs.report.add.product.order',
+                                                                        params: {
+                                                                            id:
+                                                                                row.id
+                                                                        }
+                                                                    }"
+                                                                    class="btn btn-brand btn-long"
+                                                                >
+                                                                    <span
+                                                                        class="icon"
+                                                                        ><span
+                                                                            class="fas fa-plus"
+                                                                        ></span></span
+                                                                    ><span
+                                                                        class="text"
+                                                                        >Add
+                                                                        Product</span
+                                                                    >
+                                                                </router-link>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <b-table
+                                                        :items="
+                                                            row.order_detail
+                                                        "
+                                                        :fields="fields"
+                                                        hover
+                                                    >
+                                                        <template
+                                                            #cell(index)="data"
+                                                        >
+                                                            {{ data.index + 1 }}
+                                                        </template>
+                                                        <template
+                                                            #cell(product_name)="rows"
+                                                        >
+                                                            <p>
+                                                                {{
+                                                                    rows.item
+                                                                        .product
+                                                                        .name
+                                                                }}
+                                                            </p>
+                                                        </template>
+                                                        <template
+                                                            #cell(price)="rows"
+                                                        >
+                                                            Rp.
+                                                            {{
+                                                                rows.item.price
+                                                                    | formatNumber
+                                                            }}
+                                                        </template>
+                                                        <template
+                                                            #cell(subtotal)="rows"
+                                                        >
+                                                            Rp.
+                                                            {{
+                                                                rows.item
+                                                                    .subtotal
+                                                                    | formatNumber
+                                                            }}
+                                                        </template>
+                                                        <template
+                                                            #cell(action)="rows"
+                                                        >
+                                                            <div
+                                                                class="btn-group dropdown dropdown-triangle"
                                                             >
-                                                                <th scope="row">
-                                                                    {{
-                                                                        indexs +
-                                                                            1
-                                                                    }}
-                                                                </th>
-                                                                <td>
-                                                                    {{
-                                                                        rows
-                                                                            .product
-                                                                            .name
-                                                                    }}
-                                                                </td>
-                                                                <td>
-                                                                    {{
-                                                                        rows.price
-                                                                    }}
-                                                                </td>
-                                                                <td>
-                                                                    {{
-                                                                        rows.qty
-                                                                    }}
-                                                                </td>
-                                                                <td>
-                                                                    {{
-                                                                        rows.subtotal
-                                                                    }}
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                                <button
+                                                                    class="btn btn-brand btn-long dropdown-toggle"
+                                                                    type="button"
+                                                                    data-toggle="dropdown"
+                                                                    aria-haspopup="true"
+                                                                    aria-expanded="false"
+                                                                >
+                                                                    <span
+                                                                        class="text"
+                                                                        >Action</span
+                                                                    >
+                                                                    <span
+                                                                        class="icon"
+                                                                    >
+                                                                        <span
+                                                                            class="fas fa-angle-down"
+                                                                        ></span>
+                                                                    </span>
+                                                                </button>
+                                                                <ul
+                                                                    class="dropdown-menu nav"
+                                                                >
+                                                                    <li>
+                                                                        <router-link
+                                                                            class="nav-link"
+                                                                            :to="{
+                                                                                name:
+                                                                                    'product.edit',
+                                                                                params: {
+                                                                                    id:
+                                                                                        rows
+                                                                                            .item
+                                                                                            .id
+                                                                                }
+                                                                            }"
+                                                                        >
+                                                                            <span
+                                                                                data-feather="plus-circle"
+                                                                                class="fas fa-edit"
+                                                                            ></span
+                                                                            ><span
+                                                                                >Edit</span
+                                                                            ><span
+                                                                                class="rui-nav-circle"
+                                                                            ></span>
+                                                                        </router-link>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a
+                                                                            class="nav-link"
+                                                                            @click="
+                                                                                deleteProduct(
+                                                                                    row
+                                                                                        .item
+                                                                                        .id
+                                                                                )
+                                                                            "
+                                                                        >
+                                                                            <span
+                                                                                data-feather="x-circle"
+                                                                                class="fas fa-trash"
+                                                                            ></span>
+                                                                            <span
+                                                                                >Delete</span
+                                                                            >
+                                                                            <span
+                                                                                class="rui-nav-circle"
+                                                                            ></span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </template>
+                                                    </b-table>
                                                 </div>
                                             </div>
                                         </div>
@@ -238,12 +345,25 @@
 import { mapActions, mapState } from "vuex";
 import CustomerAdd from "./module/CustomerAdd.vue";
 import ReportsCSAdd from "./module/ReportCSAdd.vue";
-import PageLoader from "../../../../components/PageLoader.vue"
+import PageLoader from "../../../../components/PageLoader.vue";
 export default {
     components: { CustomerAdd, ReportsCSAdd, PageLoader },
     name: "ViewReportsCS",
     created() {
         this.viewCsReport(this.$route.params.date);
+    },
+    data() {
+        return {
+            search: "",
+            fields: [
+                { key: "index", label: "#" },
+                { key: "product_name", label: "Product Name" },
+                { key: "price", label: "Price" },
+                { key: "qty", label: "Qty" },
+                { key: "subtotal", label: "Total" },
+                { key: "action", label: "Aksi" }
+            ]
+        };
     },
     computed: {
         ...mapState("csReport", {
