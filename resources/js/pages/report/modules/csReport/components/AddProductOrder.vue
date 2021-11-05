@@ -181,6 +181,7 @@ export default {
             form.append("cs_report_id", this.orders.cs_report_id);
             form.append("order_id", this.orders.id);
             form.append("date", this.orders.date);
+            form.append("status", this.orders.status);
             // array order
             for (var i = 0; i < this.orderProduk.qty.length; i++) {
                 let qty = this.orderProduk.qty[i];

@@ -130,7 +130,8 @@ class ReportController extends Controller
                     'price' => $data['price'][$item],
                     'qty' => $data['qty'][$item],
                     'date' => $request->date,
-                    'subtotal' => $data['qty'][$item] * $data['price'][$item]
+                    'subtotal' => $data['qty'][$item] * $data['price'][$item],
+                    'status' => $request->status
                 );
                 $detail = DetailOrder::create($product);
             }
@@ -138,6 +139,35 @@ class ReportController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
+    }
+
+    public function editProductForm($id)
+    {
+        $order = DetailOrder::find($id);
+        return $order;
+    }
+
+    public function updateProductOrder(Request $request, $id)
+    {
+        try {
+            $detail = DetailOrder::find($id);
+            $detail->update([
+                'product_id' => $request->product_id,
+                'price' => $request->price,
+                'qty' => $request->qty,
+                'subtotal' => $request->qty * $request->price,
+            ]);
+            return response()->json(['status' => 'success'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function deleteOrderProduct($id)
+    {
+        $detail = DetailOrder::find($id);
+        $detail->delete();
+        return response()->json(['status' => 'success']);
     }
     //report adv
     public function indexADV()

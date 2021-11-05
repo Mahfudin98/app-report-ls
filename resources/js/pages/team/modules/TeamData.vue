@@ -147,7 +147,7 @@ export default {
     },
     methods: {
         ...mapActions("team", ["getTeams", "removeTeam"]),
-        deleteTeam(id) {
+        removeTeam(id) {
             this.$swal({
                 title: "Kamu Yakin?",
                 text: "Tindakan ini akan menghapus secara permanent!",

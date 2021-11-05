@@ -281,7 +281,7 @@
                                                                             class="nav-link"
                                                                             :to="{
                                                                                 name:
-                                                                                    'product.edit',
+                                                                                    'cs.report.edit.product.order',
                                                                                 params: {
                                                                                     id:
                                                                                         rows
@@ -306,9 +306,7 @@
                                                                             class="nav-link"
                                                                             @click="
                                                                                 deleteProduct(
-                                                                                    row
-                                                                                        .item
-                                                                                        .id
+                                                                                    rows.item.id
                                                                                 )
                                                                             "
                                                                         >
@@ -385,7 +383,28 @@ export default {
         }
     },
     methods: {
-        ...mapActions("csReport", ["viewCsReport"])
+        ...mapActions("csReport", ["viewCsReport", "removeProductOrder"]),
+        deleteProduct(id) {
+            this.$swal.fire({
+                title: "Kamu Yakin?",
+                text: "Tindakan ini akan menghapus secara permanent!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    this.removeProductOrder(id);
+                    this.$swal(
+                        "Terhapus!",
+                        "Produk order sudah dihapus.",
+                        "success"
+                    );
+                    window.location.reload();
+                }
+            });
+        }
     }
 };
 </script>

@@ -84,7 +84,7 @@ const actions = {
         })
     },
 
-    removeCourier({ dispatch }, payload) {
+    removeTeam({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             $axios.delete(`/teams/${payload}`)
             .then((response) => {
