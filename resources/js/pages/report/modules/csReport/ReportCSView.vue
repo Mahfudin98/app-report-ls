@@ -368,7 +368,11 @@ export default {
             reportcs: state => state.reportcs
         }),
         getOrder() {
-            return this.reportcs.order.reduce((prev, obj) => {
+            const status = this.reportcs.order;
+
+            const variableOne = status.filter(itemInArray => itemInArray.status === 1);
+
+            return variableOne.reduce((prev, obj) => {
                 let flatted = obj.order_detail.map(item => {
                     let order_detail = {};
                     order_detail["subtotal"] = item.subtotal;

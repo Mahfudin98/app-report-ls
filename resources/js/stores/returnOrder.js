@@ -2,7 +2,9 @@ import $axios from '../api'
 
 const state = () => ({
     orderDetail : [],
-    getOrders: []
+    getOrders: [],
+    orderReturn: [],
+    page: 1
 })
 
 const mutations = {
@@ -11,16 +13,37 @@ const mutations = {
     },
     ASSIGN_DATA_GET_ORDER(state, payload){
         state.getOrders = payload
-    }
+    },
+    ASSIGN_DATA_ORDER_RETURN(state, payload){
+        state.orderReturn = payload
+    },
+    SET_PAGE(state, payload) {
+        state.page = payload
+    },
 }
 
 const actions = {
     getOrdersReturn({commit}, payload){
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/get-order?q=${search}`)
+            $axios.get(`/get-order?page=${state.page}&q=${search}`)
             .then((response) => {
                 commit('ASSIGN_DATA_GET_ORDER', response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error)=>{
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, {root:true})
+            }
+        })
+    },
+    getReturnOrder({commit}, payload){
+        let search = typeof payload != 'undefined' ? payload:''
+        return new Promise((resolve, reject) => {
+            $axios.get(`/get-return?page=${state.page}&q=${search}`)
+            .then((response) => {
+                commit('ASSIGN_DATA_ORDER_RETURN', response.data)
                 resolve(response.data)
             })
         })

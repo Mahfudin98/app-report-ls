@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/inventorys/usage/{slug}', [InventoryController::class, 'showDetail'])->name('inventory.usege.show');
     // return
     Route::get('/get-order', [ReturnController::class, 'index'])->name('get.order');
+    Route::get('/get-return', [ReturnController::class, 'orderReturn'])->name('get.order.return');
     Route::get('/order-detail/{waybill}', [ReturnController::class, 'OrderDetail'])->name('get.detail.order.show');
     Route::post('/return-post', [ReturnController::class, 'store'])->name('return.add');
 

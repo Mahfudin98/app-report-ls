@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderCollection;
+use App\Http\Resources\ReturnOrderCollection;
 use App\Models\CsReport;
 use App\Models\DetailOrder;
 use App\Models\Order;
@@ -20,6 +21,16 @@ class ReturnController extends Controller
             $orders = $orders->where('waybill', 'LIKE', '%' . request()->q . '%');
         }
         return new OrderCollection($orders->paginate(10));
+    }
+
+    public function orderReturn()
+    {
+        $orderReturn = ReturnOrder::with(['order'])->orderBy('date_return', 'ASC');
+        if (request()->q != '') {
+            $orderReturn = $orderReturn->where('waybill', 'LIKE', '%' . request()->q . '%');
+        }
+
+        return new ReturnOrderCollection($orderReturn->paginate(10));
     }
 
     public function OrderDetail($waybill)

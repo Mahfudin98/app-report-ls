@@ -28,4 +28,9 @@ class Order extends Model
         }
         return '<span class="badge badge-pill badge-brand">Success</span>';
     }
+
+    public function returnOrder()
+    {
+        return $this->hasMany(ReturnOrder::class);
+    }
 }
