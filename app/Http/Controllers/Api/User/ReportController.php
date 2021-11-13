@@ -169,6 +169,19 @@ class ReportController extends Controller
         $detail->delete();
         return response()->json(['status' => 'success']);
     }
+
+    public function listUserCS()
+    {
+        $auth = request()->user();
+        $user = DB::table('users')->where('parent_id', $auth->id)
+                ->Join('cs_reports', 'users.id', '=', 'cs_reports.user_id')
+                ->select('users.*', 'cs_reports.chat', 'cs_reports.transaksi')
+                ->groupBy('user_id')
+                ->selectRaw('sum(chat) as chats, sum(transaksi) as transaction')
+                ->get();
+        return response()->json(['data' => $user]);
+    }
+
     //report adv
     public function indexADV()
     {

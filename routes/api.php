@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/edit-product-form/{id}', [ReportController::class, 'editProductForm'])->name('edit.product.form');
     Route::post('/update-product-form/{id}',[ReportController::class, 'updateProductOrder'])->name('add.product.update');
     Route::delete('/delete-product-order/{id}',[ReportController::class, 'deleteOrderProduct'])->name('delete.order.product');
+    Route::get('/list-user-cs', [ReportController::class, 'listUserCS'])->name('list.user.cs');
     // adv report
     Route::get('/adv-reports', [ReportController::class, 'indexADV'])->name('index.report.adv');
     Route::get('/order', [ReportController::class, 'getOrder'])->name('get.order');

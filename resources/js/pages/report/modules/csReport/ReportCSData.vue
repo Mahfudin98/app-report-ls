@@ -1,15 +1,62 @@
 <template>
     <main>
-        <page-loader/>
+        <page-loader />
         <div class="rui-page-content">
-            <div class="container-fluid">
-                <calender/>
+            <div
+                class="container-fluid"
+                v-if="
+                    authenticated.position_id == 12 ||
+                        authenticated.position_id == 14 ||
+                        authenticated.position_id == 15
+                "
+            >
+                <calender />
+            </div>
+            <div
+                class="container-fluid"
+                v-if="
+                    authenticated.position_id != 12 ||
+                        authenticated.position_id != 14 ||
+                        authenticated.position_id != 15
+                "
+            >
+                <div class="table-responsive">
+                    <b-table :items="listCS.data" :fields="fields" head-variant="light">
+                        <template #cell(index)="data">
+                            {{ data.index + 1 }}
+                        </template>
+                        <template #cell(jumlah_lead)="data">
+                            <h6 class="badge badge-brand">
+                                {{ data.item.chats }}
+                            </h6>
+                        </template>
+                        <template #cell(transaction)="data">
+                            <h6 class="badge badge-brand">
+                                {{ data.item.transaction }}
+                            </h6>
+                        </template>
+                        <template #cell(view)>
+                            <button
+                                type="button"
+                                class="btn btn-brand btn-long btn-round"
+                            >
+                                <span class="icon">
+                                    <span
+                                        data-feather="check"
+                                        class="fas fa-eye"
+                                    ></span
+                                ></span>
+                                <span class="text">View Detail</span>
+                            </button>
+                        </template>
+                    </b-table>
+                </div>
             </div>
         </div>
     </main>
 </template>
 <script>
-import PageLoader from '../../../../components/PageLoader.vue'
+import PageLoader from "../../../../components/PageLoader.vue";
 import { mapActions, mapState } from "vuex";
 import DatePicker from "vue2-datepicker";
 import VueMomentsAgo from "vue-moments-ago";
@@ -20,25 +67,35 @@ export default {
     name: "DataReportCS",
 
     created() {
-        this.getCsReports();
+        this.getListCS();
     },
 
     data() {
         return {
             range: {},
-            search: {}
+            search: {},
+            fields: [
+                { key: "index", label: "#" },
+                { key: "name", label: "Name CS" },
+                { key: "jumlah_lead", label: "Lead" },
+                { key: "transaction", label: "Transaksi" },
+                { key: "view", label: "View" }
+            ]
         };
     },
 
     computed: {
         ...mapState("csReport", {
-            csReports: state => state.csReports
-        })
+            listCS: state => state.listCS
+        }),
+        ...mapState("user", {
+            authenticated: state => state.authenticated
+        }),
     },
 
     watch: {
         search() {
-            this.getCsReports(
+            this.getListCS(
                 this.convert(this.search[0]) +
                     "+-+" +
                     this.convert(this.search[1])
@@ -53,22 +110,7 @@ export default {
                 day = ("0" + date.getDate()).slice(-2);
             return [date.getFullYear(), mnth, day].join("-");
         },
-        ...mapActions("csReport", ["getCsReports", "removePosition"]),
-        deletePosition(id) {
-            this.$swal({
-                title: "Kamu Yakin?",
-                text: "Tindakan ini akan menghapus secara permanent!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Iya, Lanjutkan!"
-            }).then(result => {
-                if (result.value) {
-                    this.removePosition(id);
-                }
-            });
-        }
+        ...mapActions("csReport", ["getListCS"])
     }
 };
 </script>

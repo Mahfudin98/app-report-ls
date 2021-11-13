@@ -7,7 +7,8 @@ const state = () => ({
     date: '',
     reportcs: [],
     orderProduct: '',
-    editOrderProduct: ''
+    editOrderProduct: '',
+    listCS: []
 })
 
 const mutations = {
@@ -38,6 +39,10 @@ const mutations = {
     ASSIGN_EDIT_ORDER_PRODUCT(state, payload){
         state.editOrderProduct = payload
     },
+
+    ASSIGN_LIST_CS(state, payload){
+        state.listCS = payload
+    }
 
 }
 
@@ -201,6 +206,17 @@ const actions = {
             $axios.delete(`/delete-product-order/${payload}`)
             .then((response) => {
                 dispatch('viewCsReport').then(() => resolve(response.data))
+            })
+        })
+    },
+
+    // list per user
+    getListCS({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/list-user-cs`)
+            .then((response) => {
+                commit('ASSIGN_LIST_CS', response.data)
+                resolve(response.data)
             })
         })
     },
