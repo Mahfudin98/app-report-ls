@@ -9,6 +9,7 @@ const state = () => ({
     orderProduct: '',
     editOrderProduct: '',
     listCS: [],
+    listAllCS: [],
     viewOrder: []
 })
 
@@ -43,6 +44,10 @@ const mutations = {
 
     ASSIGN_LIST_CS(state, payload){
         state.listCS = payload
+    },
+
+    ASSIGN_ALL_LIST_CS(state, payload){
+        state.listAllCS = payload
     },
 
     ASSIGN_VIEW_ORDER(state, payload){
@@ -231,6 +236,16 @@ const actions = {
             $axios.get(`/view-report-order/${payload}?page=${state.page}`)
             .then((response) => {
                 commit('ASSIGN_VIEW_ORDER', response.data)
+                resolve(response.data)
+            })
+        })
+    },
+
+    getAllListCS({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/list-user-all-cs`)
+            .then((response) => {
+                commit('ASSIGN_ALL_LIST_CS', response.data)
                 resolve(response.data)
             })
         })

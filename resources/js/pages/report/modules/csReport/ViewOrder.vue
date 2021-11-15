@@ -5,7 +5,8 @@
             <div class="container-fluid">
                 <div
                     class="d-flex justify-content-between align-items-center mb-20"
-                >   <router-link
+                >
+                    <router-link
                         :to="{ name: 'cs.report.data' }"
                         class="btn btn-secondary"
                     >
@@ -27,7 +28,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <b-table :items="viewOrder.data" :fields="fields">
+                    <b-table :items="filterItem" :fields="fields">
                         <template #cell(index)="data">
                             {{ data.index + 1 }}
                         </template>
@@ -85,19 +86,17 @@
                         <p v-if="viewOrder.data">
                             <i class="fa fa-bars"></i>
                             {{ viewOrder.data.length }} item dari
-                            {{ viewOrder.total }} total data
+                            {{ viewOrder.meta.total }} total data
                         </p>
                     </div>
                     <div class="col-md-6">
                         <div class="pull-right">
                             <b-pagination
                                 v-model="page"
-                                :total-rows="viewOrder.total"
-                                :per-page="viewOrder.per_page"
+                                :total-rows="viewOrder.meta.total"
+                                :per-page="viewOrder.meta.per_page"
                                 aria-controls="viewOrder"
-                                v-if="
-                                    viewOrder.data && viewOrder.data.length > 0
-                                "
+                                v-if="viewOrder.data && viewOrder.data.length > 0"
                             ></b-pagination>
                         </div>
                     </div>
@@ -152,22 +151,42 @@ export default {
                 this.$store.commit("csReport/SET_PAGE", val);
             }
         },
-        filterDate() {
-            return this.viewOrder.filter(item => item.date === this.convert);
+        filterItem() {
+            let startDate = this.convert(this.search[0]);
+            let endDate = this.convert(this.search[1]);
+
+            const itemList = this.viewOrder.data;
+            if (startDate != "NaN-aN-aN" && this.search[0] != null) {
+                return itemList.filter(item => {
+                    const itemDate = item.date;
+                    if (startDate && endDate) {
+                        return startDate <= itemDate && itemDate <= endDate;
+                    }
+                    if (startDate && !endDate) {
+                        return startDate <= itemDate;
+                    }
+                    if (!startDate && endDate) {
+                        return itemDate <= endDate;
+                    }
+                    return true;
+                });
+            } else {
+                return itemList;
+            }
         }
     },
 
     watch: {
         page() {
-            this.viewOrderCS();
-        },
-        search() {
-            this.viewOrderCS(
-                this.convert(this.search[0]) +
-                    "+-+" +
-                    this.convert(this.search[1])
-            );
+            this.viewOrderCS(this.$route.params.id);
         }
+        // search() {
+        //     this.viewOrderCS(
+        //         this.convert(this.search[0]) +
+        //             "+-+" +
+        //             this.convert(this.search[1])
+        //     );
+        // }
     },
 
     methods: {
@@ -177,7 +196,12 @@ export default {
                 day = ("0" + date.getDate()).slice(-2);
             return [date.getFullYear(), mnth, day].join("-");
         },
-        ...mapActions("csReport", ["viewOrderCS"])
+        ...mapActions("csReport", ["viewOrderCS"]),
+        formatDate(date) {
+            return new Intl.DateTimeFormat("en-US", {
+                dateStyle: "long"
+            }).format(new Date(date));
+        }
     }
 };
 </script>
