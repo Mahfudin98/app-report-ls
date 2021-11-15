@@ -5,7 +5,15 @@
             <div class="container-fluid">
                 <div
                     class="d-flex justify-content-between align-items-center mb-20"
-                >
+                >   <router-link
+                        :to="{ name: 'cs.report.data' }"
+                        class="btn btn-secondary"
+                    >
+                        <span class="icon">
+                            <span class="fas fa-arrow-alt-circle-left"></span>
+                        </span>
+                        <span class="text">Back</span>
+                    </router-link>
                     <div class="row xs-gap">
                         <div class="col-12">
                             <div class="input-group">
