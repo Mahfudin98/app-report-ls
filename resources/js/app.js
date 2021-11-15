@@ -13,7 +13,7 @@ import router from './router.js'
 import store from './store.js'
 
 // import plugin sweet alert & bootstrap vue
-import { BootstrapVue } from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'
 import Permissions from './mixins/permission.js'
@@ -27,6 +27,7 @@ Vue.mixin(Permissions)
 
 Vue.use(VueSweetalert2);
 Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
 
 var numeral = require("numeral");
 

@@ -11,6 +11,11 @@ class Order extends Model
     protected $guarded = [];
     protected $appends = ['status_label'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function csReport()
     {
         return $this->belongsTo(CsReport::class);

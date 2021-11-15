@@ -21,7 +21,11 @@
                 "
             >
                 <div class="table-responsive">
-                    <b-table :items="listCS.data" :fields="fields" head-variant="light">
+                    <b-table
+                        :items="listCS.data"
+                        :fields="fields"
+                        head-variant="light"
+                    >
                         <template #cell(index)="data">
                             {{ data.index + 1 }}
                         </template>
@@ -35,10 +39,13 @@
                                 {{ data.item.transaction }}
                             </h6>
                         </template>
-                        <template #cell(view)>
-                            <button
-                                type="button"
+                        <template #cell(view)="row">
+                            <router-link
                                 class="btn btn-brand btn-long btn-round"
+                                :to="{
+                                    name: 'report.vieworder',
+                                    params: { id: row.item.id }
+                                }"
                             >
                                 <span class="icon">
                                     <span
@@ -47,7 +54,7 @@
                                     ></span
                                 ></span>
                                 <span class="text">View Detail</span>
-                            </button>
+                            </router-link>
                         </template>
                     </b-table>
                 </div>
@@ -79,7 +86,7 @@ export default {
                 { key: "name", label: "Name CS" },
                 { key: "jumlah_lead", label: "Lead" },
                 { key: "transaction", label: "Transaksi" },
-                { key: "view", label: "View" }
+                { key: "view", label: "View Detail" }
             ]
         };
     },
@@ -90,7 +97,7 @@ export default {
         }),
         ...mapState("user", {
             authenticated: state => state.authenticated
-        }),
+        })
     },
 
     watch: {

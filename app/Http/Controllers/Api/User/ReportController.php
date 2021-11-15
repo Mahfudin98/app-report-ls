@@ -174,12 +174,26 @@ class ReportController extends Controller
     {
         $auth = request()->user();
         $user = DB::table('users')->where('parent_id', $auth->id)
-                ->Join('cs_reports', 'users.id', '=', 'cs_reports.user_id')
-                ->select('users.*', 'cs_reports.chat', 'cs_reports.transaksi')
-                ->groupBy('user_id')
-                ->selectRaw('sum(chat) as chats, sum(transaksi) as transaction')
-                ->get();
+            ->Join('cs_reports', 'users.id', '=', 'cs_reports.user_id')
+            ->select('users.*', 'cs_reports.chat', 'cs_reports.transaksi')
+            ->groupBy('user_id')
+            ->selectRaw('sum(chat) as chats, sum(transaksi) as transaction')
+            ->get();
         return response()->json(['data' => $user]);
+    }
+
+    public function viewOrderReport($id)
+    {
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ', request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+        $order = Order::where('user_id', $id)->with(['orderDetail.product'])->orderBy('date', 'DESC')->whereBetween('date', [$start, $end])->paginate(10);
+        return $order;
     }
 
     //report adv
