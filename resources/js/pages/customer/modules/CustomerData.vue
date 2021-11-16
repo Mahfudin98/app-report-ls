@@ -17,6 +17,17 @@
                             </div>
                         </div>
                     </div>
+                    <button
+                        @click="exportData"
+                        type="button"
+                        class="btn btn-brand btn-long"
+                    >
+                        <span class="icon"
+                            ><span
+                                class="rui-icon fas fa-file-excel"
+                            ></span></span
+                        ><span class="text">Export Excel</span>
+                    </button>
                 </div>
                 <div class="table-responsive">
                     <b-table :items="dataCustomers.data" :fields="fields">
@@ -40,7 +51,10 @@
                                 :total-rows="dataCustomers.meta.total"
                                 :per-page="dataCustomers.meta.per_page"
                                 aria-controls="dataCustomers"
-                                v-if="dataCustomers.data && dataCustomers.data.length > 0"
+                                v-if="
+                                    dataCustomers.data &&
+                                        dataCustomers.data.length > 0
+                                "
                             ></b-pagination>
                         </div>
                     </div>
@@ -109,7 +123,17 @@ export default {
                 day = ("0" + date.getDate()).slice(-2);
             return [date.getFullYear(), mnth, day].join("-");
         },
-        ...mapActions("dashboard", ["getDataCustomer"])
+        ...mapActions("dashboard", ["getDataCustomer"]),
+
+        exportData() {
+            window.open(
+                `/api/export/customer?api_token=${
+                    this.token
+                }&date=${this.convert(this.search[0]) +
+                    "+-+" +
+                    this.convert(this.search[1])}`
+            );
+        }
     }
 };
 </script>

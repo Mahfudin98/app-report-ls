@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\CustomerExport;
 use App\Http\Controllers\Controller;
 use App\Models\CsReport;
 use App\Models\DetailOrder;
@@ -110,6 +111,12 @@ class DashboardController extends Controller
 
         $customer = Order::orderBy('created_at', 'ASC')->whereBetween('date', [$start, $end])->groupBy('customer_phone');
 
-        return new CustomersCollection($customer->paginate(25));
+        return new CustomersCollection($customer->paginate(1000));
+    }
+
+    public function exportDataCustomers(Request $request)
+    {
+        $customer = $this->listCustomer();
+        return Excel::download(new CustomerExport($customer, request()->date), 'customer'.request()->date.'.xlsx');
     }
 }
