@@ -20,7 +20,15 @@
                         </router-link>
                     </li>
                     <!-- report -->
-                    <li :class="this.$route.name == 'cs.report.data' || this.$route.name == 'adv.report.data' || this.$route.name == 'report.data.date' ? 'yay-item-active yay-submenu-open' : 'yay-submenu-close'">
+                    <li
+                        :class="
+                            this.$route.name == 'cs.report.data' ||
+                            this.$route.name == 'adv.report.data' ||
+                            this.$route.name == 'report.data.date'
+                                ? 'yay-item-active yay-submenu-open'
+                                : 'yay-submenu-close'
+                        "
+                    >
                         <a href="#" class="yay-sub-toggle">
                             <span class="yay-icon">
                                 <span
@@ -37,12 +45,27 @@
                             </span>
                         </a>
                         <ul class="yay-submenu dropdown-triangle">
-                            <li v-if="$can('read reports cs')" :class="this.$route.name == 'cs.report.data' || this.$route.name == 'report.data.date' ? 'yay-item-active' : ''">
+                            <li
+                                v-if="$can('read reports cs')"
+                                :class="
+                                    this.$route.name == 'cs.report.data' ||
+                                    this.$route.name == 'report.data.date'
+                                        ? 'yay-item-active'
+                                        : ''
+                                "
+                            >
                                 <router-link :to="{ name: 'cs.report.data' }"
                                     >Report CS</router-link
                                 >
                             </li>
-                            <li v-if="$can('read reports adv')" :class="this.$route.name == 'adv.report.data' ? 'yay-item-active' : ''">
+                            <li
+                                v-if="$can('read reports adv')"
+                                :class="
+                                    this.$route.name == 'adv.report.data'
+                                        ? 'yay-item-active'
+                                        : ''
+                                "
+                            >
                                 <router-link :to="{ name: 'adv.report.data' }"
                                     >Report ADV</router-link
                                 >
@@ -174,6 +197,25 @@
                                 <span class="fab fa-codepen"></span>
                             </span>
                             <span>Inventories</span>
+                        </router-link>
+                    </li>
+                    <!-- customer data -->
+                    <li
+                        v-if="$can('read inventories')"
+                        :class="
+                            this.$route.name == 'customer.data'
+                                ? 'yay-item-active'
+                                : ''
+                        "
+                    >
+                        <router-link
+                            :to="{ name: 'customer.data' }"
+                            class="active"
+                        >
+                            <span class="yay-icon">
+                                <span class="fas fa-user-shield"></span>
+                            </span>
+                            <span>Data Customer</span>
                         </router-link>
                     </li>
                     <!-- position -->

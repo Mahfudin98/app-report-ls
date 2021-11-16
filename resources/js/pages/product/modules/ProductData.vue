@@ -42,11 +42,7 @@
                     </button>
                 </div>
                 <div class="table-responsive">
-                    <b-table
-                        :items="products.data"
-                        :fields="fields"
-                        hover
-                    >
+                    <b-table :items="products.data" :fields="fields" hover>
                         <template #cell(index)="data">
                             {{ data.index + 1 }}
                         </template>
@@ -109,28 +105,24 @@
                             </div>
                         </template>
                     </b-table>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p v-if="products.data">
-                                <i class="fa fa-bars"></i>
-                                {{ products.data.length }} item dari
-                                {{ products.meta.total }} total data
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="pull-right">
-                                <b-pagination
-                                    v-model="page"
-                                    :total-rows="products.meta.total"
-                                    :per-page="products.meta.per_page"
-                                    aria-controls="products"
-                                    v-if="
-                                        products.data &&
-                                            products.data.length > 0
-                                    "
-                                ></b-pagination>
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p v-if="products.data">
+                            <i class="fa fa-bars"></i>
+                            {{ products.data.length }} item dari
+                            {{ products.meta.total }} total data
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pull-right">
+                            <b-pagination
+                                v-model="page"
+                                :total-rows="products.meta.total"
+                                :per-page="products.meta.per_page"
+                                aria-controls="products"
+                                v-if="products.data && products.data.length > 0"
+                            ></b-pagination>
                         </div>
                     </div>
                 </div>
@@ -189,24 +181,26 @@ export default {
     methods: {
         ...mapActions("product", ["getProducts", "removeProduct"]),
         deleteProduct(id) {
-            this.$swal.fire({
-                title: "Kamu Yakin?",
-                text: "Tindakan ini akan menghapus secara permanent!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then(result => {
-                if (result.isConfirmed) {
-                    this.removeProduct(id);
-                    this.$swal(
-                        "Terhapus!",
-                        "Produk sudah dihapus.",
-                        "success"
-                    );
-                }
-            });
+            this.$swal
+                .fire({
+                    title: "Kamu Yakin?",
+                    text: "Tindakan ini akan menghapus secara permanent!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+                        this.removeProduct(id);
+                        this.$swal(
+                            "Terhapus!",
+                            "Produk sudah dihapus.",
+                            "success"
+                        );
+                    }
+                });
         }
     }
 };

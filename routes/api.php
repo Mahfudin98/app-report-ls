@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/omset', [DashboardController::class, 'allOmsets'])->name('omset');
     Route::get('/chart', [DashboardController::class, 'chart'])->name('bar.omset.chart');
     Route::get('/persentase-cs', [DashboardController::class, 'persentaseCS'])->name('persentase.cs');
+    Route::get('/list-customer', [DashboardController::class, 'listCustomer'])->name('list.customer');
     // cs report
     Route::get('/cs-reports', [ReportController::class, 'indexCS'])->name('index.report.cs');
     Route::get('/cs-reports/{date}', [ReportController::class, 'indexDateCS'])->name('index.report.cs.date');

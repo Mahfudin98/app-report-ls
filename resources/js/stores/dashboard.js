@@ -3,11 +3,20 @@ import $axios from '../api.js'
 const state = () => ({
     omsets: [],
     persentasecs: [],
-    allOmsets: []
+    allOmsets: [],
+    dataCustomers: [],
+
+    page: 1
 })
 
 const mutations = {
+    ASSIGN_DATA(state, payload){
+        state.dataCustomers = payload
+    },
 
+    SET_PAGE(state, payload) {
+        state.page = payload
+    },
     ASSIGN_DATA_OMSET(state, payload) {
         state.omsets = payload
     },
@@ -50,7 +59,22 @@ const actions = {
                 resolve(response.data)
             })
         })
-    }
+    },
+    getDataCustomer({commit, state}, payload){
+        let search = typeof payload != 'undefined' ? payload:''
+        return new Promise((resolve, reject) => {
+            $axios.get(`/list-customer?page=${state.page}&date=${search}`)
+            .then((response) => {
+                commit('ASSIGN_DATA', response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error)=>{
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, {root:true})
+            }
+        })
+    },
 }
 
 export default {

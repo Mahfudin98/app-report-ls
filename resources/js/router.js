@@ -61,6 +61,9 @@ import IndexReturn from './pages/return/Index.vue'
 import DataReturn from './pages/return/modules/ReturnData.vue'
 import AddReturn from './pages/return/modules/ReturnAdd.vue'
 import EditReturn from './pages/return/modules/ReturnEdit.vue'
+// customer
+import IndexCustomer from './pages/customer/Index.vue'
+import DataCustomer from './pages/customer/modules/CustomerData'
 // not found
 import NotFound from './components/NotFound.vue'
 Vue.use(Router)
@@ -320,6 +323,20 @@ const router = new Router({
                     name: 'inventory.usage.show',
                     component: InventoryUsageShow,
                     meta: { title: 'Inventory Usage Show' }
+                },
+            ],
+        },
+        // customer
+        {
+            path: '/customer',
+            component: IndexCustomer,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'customer.data',
+                    component: DataCustomer,
+                    meta: { title: 'Manage Customer' }
                 },
             ],
         },

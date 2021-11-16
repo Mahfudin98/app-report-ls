@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Exports\OmsetExport;
+use App\Http\Resources\CustomersCollection;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
@@ -94,5 +95,21 @@ class DashboardController extends Controller
     {
         $omset = $this->allOmsets();
         return Excel::download(new OmsetExport($omset, request()->month, request()->year), 'omset'.request()->month.'-'.request()->year.'.xlsx');
+    }
+
+    public function listCustomer()
+    {
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ' ,request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+
+        $customer = Order::orderBy('created_at', 'ASC')->whereBetween('date', [$start, $end])->groupBy('customer_phone');
+
+        return new CustomersCollection($customer->paginate(25));
     }
 }
