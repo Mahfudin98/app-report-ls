@@ -69,14 +69,15 @@
                                         <div
                                             class="rui-profile-number text-center"
                                         >
-                                            <h4
-                                                class="rui-profile-number-title h2"
-                                            >
-                                                218
-                                            </h4>
+
                                             <small class="text-grey-6"
-                                                >Comment</small
+                                                >Alamat</small
                                             >
+                                            <h6
+                                                class="rui-profile-number-title h4"
+                                            >
+                                                {{ profile.address }}
+                                            </h6>
                                         </div>
                                     </div>
                                     <div class="col p-0"></div>
@@ -84,14 +85,14 @@
                                         <div
                                             class="rui-profile-number text-center"
                                         >
-                                            <h4
-                                                class="rui-profile-number-title h2"
-                                            >
-                                                2125
-                                            </h4>
                                             <small class="text-grey-6"
-                                                >Followers</small
+                                                >Tempat Lahir</small
                                             >
+                                            <h6
+                                                class="rui-profile-number-title h4"
+                                            >
+                                                {{ profile.tempat_lahir }}
+                                            </h6>
                                         </div>
                                     </div>
                                     <div class="col p-0"></div>
@@ -99,14 +100,14 @@
                                         <div
                                             class="rui-profile-number text-center"
                                         >
-                                            <h4
-                                                class="rui-profile-number-title h2"
-                                            >
-                                                419
-                                            </h4>
                                             <small class="text-grey-6"
-                                                >Following</small
+                                                >Tanggal Lahir</small
                                             >
+                                            <h6
+                                                class="rui-profile-number-title h4"
+                                            >
+                                                {{ profile.tanggal_lahir }}
+                                            </h6>
                                         </div>
                                     </div>
                                     <div class="col"></div>

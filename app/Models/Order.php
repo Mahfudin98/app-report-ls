@@ -38,4 +38,9 @@ class Order extends Model
     {
         return $this->hasMany(ReturnOrder::class);
     }
+
+    public function setCustomerPhoneAttribute($value)
+    {
+        $this->attributes['customer_phone'] = preg_replace("/^0/", "62", $value);
+    }
 }
