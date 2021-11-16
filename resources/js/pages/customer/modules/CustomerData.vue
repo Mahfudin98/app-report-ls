@@ -95,10 +95,10 @@ export default {
         }),
         page: {
             get() {
-                return this.$store.state.product.page;
+                return this.$store.state.dashboard.page;
             },
             set(val) {
-                this.$store.commit("product/SET_PAGE", val);
+                this.$store.commit("dashboard/SET_PAGE", val);
             }
         }
     },
