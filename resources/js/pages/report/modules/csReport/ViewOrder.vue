@@ -80,27 +80,6 @@
                         </template>
                     </b-table>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <p v-if="viewOrder.data">
-                            <i class="fa fa-bars"></i>
-                            {{ viewOrder.data.length }} item dari
-                            {{ viewOrder.meta.total }} total data
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="pull-right">
-                            <b-pagination
-                                v-model="page"
-                                :total-rows="viewOrder.meta.total"
-                                :per-page="viewOrder.meta.per_page"
-                                aria-controls="viewOrder"
-                                v-if="viewOrder.data && viewOrder.data.length > 0"
-                            ></b-pagination>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
@@ -143,14 +122,6 @@ export default {
         ...mapState("csReport", {
             viewOrder: state => state.viewOrder
         }),
-        page: {
-            get() {
-                return this.$store.state.csReport.page;
-            },
-            set(val) {
-                this.$store.commit("csReport/SET_PAGE", val);
-            }
-        },
         filterItem() {
             let startDate = this.convert(this.search[0]);
             let endDate = this.convert(this.search[1]);
@@ -174,19 +145,6 @@ export default {
                 return itemList;
             }
         }
-    },
-
-    watch: {
-        page() {
-            this.viewOrderCS(this.$route.params.id);
-        }
-        // search() {
-        //     this.viewOrderCS(
-        //         this.convert(this.search[0]) +
-        //             "+-+" +
-        //             this.convert(this.search[1])
-        //     );
-        // }
     },
 
     methods: {

@@ -186,7 +186,7 @@ class ReportController extends Controller
     public function viewOrderReport($id)
     {
         $order = Order::where('user_id', $id)->with(['orderDetail.product'])->orderBy('date', 'DESC');
-        return new OrderCollection($order->paginate(10));
+        return response()->json(['data' => $order->get()]);
     }
 
     public function listAllUserCS()

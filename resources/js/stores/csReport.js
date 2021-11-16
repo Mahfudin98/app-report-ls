@@ -231,9 +231,8 @@ const actions = {
     },
 
     viewOrderCS({commit}, payload){
-        let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/view-report-order/${payload}?page=${state.page}`)
+            $axios.get(`/view-report-order/${payload}`)
             .then((response) => {
                 commit('ASSIGN_VIEW_ORDER', response.data)
                 resolve(response.data)
