@@ -11,6 +11,7 @@
                         :items="listCS.data"
                         :fields="fields"
                         head-variant="light"
+                        show-empty
                     >
                         <template #cell(index)="data">
                             {{ data.index + 1 }}
@@ -51,6 +52,7 @@
                         :items="listAllCS.data"
                         :fields="fieldsAll"
                         head-variant="light"
+                        show-empty
                     >
                         <template #cell(index)="data">
                             {{ data.index + 1 }}

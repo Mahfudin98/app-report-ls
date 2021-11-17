@@ -42,7 +42,7 @@
                     </button>
                 </div>
                 <div class="table-responsive">
-                    <b-table :items="products.data" :fields="fields" hover>
+                    <b-table :items="products.data" :fields="fields" show-empty>
                         <template #cell(index)="data">
                             {{ data.index + 1 }}
                         </template>

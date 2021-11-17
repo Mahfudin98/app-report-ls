@@ -28,7 +28,7 @@
                                             placeholder="Type to search..."
                                             data-toggle="input"
                                             autocomplete="off"
-                                            v-model="search"
+                                            v-model="searchReturn"
                                         />
                                     </div>
                                 </div>
@@ -38,8 +38,7 @@
                             <b-table
                                 :items="orderReturns.data"
                                 :fields="fieldsReturn"
-                                striped
-                                hover
+                                show-empty
                             >
                                 <template #cell(status)="row">
                                     <span v-html="row.item.status_label"></span>
@@ -93,31 +92,27 @@
                                     </div>
                                 </template>
                             </b-table>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p v-if="orderReturns.data">
-                                        <i class="fa fa-bars"></i>
-                                        {{ orderReturns.data.length }} item dari
-                                        {{ orderReturns.meta.total }} total data
-                                    </p>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="pull-right">
-                                        <b-pagination
-                                            v-model="page"
-                                            :total-rows="
-                                                orderReturns.meta.total
-                                            "
-                                            :per-page="
-                                                orderReturns.meta.per_page
-                                            "
-                                            aria-controls="orderReturns"
-                                            v-if="
-                                                orderReturns.data &&
-                                                    orderReturns.data.length > 0
-                                            "
-                                        ></b-pagination>
-                                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p v-if="orderReturns.data">
+                                    <i class="fa fa-bars"></i>
+                                    {{ orderReturns.data.length }} item dari
+                                    {{ orderReturns.meta.total }} total data
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-right">
+                                    <b-pagination
+                                        v-model="pageReturn"
+                                        :total-rows="orderReturns.meta.total"
+                                        :per-page="orderReturns.meta.per_page"
+                                        aria-controls="orderReturns"
+                                        v-if="
+                                            orderReturns.data &&
+                                                orderReturns.data.length > 0
+                                        "
+                                    ></b-pagination>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +147,7 @@
                                             placeholder="Type to search..."
                                             data-toggle="input"
                                             autocomplete="off"
-                                            v-model="search"
+                                            v-model="searchOrder"
                                         />
                                     </div>
                                 </div>
@@ -162,8 +157,7 @@
                             <b-table
                                 :items="getOrders.data"
                                 :fields="fields"
-                                striped
-                                hover
+                                show-empty
                             >
                                 <template #cell(status)="row">
                                     <span v-html="row.item.status_label"></span>
@@ -217,27 +211,28 @@
                                     </div>
                                 </template>
                             </b-table>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p v-if="getOrders.data">
-                                        <i class="fa fa-bars"></i>
-                                        {{ getOrders.data.length }} item dari
-                                        {{ getOrders.meta.total }} total data
-                                    </p>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="pull-right">
-                                        <b-pagination
-                                            v-model="page"
-                                            :total-rows="getOrders.meta.total"
-                                            :per-page="getOrders.meta.per_page"
-                                            aria-controls="getOrders"
-                                            v-if="
-                                                getOrders.data &&
-                                                    getOrders.data.length > 0
-                                            "
-                                        ></b-pagination>
-                                    </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p v-if="getOrders.data">
+                                    <i class="fa fa-bars"></i>
+                                    {{ getOrders.data.length }} item dari
+                                    {{ getOrders.meta.total }} total data
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-right">
+                                    <b-pagination
+                                        v-model="pageOrder"
+                                        :total-rows="getOrders.meta.total"
+                                        :per-page="getOrders.meta.per_page"
+                                        aria-controls="getOrders"
+                                        v-if="
+                                            getOrders.data &&
+                                                getOrders.data.length > 0
+                                        "
+                                    ></b-pagination>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +243,7 @@
     </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 export default {
     name: "DataReturn",
     created() {
@@ -257,7 +252,8 @@ export default {
     },
     data() {
         return {
-            search: "",
+            searchReturn: "",
+            searchOrder: "",
             fields: [
                 { key: "waybill", label: "Waybill" },
                 { key: "customer_name", label: "Customer Name" },
@@ -282,23 +278,35 @@ export default {
             getOrders: state => state.getOrders,
             orderReturns: state => state.orderReturn
         }),
-        page: {
+        pageOrder: {
             get() {
-                return this.$store.state.order.page;
+                return this.$store.state.returnOrder.pageOrder;
             },
             set(val) {
-                this.$store.commit("returnOrder/SET_PAGE", val);
+                this.$store.commit("returnOrder/SET_PAGE_ORDER", val);
             }
-        }
+        },
+        pageReturn: {
+            get() {
+                return this.$store.state.returnOrder.pageReturn;
+            },
+            set(val) {
+                this.$store.commit("returnOrder/SET_PAGE_RETURN", val);
+            }
+        },
     },
     watch: {
-        page() {
+        pageOrder() {
             this.getOrdersReturn();
+        },
+        pageReturn() {
             this.getReturnOrder();
         },
-        search() {
-            this.getOrdersReturn(this.search);
-            this.getReturnOrder(this.search);
+        searchReturn() {
+            this.getReturnOrder(this.searchReturn);
+        },
+        searchOrder() {
+            this.getOrdersReturn(this.searchOrder);
         }
     },
     methods: {

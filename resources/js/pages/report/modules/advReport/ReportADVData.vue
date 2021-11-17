@@ -22,8 +22,7 @@
                     <b-table
                         :items="advReports.data"
                         :fields="fields"
-                        striped
-                        hover
+                        show-empty
                     >
                         <template #cell(index)="data">
                             {{ data.index + 1 }}

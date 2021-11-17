@@ -35,8 +35,7 @@
                     <b-table
                         :items="products.data"
                         :fields="fields"
-                        striped
-                        hover
+                        show-empty
                     >
                         <template #cell(index)="data">
                             {{ data.index + 1 }}
@@ -50,45 +49,48 @@
                         <template #cell(price)="row">
                             Rp. {{ row.item.price | formatNumber }}
                         </template>
+                        <template #cell(stock)="row">
+                            <p v-if="show"> {{ row.item.stock }} </p>
+                            <div class="form-group" v-else>
+                                <label for="stock">Edit Stock</label>
+                                <input class="form-control" id="stock" type="text" name="stock" v-model="product.stock">
+                            </div>
+                        </template>
                         <template #cell(action)>
                             <div class="btn-group dropdown dropdown-triangle">
                                 <button
                                     class="btn btn-brand btn-long dropdown-toggle"
                                     type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
+                                    @click="show = !show"
                                 >
-                                    <span class="text">Action</span>
+                                    <span class="text">Edit</span>
                                     <span class="icon">
-                                        <span class="fas fa-angle-down"></span>
+                                        <span class="fas fa-edit"></span>
                                     </span>
                                 </button>
-                                <ul class="dropdown-menu nav">
-                                    <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
-                                                data-feather="plus-circle"
-                                                class="fas fa-edit"
-                                            ></span
-                                            ><span>Edit</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
-                                                data-feather="x-circle"
-                                                class="fas fa-trash"
-                                            ></span
-                                            ><span>Delete</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
-                                    </li>
-                                </ul>
                             </div>
                         </template>
                     </b-table>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p v-if="products.data">
+                            <i class="fa fa-bars"></i>
+                            {{ products.data.length }} item dari
+                            {{ products.meta.total }} total data
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pull-right">
+                            <b-pagination
+                                v-model="page"
+                                :total-rows="products.meta.total"
+                                :per-page="products.meta.per_page"
+                                aria-controls="products"
+                                v-if="products.data && products.data.length > 0"
+                            ></b-pagination>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,6 +107,7 @@ export default {
 
     data() {
         return {
+            show : true,
             search: "",
             fields: [
                 { key: "index", label: "#" },
@@ -114,17 +117,31 @@ export default {
                 { key: "price", label: "Harga" },
                 { key: "stock", label: "Stock" },
                 { key: "action", label: "Aksi" }
-            ]
+            ],
+            product: {
+                stock: ''
+            }
         };
     },
 
     computed: {
         ...mapState("product", {
             products: state => state.products
-        })
+        }),
+        page: {
+            get() {
+                return this.$store.state.product.page;
+            },
+            set(val) {
+                this.$store.commit("product/SET_PAGE", val);
+            }
+        }
     },
 
     watch: {
+        page() {
+            this.getProducts();
+        },
         search() {
             this.getProducts(this.search);
         }
@@ -132,21 +149,6 @@ export default {
 
     methods: {
         ...mapActions("product", ["getProducts", "removeProduct"]),
-        deleteProduct(id) {
-            this.$swal({
-                title: "Kamu Yakin?",
-                text: "Tindakan ini akan menghapus secara permanent!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Iya, Lanjutkan!"
-            }).then(result => {
-                if (result.value) {
-                    this.removeProduct(id);
-                }
-            });
-        }
     }
 };
 </script>

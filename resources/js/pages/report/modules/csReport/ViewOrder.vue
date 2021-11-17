@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <b-table :items="filterItem" :fields="fields">
+                    <b-table :items="filterItem" :fields="fields" show-empty>
                         <template #cell(index)="data">
                             {{ data.index + 1 }}
                         </template>

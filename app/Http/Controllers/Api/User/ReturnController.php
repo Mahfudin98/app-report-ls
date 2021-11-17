@@ -20,7 +20,7 @@ class ReturnController extends Controller
         if (request()->q != '') {
             $orders = $orders->where('waybill', 'LIKE', '%' . request()->q . '%');
         }
-        return new OrderCollection($orders->paginate(10));
+        return new OrderCollection($orders->paginate(20));
     }
 
     public function orderReturn()
@@ -30,7 +30,7 @@ class ReturnController extends Controller
             $orderReturn = $orderReturn->where('waybill', 'LIKE', '%' . request()->q . '%');
         }
 
-        return new ReturnOrderCollection($orderReturn->paginate(10));
+        return new ReturnOrderCollection($orderReturn->paginate(20));
     }
 
     public function OrderDetail($waybill)

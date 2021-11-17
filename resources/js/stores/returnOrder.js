@@ -4,7 +4,8 @@ const state = () => ({
     orderDetail : [],
     getOrders: [],
     orderReturn: [],
-    page: 1
+    pageOrder: 1,
+    pageReturn: 1,
 })
 
 const mutations = {
@@ -17,16 +18,19 @@ const mutations = {
     ASSIGN_DATA_ORDER_RETURN(state, payload){
         state.orderReturn = payload
     },
-    SET_PAGE(state, payload) {
-        state.page = payload
+    SET_PAGE_ORDER(state, payload) {
+        state.pageOrder = payload
+    },
+    SET_PAGE_RETURN(state, payload) {
+        state.pageReturn = payload
     },
 }
 
 const actions = {
-    getOrdersReturn({commit}, payload){
-        let search = typeof payload != 'undefined' ? payload:''
+    getOrdersReturn({commit, state}, payload){
+        let searchOrder = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/get-order?page=${state.page}&q=${search}`)
+            $axios.get(`/get-order?page=${state.pageOrder}&q=${searchOrder}`)
             .then((response) => {
                 commit('ASSIGN_DATA_GET_ORDER', response.data)
                 resolve(response.data)
@@ -38,10 +42,10 @@ const actions = {
             }
         })
     },
-    getReturnOrder({commit}, payload){
-        let search = typeof payload != 'undefined' ? payload:''
+    getReturnOrder({commit, state}, payload){
+        let searchReturn = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/get-return?page=${state.page}&q=${search}`)
+            $axios.get(`/get-return?page=${state.pageReturn}&q=${searchReturn}`)
             .then((response) => {
                 commit('ASSIGN_DATA_ORDER_RETURN', response.data)
                 resolve(response.data)

@@ -211,7 +211,7 @@
                                                             row.order_detail
                                                         "
                                                         :fields="fields"
-                                                        hover
+                                                        show-empty
                                                     >
                                                         <template
                                                             #cell(index)="data"
