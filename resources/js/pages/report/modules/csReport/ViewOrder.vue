@@ -80,6 +80,26 @@
                         </template>
                     </b-table>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p v-if="viewOrder.data">
+                            <i class="fa fa-bars"></i>
+                            {{ viewOrder.data.length }} item dari
+                            {{ viewOrder.meta.total }} total data
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pull-right">
+                            <b-pagination
+                                v-model="page"
+                                :total-rows="viewOrder.meta.total"
+                                :per-page="viewOrder.meta.per_page"
+                                aria-controls="viewOrder"
+                                v-if="viewOrder.data && viewOrder.data.length > 0"
+                            ></b-pagination>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -94,11 +114,12 @@ export default {
     name: "ViewOrder",
 
     created() {
-        this.viewOrderCS(this.$route.params.id);
+        this.viewOrderCS({view: this.$route.params.id});
     },
 
     data() {
         return {
+            view: '',
             search: {},
             fields: [
                 { key: "index", label: "#" },
@@ -144,6 +165,25 @@ export default {
             } else {
                 return itemList;
             }
+        },
+
+        page: {
+            get() {
+                return this.$store.state.csReport.page;
+            },
+            set(val) {
+                this.$store.commit("csReport/SET_PAGE", val);
+            }
+        }
+    },
+
+    watch: {
+        page() {
+            this.viewOrderCS({view : this.$route.params.id});
+        },
+
+        view() {
+            this.viewOrderCS({view : this.$route.params.id});
         }
     },
 

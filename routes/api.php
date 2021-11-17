@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/delete-product-order/{id}',[ReportController::class, 'deleteOrderProduct'])->name('delete.order.product');
     Route::get('/list-user-cs', [ReportController::class, 'listUserCS'])->name('list.user.cs');
     Route::get('/list-user-all-cs', [ReportController::class, 'listAllUserCS'])->name('list.user.all.cs');
-    Route::get('/view-report-order/{id}', [ReportController::class, 'viewOrderReport'])->name('view.order.report.id');
+    Route::get('/view-report-order', [ReportController::class, 'viewOrderReport'])->name('view.order.report.id');
     // adv report
     Route::get('/adv-reports', [ReportController::class, 'indexADV'])->name('index.report.adv');
     Route::get('/order', [ReportController::class, 'getOrder'])->name('get.order');
