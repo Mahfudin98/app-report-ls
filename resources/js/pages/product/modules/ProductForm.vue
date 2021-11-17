@@ -9,6 +9,7 @@
                 id="name"
                 placeholder="Product name"
                 v-model="product.name"
+                :disabled="authenticated.position_id == 8"
                 required
             />
         </div>
@@ -21,6 +22,19 @@
                 id="price"
                 placeholder="Product price"
                 v-model="product.price"
+                :disabled="authenticated.position_id == 8"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="stock">Stock</label>
+            <input
+                class="form-control"
+                type="number"
+                name="stock"
+                id="stock"
+                placeholder="Product stock"
+                v-model="product.stock"
                 required
             />
         </div>
@@ -31,6 +45,7 @@
                 class="form-control"
                 required
                 v-model="product.type_pembelian"
+                :disabled="authenticated.position_id == 8"
             >
                 <option selected="" value="" disabled="">Silahkan Pilih</option>
                 <option value="0">Ecer</option>
@@ -45,6 +60,7 @@
                 id="tipe_product"
                 required
                 v-model="product.type_product"
+                :disabled="authenticated.position_id == 8"
             >
                 <option selected="" value="" disabled="">Silahkan Pilih</option>
                 <option value="0">BPOM</option>
@@ -59,7 +75,6 @@ import { mapState, mapMutations, mapActions } from "vuex";
 export default {
     data() {
         return {
-            url: null
         };
     },
 
@@ -68,6 +83,9 @@ export default {
         ...mapState(["errors"]),
         ...mapState("product", {
             product: state => state.product
+        }),
+        ...mapState("user", {
+            authenticated: state => state.authenticated
         })
     },
     methods: {

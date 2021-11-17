@@ -6,6 +6,7 @@ const state = () => ({
     product: {
         name: '',
         price: '',
+        stock: '',
         type_pembelian: '',
         type_product: ''
     },
@@ -26,6 +27,7 @@ const mutations = {
         state.product = {
             name: payload.name,
             price: payload.price,
+            stock: payload.stock,
             type_pembelian: payload.type_pembelian,
             type_product: payload.type_product
         }
@@ -35,6 +37,7 @@ const mutations = {
         state.product = {
             name: '',
             price: '',
+            stock: '',
             type_pembelian: '',
             type_product: ''
         }

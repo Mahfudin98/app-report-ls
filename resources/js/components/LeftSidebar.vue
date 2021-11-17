@@ -96,6 +96,8 @@
                         </router-link>
                     </li>
                     <!-- project -->
+                    <!--disabled dulu-->
+                    <!--
                     <li
                         v-if="$can('read projects')"
                         :class="
@@ -118,7 +120,10 @@
                             <span class="rui-yaybar-circle"></span>
                         </router-link>
                     </li>
+                    -->
                     <!-- content -->
+                    <!--disabled dulu-->
+                    <!--
                     <li
                         v-if="$can('read contents')"
                         :class="
@@ -137,7 +142,10 @@
                             <span>Conent</span>
                         </router-link>
                     </li>
+                    -->
                     <!-- stock -->
+                    <!--disabled dulu-->
+                    <!--
                     <li
                         v-if="$can('read stocks')"
                         :class="
@@ -156,6 +164,7 @@
                             <span>Stock</span>
                         </router-link>
                     </li>
+                    -->
                     <li class="yay-label">Super Admin</li>
                     <!-- teams -->
                     <li

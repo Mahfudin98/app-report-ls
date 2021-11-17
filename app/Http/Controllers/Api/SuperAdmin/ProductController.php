@@ -106,7 +106,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'slug' => $request->name,
             'price' => $request->price,
-            'stock' => 0,
+            'stock' => $request->stock,
             'type_pembelian' => $request->type_pembelian,
             'type_product' => $request->type_product
         ]);
