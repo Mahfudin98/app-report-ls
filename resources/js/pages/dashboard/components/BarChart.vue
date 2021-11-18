@@ -18,13 +18,13 @@ export default {
     },
     computed: {
         colorBG() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var i = 0; i < 6; i++ ) {
+            var letters = "0123456789ABCDEF".split("");
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
                 color += letters[Math.floor(Math.random() * 16)];
             }
             return color;
-        },
+        }
     },
     methods: {
         barRenderChart() {
@@ -35,10 +35,10 @@ export default {
             var ratioArray = [];
             var labelsArray = [];
 
-            for ( var i = 0; i < length; i++ ) {
-            // Then push our data to the new arrays
-            labelsArray.push(array[i] ? array[i].labels : '');
-            ratioArray.push(array[i] ? array[i].total : '');
+            for (var i = 0; i < length; i++) {
+                // Then push our data to the new arrays
+                labelsArray.push(array[i] ? array[i].labels : "");
+                ratioArray.push(array[i] ? array[i].total : "");
             }
             this.renderChart(
                 {
@@ -47,12 +47,17 @@ export default {
                         {
                             label: "Data Omset",
                             data: ratioArray,
-                            backgroundColor: this.colorBG,
-                            // borderColor: [
-                            //     "rgba(255, 99, 132, 1)",
-                            //     "rgba(54, 162, 235, 1)",
-                            //     "rgba(255, 206, 86, 1)"
-                            // ],
+                            backgroundColor: labelsArray.map(
+                                d =>
+                                    "rgba(" +
+                                    Math.floor(Math.random() * 255) +
+                                    "," +
+                                    Math.floor(Math.random() * 255) +
+                                    "," +
+                                    Math.floor(Math.random() * 255) +
+                                    ", 0.8)"
+                            ),
+                            borderColor: "rgba(94, 119, 255, 1)",
                             borderWidth: 1
                         }
                     ]
