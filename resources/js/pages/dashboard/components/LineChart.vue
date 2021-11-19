@@ -35,9 +35,9 @@
                     datasets: [{
                         label: 'Data All Omset',
                         data: this.data,
-                        backgroundColor: 'rgba(94, 119, 255, 0.8)',
-                        borderColor: 'rgba(171, 184, 255, 0.8)',
-                        borderWidth: 1
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
                     }]
                 }, this.options)
             }

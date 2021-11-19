@@ -11,3 +11,6 @@
 // @import './template/bootstrap-custom.scss';
 // @import './template/rootui.scss';
 // @import './template/rootui-night.scss';
+$--circular-progress-int-fz: 28px;
+$--circular-progress-dec-fz: 12px;
+@import '~easy-circular-progress/src/index';

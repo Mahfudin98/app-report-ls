@@ -45,6 +45,7 @@
         "@tabler/core": "^1.0.0-beta4",
         "bootstrap-vue": "^2.21.2",
         "chart.js": "^2.9.4",
+        "easy-circular-progress": "^1.0.4",
         "moment": "^2.29.1",
         "numeral": "^2.0.6",
         "sweetalert2": "^11.1.9",

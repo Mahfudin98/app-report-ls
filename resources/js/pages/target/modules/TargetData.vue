@@ -53,59 +53,79 @@
                             Rp. {{ row.item.target | formatNumber }}
                         </template>
                         <template #cell(date)="row">
-                            {{ moment(row.item.start_date).format('MMMM - YYYY')  }}
+                            {{
+                                moment(row.item.start_date).format(
+                                    "MMMM - YYYY"
+                                )
+                            }}
                         </template>
                         <template #cell(percent)="row">
-                            {{ (row.item.omset / row.item.target * 100).toFixed(2) }} %
+                            <h3 class="badge badge-brand">
+                                {{
+                                    (
+                                        (row.item.omset / row.item.target) *
+                                        100
+                                    ).toFixed(2)
+                                }}
+                                %
+                            </h3>
                         </template>
-                        <template #cell(action)="row">
-                            <div class="btn-group dropdown dropdown-triangle">
-                                <button
-                                    class="btn btn-brand btn-long dropdown-toggle"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <span class="text">Action</span>
-                                    <span class="icon">
-                                        <span class="fas fa-angle-down"></span>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu nav">
-                                    <li>
-                                        <router-link
-                                            class="nav-link"
-                                            :to="{
-                                                name: 'product.edit',
-                                                params: { id: row.item.id }
-                                            }"
-                                        >
-                                            <span
-                                                data-feather="plus-circle"
-                                                class="fas fa-edit"
-                                            ></span
-                                            ><span>Edit</span
-                                            ><span
-                                                class="rui-nav-circle"
-                                            ></span>
-                                        </router-link>
-                                    </li>
-                                    <li>
-                                        <a
-                                            class="nav-link"
-                                            @click="deleteProduct(row.item.id)"
-                                        >
-                                            <span
-                                                data-feather="x-circle"
-                                                class="fas fa-trash"
-                                            ></span>
-                                            <span>Delete</span>
-                                            <span class="rui-nav-circle"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <template #cell(action)="data">
+                            <button
+                                @click="data.toggleDetails"
+                                class="btn btn-brand btn-long btn-round"
+                            >
+                                <span class="icon">
+                                    <span
+                                        data-feather="check"
+                                        class="fas fa-eye"
+                                    ></span
+                                ></span>
+                                <span class="text">
+                                    {{ data.detailsShowing ? "Hide" : "Show" }}
+                                    Detail
+                                </span>
+                            </button>
+                        </template>
+                        <template #row-details="row">
+                            <b-card>
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <Progress
+                                                    strokeColor="#00C58E"
+                                                    :transitionDuration="1000"
+                                                    :radius="50"
+                                                    :strokeWidth="10"
+                                                    :value="
+                                                        (
+                                                            (row.item.omset /
+                                                                row.item
+                                                                    .target) *
+                                                            100
+                                                        ).toFixed(2)
+                                                    "
+                                                >
+                                                    <template v-slot:footer>
+                                                        <b
+                                                            >Bulan
+                                                            {{
+                                                                moment(
+                                                                    row.item
+                                                                        .start_date
+                                                                ).format(
+                                                                    "MMMM - YYYY"
+                                                                )
+                                                            }}</b
+                                                        >
+                                                    </template>
+                                                </Progress>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </b-card>
                         </template>
                     </b-table>
                 </div>
@@ -114,11 +134,12 @@
     </main>
 </template>
 <script>
-import moment from 'moment'
+import Progress from "easy-circular-progress";
+import moment from "moment";
 import { mapActions, mapState } from "vuex";
 import VueMomentsAgo from "vue-moments-ago";
 export default {
-    components: { VueMomentsAgo },
+    components: { VueMomentsAgo, Progress },
     created() {
         this.getTarget();
     },

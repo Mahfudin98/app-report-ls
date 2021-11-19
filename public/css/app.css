@@ -11756,3 +11756,48 @@ textarea.form-control-lg {
   color: #ccc;
   background-color: #f3f3f3;
 }
+
+.vue-circular-progress {
+  display: inline-block;
+}
+.vue-circular-progress .circle {
+  position: relative;
+}
+.vue-circular-progress .circle__svg {
+  transform: rotate(-90deg);
+}
+.vue-circular-progress .circle__progress {
+  fill: none;
+  stroke-opacity: 0.3;
+  stroke-linecap: round;
+}
+.vue-circular-progress .circle__progress--fill {
+  --initialStroke: 0;
+  --transitionDuration: 0;
+  stroke-opacity: 1;
+  stroke-dasharray: var(--initialStroke);
+  stroke-dashoffset: var(--initialStroke);
+  transition: stroke-dashoffset var(--transitionDuration) ease;
+}
+.vue-circular-progress .percent {
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  font-weight: bold;
+  text-align: center;
+  line-height: 28px;
+  transform: translate(-50%, -50%);
+}
+.vue-circular-progress .percent__int {
+  font-size: 28px;
+}
+.vue-circular-progress .percent__dec,
+.vue-circular-progress .percent_sign {
+  font-size: 12px;
+}
+.vue-circular-progress .label {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-top: 15px;
+}
