@@ -64,6 +64,11 @@ import EditReturn from './pages/return/modules/ReturnEdit.vue'
 // customer
 import IndexCustomer from './pages/customer/Index.vue'
 import DataCustomer from './pages/customer/modules/CustomerData'
+// target
+import IndexTarget from './pages/target/Index.vue'
+import DataTarget from './pages/target/modules/TargetData.vue'
+import AddTarget from './pages/target/modules/TargetAdd.vue'
+import EditTarget from './pages/target/modules/TargetEdit.vue'
 // not found
 import NotFound from './components/NotFound.vue'
 Vue.use(Router)
@@ -365,7 +370,33 @@ const router = new Router({
                     meta: { title: 'Add Return' }
                 },
             ],
-        }
+        },
+        // target route
+        {
+            path: '/target',
+            component: IndexTarget,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'target.data',
+                    component: DataTarget,
+                    meta: { title: 'Manage Target' }
+                },
+                {
+                    path: '/add',
+                    name: 'target.add',
+                    component: AddTarget,
+                    meta: { title: 'Manage Target' }
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'target.edit',
+                    component: EditTarget,
+                    meta: { title: 'Edit Target' }
+                },
+            ],
+        },
     ],
     scrollBehavior (to, from, savedPosition) {
         if (savedPosition) {

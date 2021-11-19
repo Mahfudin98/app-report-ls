@@ -95,6 +95,25 @@
                             <span class="rui-yaybar-circle"></span>
                         </router-link>
                     </li>
+                    <!-- target -->
+                    <li
+                        v-if="authenticated.role == 0 || $can('create teams')"
+                        :class="
+                            this.$route.name == 'target.data'
+                                ? 'yay-item-active'
+                                : ''
+                        "
+                    >
+                        <router-link
+                            :to="{ name: 'target.data' }"
+                            class="active"
+                        >
+                            <span class="yay-icon">
+                                <span class="fas fa-bullseye"></span>
+                            </span>
+                            <span>Target</span>
+                        </router-link>
+                    </li>
                     <!-- project -->
                     <!--disabled dulu-->
                     <!--

@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Exports\OmsetExport;
 use App\Http\Resources\CustomersCollection;
+use App\Models\Target;
+use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
@@ -76,7 +78,7 @@ class DashboardController extends Controller
         $parse = Carbon::parse($filter);
         $array_date = range($parse->startOfMonth()->format('d'), $parse->endOfMonth()->format('d'));
 
-        $orders = DetailOrder::where('created_at', 'LIKE', '%' . $filter . '%')->where('status', 1)->groupBy('date')->selectRaw('*, sum(subtotal) as total')->get();
+        $orders = DetailOrder::where('date', 'LIKE', '%' . $filter . '%')->where('status', 1)->groupBy('date')->selectRaw('*, sum(subtotal) as total')->get();
 
         $data = [];
         foreach ($array_date as $row) {
@@ -118,5 +120,46 @@ class DashboardController extends Controller
     {
         $customer = $this->listCustomer();
         return Excel::download(new CustomerExport($customer, request()->date), 'customer'.request()->date.'.xlsx');
+    }
+
+    public function targetIndex()
+    {
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ' ,request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+
+        $data = Target::with(['user'])->whereBetween('start_date', [$start, $end])->get();
+
+        return response()->json(['data' => $data], 200);
+    }
+
+    public function addTarget(Request $request)
+    {
+        $this->validate($request, [
+            'target' => 'required|integer',
+            'start_date' => 'required',
+            'end_date' => 'required'
+        ]);
+
+        $bulan = Carbon::createFromFormat('Y-m-d', $request->start_date)->month;
+        $adv = User::where('parent_id', $request->user_id)->pluck('id')->toArray();
+
+        $orders = $orders = DetailOrder::whereMonth('date', $bulan)->where('status', 1)->whereIn('user_id', $adv)->sum('subtotal');
+
+        Target::create([
+            'user_id' => $request->user_id,
+            'adv_name' => $request->adv_name,
+            'target' => $request->target,
+            'omset' => $orders,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date
+        ]);
+
+        return response()->json(['status' => 'success'], 200);
     }
 }

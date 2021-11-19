@@ -84,5 +84,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/get-return', [ReturnController::class, 'orderReturn'])->name('get.order.return');
     Route::get('/order-detail/{waybill}', [ReturnController::class, 'OrderDetail'])->name('get.detail.order.show');
     Route::post('/return-post', [ReturnController::class, 'store'])->name('return.add');
-
+    // target
+    Route::get('/target', [DashboardController::class, 'targetIndex'])->name('target');
+    Route::post('/post-target', [DashboardController::class, 'addTarget'])->name('target.add');
 });
