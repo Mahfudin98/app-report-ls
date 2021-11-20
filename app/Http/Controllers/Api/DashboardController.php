@@ -79,18 +79,19 @@ class DashboardController extends Controller
         $array_date = range($parse->startOfMonth()->format('d'), $parse->endOfMonth()->format('d'));
 
         $orders = DetailOrder::where('date', 'LIKE', '%' . $filter . '%')->where('status', 1)->groupBy('date')->selectRaw('*, sum(subtotal) as total')->get();
-
+        $ordersRetur = DetailOrder::where('date', 'LIKE', '%' . $filter . '%')->where('status', 0)->groupBy('date')->selectRaw('*, sum(subtotal) as totalRetur')->get();
         $data = [];
         foreach ($array_date as $row) {
             $f_date = strlen($row) == 1 ? 0 . $row:$row;
             $date = $filter . '-' . $f_date;
             $total = $orders->firstWhere('date', $date);
+            $totalRetur = $ordersRetur->firstWhere('date', $date);
             $data[] = [
                 'date' => $date,
-                'total' => $total ? $total->total:0
+                'total' => $total ? $total->total:0,
+                'totalRetur' => $totalRetur ? $totalRetur->totalRetur:0
             ];
         }
-
         return $data;
     }
 

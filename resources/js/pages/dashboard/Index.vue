@@ -358,9 +358,13 @@ export default {
             });
         },
         allOrder_data() {
-            return _.map(this.allOmsets, function(o) {
+            let total = _.map(this.allOmsets, function(o) {
                 return o.total;
             });
+            let dataRetur = _.map(this.allOmsets, function(o) {
+                return o.totalRetur;
+            });
+            return [total, dataRetur]
         }
     },
 

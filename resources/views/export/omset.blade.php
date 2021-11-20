@@ -8,7 +8,8 @@
         </tr>
         <tr>
             <th>Tanggal</th>
-            <th>Pemasukan</th>
+            <th>Omset</th>
+            <th>Retur Order</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
             <tr>
                 <td>{{ $row['date'] }}</td>
                 <td>Rp {{ number_format($row['total']) }}</td>
+                <td>Rp {{ number_format($row['totalRetur']) }}</td>
             </tr>
         @endforeach
     </tbody>

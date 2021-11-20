@@ -2,44 +2,47 @@
     <main>
         <div class="rui-page-content">
             <div class="container-fluid">
-                <div
-                    class="d-flex justify-content-between align-items-center mb-20"
-                >
-                    <div class="row xs-gap">
-                        <div class="col-12">
-                            <div class="input-group">
-                                <button
-                                    type="button"
-                                    class="btn btn-clean btn-uniform btn-grey-5"
-                                    data-toggle="button"
-                                    aria-pressed="false"
-                                >
-                                    <span
-                                        style="font-size: 17px;"
-                                        class="rui-icon fas fa-search"
-                                    ></span>
-                                </button>
-                                <input
-                                    type="search"
-                                    class="form-control form-control-clean"
-                                    placeholder="Type to search..."
-                                    data-toggle="input"
-                                    autocomplete="off"
-                                    v-model="search"
-                                />
-                            </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="">Bulan</label>
+                            <select v-model="month" class="form-control">
+                                <option value="01">Januari</option>
+                                <option value="02">Februari</option>
+                                <option value="03">Maret</option>
+                                <option value="04">April</option>
+                                <option value="05">Mei</option>
+                                <option value="06">Juni</option>
+                                <option value="07">Juli</option>
+                                <option value="08">Agustus</option>
+                                <option value="09">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
                         </div>
                     </div>
-                    <router-link
-                        class="btn btn-brand btn-long"
-                        :to="{
-                            name: 'target.add'
-                        }"
-                    >
-                        <span class="icon"
-                            ><span class="rui-icon fas fa-plus"></span></span
-                        ><span class="text">Add Target</span>
-                    </router-link>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="">Tahun</label>
+                            <select v-model="year" class="form-control">
+                                <option
+                                    v-for="(y, i) in years"
+                                    :key="i"
+                                    :value="y"
+                                    >{{ y }}</option
+                                >
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Export To Excel</label>
+                        <button
+                            class="btn btn-primary btn-sm pull-right"
+                        >
+                            Export
+                        </button>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <b-table :items="targets.data" :fields="fields" show-empty>
@@ -155,7 +158,9 @@ export default {
                 { key: "date", label: "Date" },
                 { key: "percent", label: "Persentase" },
                 { key: "action", label: "Aksi" }
-            ]
+            ],
+            month: moment().format("MM"),
+            year: moment().format("Y")
         };
     },
 
@@ -170,7 +175,15 @@ export default {
             set(val) {
                 this.$store.commit("product/SET_PAGE", val);
             }
-        }
+        },
+        years() {
+            return _.range(
+                2019,
+                moment()
+                    .add(1, "years")
+                    .format("Y")
+            );
+        },
     },
 
     watch: {
@@ -179,11 +192,23 @@ export default {
         },
         search() {
             this.getTarget(this.search);
+        },
+        month() {
+            this.getTarget({
+                month: this.month,
+                year: this.year
+            });
+        },
+        year() {
+            this.getTarget({
+                month: this.month,
+                year: this.year
+            });
         }
     },
 
     methods: {
-        ...mapActions("target", ["getTarget", "removeProduct"])
+        ...mapActions("target", ["getTarget", "removeProduct"]),
     }
 };
 </script>
