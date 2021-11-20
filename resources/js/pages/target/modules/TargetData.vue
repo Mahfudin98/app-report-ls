@@ -144,7 +144,10 @@ import VueMomentsAgo from "vue-moments-ago";
 export default {
     components: { VueMomentsAgo, Progress },
     created() {
-        this.getTarget();
+        this.getTarget({
+            month: this.month,
+            year: this.year
+        });
     },
 
     data() {
@@ -168,14 +171,6 @@ export default {
         ...mapState("target", {
             targets: state => state.targets
         }),
-        page: {
-            get() {
-                return this.$store.state.product.page;
-            },
-            set(val) {
-                this.$store.commit("product/SET_PAGE", val);
-            }
-        },
         years() {
             return _.range(
                 2019,
@@ -187,12 +182,6 @@ export default {
     },
 
     watch: {
-        page() {
-            this.getTarget();
-        },
-        search() {
-            this.getTarget(this.search);
-        },
         month() {
             this.getTarget({
                 month: this.month,

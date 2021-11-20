@@ -125,16 +125,11 @@ class DashboardController extends Controller
 
     public function targetIndex()
     {
-        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
 
-        if (request()->date != '') {
-            $date = explode(' - ' ,request()->date);
-            $start = Carbon::parse($date[0])->format('Y-m-d');
-            $end = Carbon::parse($date[1])->format('Y-m-d');
-        }
-
-        $data = Target::with(['user'])->whereBetween('start_date', [$start, $end])->get();
+        $data = Target::with(['user'])->where('start_date', 'LIKE', '%' . $filter . '%')->get();
 
         return response()->json(['data' => $data], 200);
     }

@@ -28,9 +28,8 @@ const mutations = {
 
 const actions = {
     getTarget({commit}, payload){
-        let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
-            $axios.get(`/target?page=${state.page}&q=${search}`)
+            $axios.get(`/target?month=${payload.month}&year=${payload.year}`)
             .then((response) => {
                 commit('ASSIGN_DATA', response.data)
                 resolve(response.data)
