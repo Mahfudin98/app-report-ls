@@ -24,7 +24,7 @@
                 type="number"
                 name="target"
                 id="target"
-                placeholder="Product target"
+                placeholder="Omset target"
                 v-model="target.target"
                 required
             />
@@ -38,7 +38,7 @@
                         type="date"
                         name="start_date"
                         id="start_date"
-                        placeholder="Product start_date"
+                        placeholder="Product Start Date"
                         v-model="target.start_date"
                         required
                     />
@@ -52,7 +52,7 @@
                         type="date"
                         name="end_date"
                         id="end_date"
-                        placeholder="Product end_date"
+                        placeholder="Product End Date"
                         v-model="target.end_date"
                         required
                     />

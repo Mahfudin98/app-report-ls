@@ -10,6 +10,7 @@ use App\Models\AdvReport;
 use App\Models\CsReport;
 use App\Models\DetailOrder;
 use App\Models\Order;
+use App\Models\Target;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -105,6 +106,13 @@ class ReportController extends Controller
             $csReport->update([
                 'transaksi' => $orderget->count()
             ]);
+            // update target
+            $bulan = Carbon::createFromFormat('Y-m-d', $request->date)->month;
+            $details = DetailOrder::where('date', $request->date)->where('user_id', $user->id)->sum('subtotal');
+            $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
+            $target->update([
+                'omset' => $target->omset + $details
+            ]);
 
             return response()->json(['status' => 'success'], 200);
         } catch (\Throwable $e) {
@@ -137,6 +145,13 @@ class ReportController extends Controller
                 );
                 $detail = DetailOrder::create($product);
             }
+            // target update
+            $bulan = Carbon::createFromFormat('Y-m-d', $request->date)->month;
+            $details = DetailOrder::where('date', $request->date)->where('user_id', $user->id)->sum('subtotal');
+            $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
+            $target->update([
+                'omset' => $target->omset + $details
+            ]);
             return response()->json(['status' => 'success'], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()]);
