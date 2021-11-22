@@ -58,17 +58,17 @@ const actions = {
         })
     },
 
-    editTeam({ commit }, payload) {
+    editTarget({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            $axios.get(`/targets/${payload}/edit`)
+            $axios.get(`/target/${payload}/edit`)
             .then((response) => {
                 resolve(response.data)
             })
         })
     },
-    updateTeam({ state }, payload) {
+    updateTarget({ state }, payload) {
         return new Promise((resolve, reject) => {
-            $axios.post(`/targets-update/${state.id}`, payload, {
+            $axios.post(`/update-target/${state.id}`, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -76,30 +76,6 @@ const actions = {
             .then((response) => {
                 resolve(response.data)
             })
-        })
-    },
-
-    removeTeam({ dispatch }, payload) {
-        return new Promise((resolve, reject) => {
-            $axios.delete(`/targets/${payload}`)
-            .then((response) => {
-                dispatch('getTeams').then(() => resolve(response.data))
-            })
-        })
-    },
-
-    showTeam({commit}, payload){
-        return new Promise((resolve, reject) => {
-            $axios.get(`/targets/${payload}`)
-            .then((response) => {
-                commit('ASSIGN_PROFILE',response.data)
-                resolve(response.data)
-            })
-        })
-        .catch((error) => {
-            if (error.response.status == 422) {
-                commit('SET_ERRORS', error.response.data.errors, { root: true })
-            }
         })
     },
 }

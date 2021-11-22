@@ -3,7 +3,7 @@
         <div class="rui-page-content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label for="">Bulan</label>
                             <select v-model="month" class="form-control">
@@ -22,7 +22,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label for="">Tahun</label>
                             <select v-model="year" class="form-control">
@@ -33,6 +33,22 @@
                                     >{{ y }}</option
                                 >
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Add Target</label>
+                            <router-link
+                                :to="{
+                                    name: 'target.add'
+                                }"
+                                class="btn btn-brand"
+                            >
+                                <span class="icon">
+                                    <span class="fas fa-plus"></span>
+                                </span>
+                                <span class="text">Add Target</span>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -88,7 +104,12 @@
                                     <div class="col-md-4">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title">Setting <span class="fas fa-cog"></span></h5>
+                                                <h5 class="card-title">
+                                                    Setting
+                                                    <span
+                                                        class="fas fa-cog"
+                                                    ></span>
+                                                </h5>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <router-link
@@ -130,10 +151,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <br>
+                                        <br />
                                         <div class="card text-center">
                                             <div class="card-body">
-                                                <h5 class="card-title">Persentase <span class="fas fa-percentage"></span></h5>
+                                                <h5 class="card-title">
+                                                    Persentase
+                                                    <span
+                                                        class="fas fa-percentage"
+                                                    ></span>
+                                                </h5>
                                                 <Progress
                                                     strokeColor="#00C58E"
                                                     :transitionDuration="1000"
@@ -168,7 +194,9 @@
                                     <div class="col-md-8">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title">List Persentase CS</h5>
+                                                <h5 class="card-title">
+                                                    List Persentase CS
+                                                </h5>
                                                 <b-table
                                                     :items="row.item.user.child"
                                                     :fields="csdetail"
@@ -187,7 +215,7 @@
                                                                 .filter(
                                                                     itemInArray =>
                                                                         itemInArray.status ===
-                                                                        1
+                                                                        1, dateArray => dateArray.date === month
                                                                 )
                                                                 .reduce(
                                                                     (

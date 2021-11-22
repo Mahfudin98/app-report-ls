@@ -158,4 +158,21 @@ class DashboardController extends Controller
 
         return response()->json(['status' => 'success'], 200);
     }
+
+    public function editTarget($id)
+    {
+        $target = Target::find($id);
+        return response()->json(['data' => $target], 200);
+    }
+
+    public function updateTarget(Request $request, $id)
+    {
+        $target = Target::find($id);
+        $target->update([
+            'target' => $request->target,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date
+        ]);
+        return response()->json(['status' => 'success'], 200);
+    }
 }

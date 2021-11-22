@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="form-group">
+        <div class="form-group" v-if="this.$route.name == 'target.add'">
             <label for="adv_name">Nama Adv</label>
             <select
                 class="form-control"
@@ -16,6 +16,19 @@
                     >{{ items.name }}</option
                 >
             </select>
+        </div>
+        <div class="form-group" v-if="this.$route.name == 'target.edit'">
+            <label for="target">Nama Adv</label>
+            <input
+                class="form-control"
+                type="text"
+                name="target"
+                id="target"
+                placeholder="Omset target"
+                v-model="target.user_id"
+                disabled
+                required
+            />
         </div>
         <div class="form-group">
             <label for="target">Target</label>
@@ -67,6 +80,16 @@ import { mapState, mapMutations, mapActions } from "vuex";
 export default {
     created() {
         this.getAdv();
+        if (this.$route.name == "target.edit") {
+            this.editTarget(this.$route.params.id).then(res => {
+                this.target = {
+                    user_id: res.data.adv_name,
+                    target: res.data.target,
+                    start_date: res.data.start_date,
+                    end_date: res.data.end_date
+                };
+            });
+        }
     },
     data() {
         return {
@@ -95,25 +118,42 @@ export default {
     },
     methods: {
         ...mapActions("user", ["getAdv"]),
-        ...mapActions("target", ["submitTarget"]),
+        ...mapActions("target", ["submitTarget", "editTarget", "updateTarget"]),
+        ...mapMutations("target", ["SET_ID_UPDATE"]),
         submit() {
             let form = new FormData();
-
-            form.append("user_id", this.userId);
-            form.append("adv_name", this.userName);
+            if (this.$route.name == "target.add") {
+                form.append("user_id", this.userId);
+                form.append("adv_name", this.userName);
+            }
             form.append("target", this.target.target);
             form.append("start_date", this.target.start_date);
             form.append("end_date", this.target.end_date);
-            this.submitTarget(form).then(() => {
-                this.target = {
-                    user_id: "",
-                    target: "",
-                    start_date: "",
-                    end_date: ""
-                };
 
-                this.$router.push({ name: "target.data" });
-            });
+            if (this.$route.name == "target.add") {
+                this.submitTarget(form).then(() => {
+                    this.target = {
+                        user_id: "",
+                        target: "",
+                        start_date: "",
+                        end_date: ""
+                    };
+
+                    this.$router.push({ name: "target.data" });
+                });
+            } else if (this.$route.name == "target.edit") {
+                this.SET_ID_UPDATE(this.$route.params.id);
+                this.updateTarget(form).then(() => {
+                    this.target = {
+                        user_id: "",
+                        target: "",
+                        start_date: "",
+                        end_date: ""
+                    };
+
+                    this.$router.push({ name: "target.data" });
+                });
+            }
         }
     }
 };

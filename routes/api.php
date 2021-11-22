@@ -86,5 +86,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/return-post', [ReturnController::class, 'store'])->name('return.add');
     // target
     Route::get('/target', [DashboardController::class, 'targetIndex'])->name('target');
+    Route::get('/target/{id}/edit', [DashboardController::class, 'editTarget'])->name('target.edit');
     Route::post('/post-target', [DashboardController::class, 'addTarget'])->name('target.add');
+    Route::post('/update-target/{id}', [DashboardController::class, 'updateTarget'])->name('target.update');
 });

@@ -1,0 +1,46 @@
+<template>
+    <div class="rui-page-content">
+        <div class="container-fluid">
+            <div
+                class="d-flex justify-content-between align-items-center mb-20"
+            >
+                <router-link
+                    :to="{ name: 'target.data' }"
+                    class="btn btn-secondary"
+                >
+                    <span class="icon">
+                        <span class="fas fa-arrow-alt-circle-left"></span>
+                    </span>
+                    <span class="text">Back</span>
+                </router-link>
+                <button
+
+                    @click.prevent="submit"
+                    class="btn btn-brand"
+                >
+                    <span class="icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </span>
+                    <span class="text">Update</span>
+                </button>
+            </div>
+            <form-target ref="targetForm"></form-target>
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapActions, mapState, mapMutations } from "vuex";
+import TargetForm from "./TargetForm.vue";
+export default {
+    name: "EditTarget",
+    methods: {
+        submit() {
+            this.$refs.targetForm.submit();
+        }
+    },
+    components: {
+        "form-target" : TargetForm
+    }
+};
+</script>
