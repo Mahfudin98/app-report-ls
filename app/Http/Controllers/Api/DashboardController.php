@@ -129,7 +129,7 @@ class DashboardController extends Controller
         $mounth = request()->month;
         $filter = $year . '-' . $mounth;
 
-        $data = Target::with(['user'])->where('start_date', 'LIKE', '%' . $filter . '%')->get();
+        $data = Target::with(['user', 'user.child.orderDetail'])->where('start_date', 'LIKE', '%' . $filter . '%')->get();
 
         return response()->json(['data' => $data], 200);
     }
