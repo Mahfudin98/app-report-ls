@@ -214,8 +214,8 @@
                                                             datas.item.order_detail
                                                                 .filter(
                                                                     itemInArray =>
-                                                                        itemInArray.status ===
-                                                                        1, dateArray => dateArray.date === month
+                                                                        (itemInArray.status ===
+                                                                        1 && moment(itemInArray.date).format("M") === month)
                                                                 )
                                                                 .reduce(
                                                                     (
@@ -236,8 +236,8 @@
                                                             datas.item.order_detail
                                                                 .filter(
                                                                     itemInArray =>
-                                                                        itemInArray.status ===
-                                                                        1
+                                                                        (itemInArray.status ===
+                                                                        1 && moment(itemInArray.date).format("M") === month)
                                                                 )
                                                                 .reduce(
                                                                     (
@@ -273,8 +273,8 @@
                                                                     (datas.item.order_detail
                                                                         .filter(
                                                                             itemInArray =>
-                                                                                itemInArray.status ===
-                                                                                1
+                                                                                (itemInArray.status ===
+                                                                                1 && moment(itemInArray.date).format("M") === month)
                                                                         )
                                                                         .reduce(
                                                                             (
@@ -362,28 +362,6 @@ export default {
                     .format("Y")
             );
         },
-        order(index) {
-            // const result = this.targets.user
-            // const res = Object.keys(result).map(function(key) {
-            //     return parseInt(result[key].detail_order);
-            // });
-            // return res;
-            const target = this.targets.data;
-            const variableOne = status.filter(
-                itemInArray => itemInArray.status === 1
-            );
-
-            return variableOne.reduce((prev, obj) => {
-                let flatted = obj[i].order_detail.map(item => {
-                    let order_detail = {};
-                    order_detail["subtotal"] = item.subtotal;
-                    let subtotal = order_detail["subtotal"];
-                    return subtotal;
-                });
-
-                return [...prev, ...flatted];
-            }, []);
-        }
     },
 
     watch: {
