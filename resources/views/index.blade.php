@@ -37,7 +37,8 @@ class="rui-no-transition rui-navbar-autohide rui-section-lines">
     </div>
 
     <script src="{{asset('js/app.js')}}"></script>
-
+    <script src="{{asset('js/manifest.js')}}"></script>
+    <script src="{{asset('js/vendor.js')}}"></script>
     <script src="{{asset('common-assets/vendor/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{asset('common-assets/vendor/popper.js/dist/umd/popper.min.js')}}"></script>
     <script src="{{asset('common-assets/vendor/bootstrap/dist/js/bootstrap.min.js')}}"></script>
