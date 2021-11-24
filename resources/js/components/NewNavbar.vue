@@ -140,16 +140,15 @@
                                 variant="primary"
                                 href="#"
                             >
-                                <b-img
+                                <img
                                     v-if="authenticated.image != null"
-                                    v-bind="mainProps"
-                                    rounded="circle"
+                                    class="myprofile"
                                     :src="
                                         '../storage/teams/' +
                                             authenticated.image
                                     "
                                     :alt="authenticated.name"
-                                ></b-img>
+                                />
                                 <b-img
                                     v-if="authenticated.image == null"
                                     v-bind="mainProps"
@@ -336,13 +335,12 @@
 
                 <div class="dropdown dropdown-triangle">
                     <b-link id="profile-mobile" variant="primary" href="#">
-                        <b-img
+                        <img
                             v-if="authenticated.image != null"
-                            v-bind="mainProps"
-                            rounded="circle"
+                            class="myprofile"
                             :src="'../storage/teams/' + authenticated.image"
                             :alt="authenticated.name"
-                        ></b-img>
+                        />
                         <b-img
                             v-if="authenticated.image == null"
                             v-bind="mainProps"
@@ -665,3 +663,25 @@ export default {
     }
 };
 </script>
+<style>
+.player-holder {
+    height: 100px;
+    max-width: 650px;
+    background: transparent;
+    text-align: center;
+}
+.player-thumb {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+.myprofile {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+</style>

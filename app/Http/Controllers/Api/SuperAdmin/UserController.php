@@ -18,7 +18,7 @@ class UserController extends Controller
         if (request()->q != '') {
             $users = $users->where('name', 'LIKE', '%' . request()->q . '%');
         }
-        $users = $users->paginate(10);
+        $users = $users->paginate(12);
         return new UsersCollection($users);
     }
 

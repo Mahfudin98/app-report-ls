@@ -27,7 +27,7 @@ const mutations = {
 }
 
 const actions = {
-    getTeams({commit}, payload){
+    getTeams({commit, state}, payload){
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             $axios.get(`/teams?page=${state.page}&q=${search}`)

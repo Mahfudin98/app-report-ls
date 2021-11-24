@@ -23,7 +23,7 @@
                                 <div class="col-auto">
                                     <div class="player-holder">
                                         <img
-                                            class="player-thumb"
+                                            class="myimg"
                                             v-show="profile.image != null"
                                             :src="
                                                 '../storage/teams/' +
@@ -1265,5 +1265,11 @@ export default {
     border-radius: 50%;
     background-size: cover;
     background-position: center;
+}
+.myimg{
+  width:150px;
+  height:150px;
+  object-fit:cover;
+  border-radius:50%;
 }
 </style>

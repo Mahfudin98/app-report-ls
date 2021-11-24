@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-    <page-loader/>
+        <page-loader />
         <div class="rui-page-content">
             <div class="container-fluid">
                 <div
@@ -31,12 +31,13 @@
                             </div>
                         </div>
                     </div>
-                    <router-link class="btn btn-brand btn-long" v-if="authenticated.role == 0 || $can('create teams')"
-                        :to="{ name: 'teams.add' }">
+                    <router-link
+                        class="btn btn-brand btn-long"
+                        v-if="authenticated.role == 0 || $can('create teams')"
+                        :to="{ name: 'teams.add' }"
+                    >
                         <span class="icon"
-                            ><span
-                                class="rui-icon fas fa-plus"
-                            ></span></span
+                            ><span class="rui-icon fas fa-plus"></span></span
                         ><span class="text">New</span>
                     </router-link>
                 </div>
@@ -56,7 +57,7 @@
                                 >
                                     <div class="player-holder">
                                         <img
-                                            class="player-thumb"
+                                            class="myimg"
                                             v-show="row.image != null"
                                             :src="
                                                 '../storage/teams/' + row.image
@@ -76,10 +77,11 @@
                                     class="btn-group"
                                     v-if="$can('edit teams')"
                                 >
-                                    <router-link :to="{
-                                        name: 'teams.edit',
-                                        params: { id: row.id }
-                                    }"
+                                    <router-link
+                                        :to="{
+                                            name: 'teams.edit',
+                                            params: { id: row.id }
+                                        }"
                                         class="btn btn-warning"
                                     >
                                         <i class="fas fa-edit"></i>
@@ -104,12 +106,39 @@
                         </div>
                     </div>
                 </div>
+                <br/>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p v-if="teams.data">
+                                    <i class="fa fa-bars"></i>
+                                    {{ teams.data.length }} item dari
+                                    {{ teams.meta.total }} total data
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="pull-right">
+                                    <b-pagination
+                                        v-model="page"
+                                        :total-rows="teams.meta.total"
+                                        :per-page="teams.meta.per_page"
+                                        aria-controls="teams"
+                                        v-if="
+                                            teams.data && teams.data.length > 0
+                                        "
+                                    ></b-pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import PageLoader from '../../../components/PageLoader.vue'
+import PageLoader from "../../../components/PageLoader.vue";
 import { mapActions, mapState } from "vuex";
 export default {
     name: "DataUser",
@@ -181,5 +210,11 @@ export default {
     border-radius: 50%;
     background-size: cover;
     background-position: center;
+}
+.myimg{
+  width:150px;
+  height:150px;
+  object-fit:cover;
+  border-radius:50%;
 }
 </style>
