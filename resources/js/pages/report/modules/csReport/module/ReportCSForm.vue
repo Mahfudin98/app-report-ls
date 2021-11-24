@@ -49,6 +49,16 @@
                                     {{ errors.date[0] }}
                                 </p>
                             </div>
+                            <div class="form-group">
+                                <label
+                                    >Berikan keterangan report kamu dibawah
+                                    ini!</label
+                                >
+                                <ckeditor
+                                    v-model="csReport.description"
+                                    :config="editorConfig"
+                                ></ckeditor>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,8 +68,13 @@
 </template>
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import CKEditor from "ckeditor4-vue";
 export default {
     name: "AddReportCS",
+    components: {
+        // Use the <ckeditor> component in this view.
+        ckeditor: CKEditor.component
+    },
     created() {
         this.viewCsReport(this.$route.params.date);
     },
@@ -68,14 +83,18 @@ export default {
             csReport: {
                 chat: "",
                 transaksi: 0,
-                date: this.$route.params.date
+                date: this.$route.params.date,
+                description: "",
+            },
+            editorConfig: {
+                uiColor: '#9AB8F3'
             }
         };
     },
     computed: {
         ...mapState("csReport", {
             reportcs: state => state.reportcs
-        }),
+        })
     },
     methods: {
         ...mapState(["errors"]),
@@ -85,11 +104,13 @@ export default {
             form.append("chat", this.csReport.chat);
             form.append("transaksi", this.csReport.transaksi);
             form.append("date", this.$route.params.date);
+            form.append("description", this.csReport.description);
             this.submitCsReport(form).then(() => {
                 this.csReport = {
                     chat: "",
                     transaksi: 0,
-                    date: this.$route.params.date
+                    date: this.$route.params.date,
+                    description: "",
                 };
                 this.$swal({
                     background: "#FFFFFF",

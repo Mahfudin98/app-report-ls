@@ -128,26 +128,6 @@ const actions = {
         })
     },
 
-    editPosition({commit}, payload){
-        return new Promise((resolve, reject) => {
-            $axios.get(`/positions/${payload}/edit`)
-            .then((response) => {
-                commit('ASSIGN_FORM', response.data.data)
-                resolve(response.data)
-            })
-        })
-    },
-
-    updatePosition({state, commit}, payload){
-        return new Promise((resolve, reject) => {
-            $axios.put(`/positions/${payload}`, state.position)
-            .then((response) => {
-                commit('CLEAR_FORM')
-                resolve(response.data)
-            })
-        })
-    },
-
     removePosition({dispatch}, payload){
         return new Promise((resolve, reject) => {
             $axios.delete(`/positions/${payload}`)
@@ -246,6 +226,19 @@ const actions = {
             $axios.get(`/list-user-all-cs`)
             .then((response) => {
                 commit('ASSIGN_ALL_LIST_CS', response.data)
+                resolve(response.data)
+            })
+        })
+    },
+
+    updateCsReport({ state }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.post(`/cs-reports/update/${state.id}`, payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
                 resolve(response.data)
             })
         })

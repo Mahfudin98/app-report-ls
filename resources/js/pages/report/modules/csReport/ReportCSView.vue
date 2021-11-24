@@ -78,6 +78,48 @@
                                         <div class="col"></div>
                                     </div>
                                 </div>
+                                <div class="rui-profile-numbers">
+                                    <br />
+                                    <div class="row justify-content-center">
+                                        <div class="col-auto">
+                                            <h3 class="text-center">
+                                                Setting
+                                                <i class="fas fa-cog"></i>
+                                            </h3>
+                                        </div>
+                                        <div class="col-auto">
+                                            <router-link
+                                                :to="{
+                                                    name: 'report.edit.order',
+                                                    params: {
+                                                        date: reportcs.date
+                                                    }
+                                                }"
+                                                class="btn btn-warning"
+                                            >
+                                                <span class="icon">
+                                                    <span
+                                                        class="fas fa-edit"
+                                                    ></span>
+                                                </span>
+                                                <span class="text">Edit Order</span>
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <h3>Deskripsi Report</h3>
+                                <div class="row justify-content">
+                                    <div class="col-auto">
+                                        <p
+                                            v-if="reportcs.description != null"
+                                            v-html="reportcs.description"
+                                        ></p>
+                                        <p v-if="reportcs.description == null">
+                                            <i>Tidak Ada Deskripsi!</i>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -206,6 +248,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <b-img
+                                                        v-show="
+                                                            row.image != null
+                                                        "
+                                                        :src="
+                                                            '../storage/orders/' +
+                                                                row.image
+                                                        "
+                                                        thumbnail
+                                                        fluid
+                                                        alt="Responsive image"
+                                                    ></b-img>
                                                     <b-table
                                                         :items="
                                                             row.order_detail
@@ -306,7 +360,9 @@
                                                                             class="nav-link"
                                                                             @click="
                                                                                 deleteProduct(
-                                                                                    rows.item.id
+                                                                                    rows
+                                                                                        .item
+                                                                                        .id
                                                                                 )
                                                                             "
                                                                         >
@@ -370,7 +426,9 @@ export default {
         getOrder() {
             const status = this.reportcs.order;
 
-            const variableOne = status.filter(itemInArray => itemInArray.status === 1);
+            const variableOne = status.filter(
+                itemInArray => itemInArray.status === 1
+            );
 
             return variableOne.reduce((prev, obj) => {
                 let flatted = obj.order_detail.map(item => {
@@ -389,25 +447,27 @@ export default {
     methods: {
         ...mapActions("csReport", ["viewCsReport", "removeProductOrder"]),
         deleteProduct(id) {
-            this.$swal.fire({
-                title: "Kamu Yakin?",
-                text: "Tindakan ini akan menghapus secara permanent!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then(result => {
-                if (result.isConfirmed) {
-                    this.removeProductOrder(id);
-                    this.$swal(
-                        "Terhapus!",
-                        "Produk order sudah dihapus.",
-                        "success"
-                    );
-                    window.location.reload();
-                }
-            });
+            this.$swal
+                .fire({
+                    title: "Kamu Yakin?",
+                    text: "Tindakan ini akan menghapus secara permanent!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+                        this.removeProductOrder(id);
+                        this.$swal(
+                            "Terhapus!",
+                            "Produk order sudah dihapus.",
+                            "success"
+                        );
+                        window.location.reload();
+                    }
+                });
         }
     }
 };

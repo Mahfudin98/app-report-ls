@@ -78,6 +78,20 @@
                                     {{ errors.waybill[0] }}
                                 </p>
                             </div>
+                            <div class="form-group" :class="{ 'has-error': errors.image }">
+                                <label for="file-input">Image</label>
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    accept="image/*"
+                                    @change="uploadImage($event)"
+                                    id="file-input"
+                                />
+                                <p>*Kosongkan jika tidak ingin menambahkan</p>
+                                <p class="text-danger" v-if="errors.image">
+                                    {{ errors.image[0] }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -125,7 +139,7 @@
                                         v-model="customers.qty[index]"
                                     />
                                 </div>
-                                <br>
+                                <br />
                                 <button
                                     class="btn btn-brand"
                                     type="button"
@@ -171,6 +185,7 @@ export default {
                 customer_phone: "",
                 customer_address: "",
                 waybill: "",
+                image: "",
                 // for order
                 product_id: [""],
                 qty: [""]
@@ -208,15 +223,17 @@ export default {
             });
         },
         removeParent(index) {
-            this.customers = {
+            (this.customers = {
                 product_id: [""],
                 qty: [""]
-            },
-            this.order.splice(index, 1);
+            }),
+                this.order.splice(index, 1);
         },
         ...mapActions("product", ["getAllProducts"]),
         ...mapActions("csReport", ["viewCsReport", "submitCustomer"]),
-
+        uploadImage(event) {
+            this.customers.image = event.target.files[0];
+        },
         submit() {
             let form = new FormData();
 
@@ -225,6 +242,7 @@ export default {
             form.append("customer_phone", this.customers.customer_phone);
             form.append("customer_address", this.customers.customer_address);
             form.append("waybill", this.customers.waybill);
+            form.append("image", this.customers.image);
             form.append("date", this.$route.params.date);
             // array order
             for (var i = 0; i < this.customers.qty.length; i++) {
@@ -242,6 +260,7 @@ export default {
                     transaksi: "",
                     omset: "",
                     date: "",
+                    image: "",
                     // for order
                     product_id: [""],
                     total_order: [""]

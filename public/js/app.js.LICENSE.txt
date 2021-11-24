@@ -23,12 +23,6 @@
  */
 
 /*!
- * Vue.js v2.6.14
- * (c) 2014-2021 Evan You
- * Released under the MIT License.
- */
-
-/*!
  * jQuery JavaScript Library v3.6.0
  * https://jquery.com/
  *
@@ -61,6 +55,13 @@ Docs & License: https://fullcalendar.io/
  * license : MIT
  * http://adamwdraper.github.com/Numeral-js/
  */
+
+/*! For license information please see ckeditor.js.LICENSE.txt */
+
+/*!*
+* @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+* For licensing, see LICENSE.md.
+*/
 
 /**
  * @license

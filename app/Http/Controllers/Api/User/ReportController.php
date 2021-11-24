@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
@@ -50,7 +51,7 @@ class ReportController extends Controller
             'chat'      => 'required|integer',
             'transaksi' => 'required|integer',
             'date'      => 'required|date',
-            // 'keterangan' => 'nullable'
+            'description' => 'nullable'
         ]);
 
         $user = request()->user();
@@ -59,7 +60,31 @@ class ReportController extends Controller
             'user_id'   => $user->id,
             'chat'      => $request->chat,
             'transaksi' => $request->transaksi,
-            'date'      => $request->date
+            'date'      => $request->date,
+            'description' => $request->description
+        ]);
+
+        return response()->json(['status' => 'success'], 200);
+    }
+
+    public function updateReportCS(Request $request, $id)
+    {
+        $csReport = CsReport::find($id);
+        $this->validate($request, [
+            'chat'      => 'required|integer',
+            'transaksi' => 'required|integer',
+            'date'      => 'required|date',
+            'description' => 'nullable'
+        ]);
+
+        $user = request()->user();
+
+        $csReport->update([
+            'user_id'   => $user->id,
+            'chat'      => $request->chat,
+            'transaksi' => $request->transaksi,
+            'date'      => $request->date,
+            'description' => $request->description
         ]);
 
         return response()->json(['status' => 'success'], 200);
@@ -71,12 +96,19 @@ class ReportController extends Controller
             'customer_name'     => 'required|string',
             'customer_phone'    => 'required|string',
             'customer_address'  => 'required|string',
-            'waybill'  => 'required|string',
+            'waybill'           => 'required|string',
+            'image'             => 'nullable|image'
         ]);
 
         try {
             $user = request()->user();
             $data = $request->all();
+            $name = NULL;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $name = Str::slug($request->customer_name. '-' .$request->waybill) . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/orders', $name);
+            }
             $order = Order::create([
                 'user_id'           => $user->id,
                 'cs_report_id'      => $request->cs_report_id,
@@ -84,7 +116,8 @@ class ReportController extends Controller
                 'customer_phone'    => $request->customer_phone,
                 'customer_address'  => $request->customer_address,
                 'waybill'           => $request->waybill,
-                'date'              => $request->date
+                'date'              => $request->date,
+                'image'             => $name,
             ]);
             $orders = Order::find($order['id']);
             foreach ($data['qty'] as $item => $value) {
