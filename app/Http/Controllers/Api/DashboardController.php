@@ -137,7 +137,9 @@ class DashboardController extends Controller
     public function addTarget(Request $request)
     {
         $this->validate($request, [
-            'target' => 'required|integer',
+            'user_id' => 'required',
+            'adv_name' => 'required',
+            'target' => 'required',
             'start_date' => 'required',
             'end_date' => 'required'
         ]);
@@ -173,6 +175,13 @@ class DashboardController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date
         ]);
+        return response()->json(['status' => 'success'], 200);
+    }
+
+    public function destroyTarget($id)
+    {
+        $target = Target::find($id);
+        $target->delete();
         return response()->json(['status' => 'success'], 200);
     }
 }

@@ -90,4 +90,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/target/{id}/edit', [DashboardController::class, 'editTarget'])->name('target.edit');
     Route::post('/post-target', [DashboardController::class, 'addTarget'])->name('target.add');
     Route::post('/update-target/{id}', [DashboardController::class, 'updateTarget'])->name('target.update');
+    Route::delete('/target-delete/{id}', [DashboardController::class, 'destroyTarget'])->name('target.destroy');
 });

@@ -310,6 +310,15 @@ export default {
                         gender: ""
                     };
 
+                    this.$swal({
+                        background: "#FFFFFF",
+                        title: "Ditambah!",
+                        text: "Data Berhasil ditambah!",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
                     this.$router.push({ name: "teams.data" });
                 });
             } else if (this.$route.name == "teams.edit") {
@@ -329,6 +338,14 @@ export default {
                         password: "",
                         gender: ""
                     };
+                    this.$swal({
+                        background: "#FFFFFF",
+                        title: "Diupdate!",
+                        text: "Data Berhasil diupdate!",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
                     this.$router.push({ name: "teams.data" });
                 });
             }

@@ -16,6 +16,9 @@
                     >{{ items.name }}</option
                 >
             </select>
+            <p class="text-danger" v-if="errors.user_id">
+                {{ errors.user_id[0] }}
+            </p>
         </div>
         <div class="form-group" v-if="this.$route.name == 'target.edit'">
             <label for="target">Nama Adv</label>
@@ -41,6 +44,9 @@
                 v-model="target.target"
                 required
             />
+            <p class="text-danger" v-if="errors.target">
+                {{ errors.target[0] }}
+            </p>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -55,6 +61,9 @@
                         v-model="target.start_date"
                         required
                     />
+                    <p class="text-danger" v-if="errors.start_date">
+                        {{ errors.start_date[0] }}
+                    </p>
                 </div>
             </div>
             <div class="col-md-6">
@@ -69,6 +78,9 @@
                         v-model="target.end_date"
                         required
                     />
+                    <p class="text-danger" v-if="errors.end_date">
+                        {{ errors.end_date[0] }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -78,6 +90,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 export default {
+    name: "FormProduct",
     created() {
         this.getAdv();
         if (this.$route.name == "target.edit") {
@@ -101,9 +114,8 @@ export default {
             }
         };
     },
-
-    name: "FormProduct",
     computed: {
+        ...mapState(["errors"]),
         ...mapState("user", {
             users: state => state.users
         }),
@@ -139,6 +151,15 @@ export default {
                         end_date: ""
                     };
 
+                    this.$swal({
+                        background: "#FFFFFF",
+                        title: "Ditambah!",
+                        text: "Data Berhasil ditambah!",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
                     this.$router.push({ name: "target.data" });
                 });
             } else if (this.$route.name == "target.edit") {
@@ -151,6 +172,14 @@ export default {
                         end_date: ""
                     };
 
+                    this.$swal({
+                        background: "#FFFFFF",
+                        title: "Diupdate!",
+                        text: "Data Berhasil diupdate!",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
                     this.$router.push({ name: "target.data" });
                 });
             }

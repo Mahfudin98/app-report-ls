@@ -27,7 +27,7 @@ const mutations = {
 }
 
 const actions = {
-    getTarget({commit}, payload){
+    getTargets({commit}, payload){
         return new Promise((resolve, reject) => {
             $axios.get(`/target?month=${payload.month}&year=${payload.year}`)
             .then((response) => {
@@ -44,11 +44,13 @@ const actions = {
 
     submitTarget({dispatch, commit}, payload) {
         return new Promise((resolve, reject) => {
-            $axios.post(`/post-target`, payload)
+            $axios.post(`/post-target`, payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
             .then((response) => {
-                dispatch('getTarget').then(() => {
-                    resolve(response.data)
-                })
+                resolve(response.data)
             })
             .catch((error) => {
                 if (error.response.status == 422) {
@@ -73,6 +75,14 @@ const actions = {
                     'Content-Type': 'multipart/form-data'
                 }
             })
+            .then((response) => {
+                resolve(response.data)
+            })
+        })
+    },
+    removeTarget({dispatch}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.delete(`/target-delete/${payload}`)
             .then((response) => {
                 resolve(response.data)
             })

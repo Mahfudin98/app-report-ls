@@ -97,7 +97,7 @@
                     </li>
                     <!-- target -->
                     <li
-                        v-if="authenticated.role == 0 || $can('create teams')"
+                        v-if="authenticated.role == 0 || $can('read teams')"
                         :class="
                             this.$route.name == 'target.data'
                                 ? 'yay-item-active'

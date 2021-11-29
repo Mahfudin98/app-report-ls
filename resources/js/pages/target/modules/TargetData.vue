@@ -35,7 +35,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div
+                        class="col-md-2"
+                        v-if="authenticated.role == 0 || $can('add teams')"
+                    >
                         <div class="form-group">
                             <label>Add Target</label>
                             <router-link
@@ -102,7 +105,13 @@
                             <b-card>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="card">
+                                        <div
+                                            class="card"
+                                            v-if="
+                                                authenticated.role == 0 ||
+                                                    $can('edit teams')
+                                            "
+                                        >
                                             <div class="card-body">
                                                 <h5 class="card-title">
                                                     Setting
@@ -110,6 +119,23 @@
                                                         class="fas fa-cog"
                                                     ></span>
                                                 </h5>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <button
+                                                            class="btn btn-brand btn-long"
+                                                        >
+                                                            <span class="icon">
+                                                                <span
+                                                                    class="fas fa-file-export"
+                                                                ></span>
+                                                            </span>
+                                                            <span class="text"
+                                                                >Export</span
+                                                            >
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <router-link
@@ -136,15 +162,20 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <button
-                                                            class="btn btn-brand"
+                                                            class="btn btn-danger"
+                                                            @click="
+                                                                deleteTarget(
+                                                                    row.item.id
+                                                                )
+                                                            "
                                                         >
                                                             <span class="icon">
                                                                 <span
-                                                                    class="fas fa-file-export"
+                                                                    class="fas fa-trash"
                                                                 ></span>
                                                             </span>
                                                             <span class="text"
-                                                                >Export</span
+                                                                >Hapus</span
                                                             >
                                                         </button>
                                                     </div>
@@ -214,8 +245,14 @@
                                                             datas.item.order_detail
                                                                 .filter(
                                                                     itemInArray =>
-                                                                        (itemInArray.status ===
-                                                                        1 && moment(itemInArray.date).format("M") === month)
+                                                                        itemInArray.status ===
+                                                                            1 &&
+                                                                        moment(
+                                                                            itemInArray.date
+                                                                        ).format(
+                                                                            "M"
+                                                                        ) ===
+                                                                            month
                                                                 )
                                                                 .reduce(
                                                                     (
@@ -236,8 +273,14 @@
                                                             datas.item.order_detail
                                                                 .filter(
                                                                     itemInArray =>
-                                                                        (itemInArray.status ===
-                                                                        1 && moment(itemInArray.date).format("M") === month)
+                                                                        itemInArray.status ===
+                                                                            1 &&
+                                                                        moment(
+                                                                            itemInArray.date
+                                                                        ).format(
+                                                                            "M"
+                                                                        ) ===
+                                                                            month
                                                                 )
                                                                 .reduce(
                                                                     (
@@ -273,8 +316,14 @@
                                                                     (datas.item.order_detail
                                                                         .filter(
                                                                             itemInArray =>
-                                                                                (itemInArray.status ===
-                                                                                1 && moment(itemInArray.date).format("M") === month)
+                                                                                itemInArray.status ===
+                                                                                    1 &&
+                                                                                moment(
+                                                                                    itemInArray.date
+                                                                                ).format(
+                                                                                    "M"
+                                                                                ) ===
+                                                                                    month
                                                                         )
                                                                         .reduce(
                                                                             (
@@ -320,7 +369,7 @@ import VueMomentsAgo from "vue-moments-ago";
 export default {
     components: { VueMomentsAgo, Progress },
     created() {
-        this.getTarget({
+        this.getTargets({
             month: this.month,
             year: this.year
         });
@@ -354,6 +403,9 @@ export default {
         ...mapState("target", {
             targets: state => state.targets
         }),
+        ...mapState("user", {
+            authenticated: state => state.authenticated //ME-LOAD STATE AUTHENTICATED
+        }),
         years() {
             return _.range(
                 2019,
@@ -361,18 +413,18 @@ export default {
                     .add(1, "years")
                     .format("Y")
             );
-        },
+        }
     },
 
     watch: {
         month() {
-            this.getTarget({
+            this.getTargets({
                 month: this.month,
                 year: this.year
             });
         },
         year() {
-            this.getTarget({
+            this.getTargets({
                 month: this.month,
                 year: this.year
             });
@@ -380,7 +432,30 @@ export default {
     },
 
     methods: {
-        ...mapActions("target", ["getTarget", "removeProduct"])
+        ...mapActions("target", ["getTargets", "removeTarget"]),
+        deleteTarget(id) {
+            this.$swal
+                .fire({
+                    title: "Kamu Yakin?",
+                    text: "Tindakan ini akan menghapus secara permanent!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+                        this.removeTarget(id);
+                        this.$swal(
+                            "Terhapus!",
+                            "Produk sudah dihapus.",
+                            "success"
+                        );
+                        window.location.reload();
+                    }
+                });
+        }
     }
 };
 </script>
