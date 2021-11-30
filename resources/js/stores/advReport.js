@@ -57,34 +57,32 @@ const actions = {
         })
     },
 
-    editPosition({commit}, payload){
+    editAdvReport({commit}, payload){
         return new Promise((resolve, reject) => {
-            $axios.get(`/positions/${payload}/edit`)
+            $axios.get(`/adv-edit/${payload}`)
             .then((response) => {
-                commit('ASSIGN_FORM', response.data.data)
                 resolve(response.data)
             })
         })
     },
 
-    updatePosition({state, commit}, payload){
+    updateAdvReport({state, commit}, payload){
         return new Promise((resolve, reject) => {
-            $axios.put(`/positions/${payload}`, state.position)
+            $axios.post(`/adv-update/${state.id}`, payload)
             .then((response) => {
-                commit('CLEAR_FORM')
                 resolve(response.data)
             })
         })
     },
 
-    removePosition({dispatch}, payload){
+    removeAdvReport({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
-            $axios.delete(`/positions/${payload}`)
+            $axios.delete(`/adv-delete/${payload}`)
             .then((response) => {
-                dispatch('getPosition').then(() => resolve())
+                dispatch('getAdvReports').then(() => resolve(response.data))
             })
         })
-    }
+    },
 }
 
 export default {

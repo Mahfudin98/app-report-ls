@@ -326,4 +326,34 @@ class ReportController extends Controller
 
         return response()->json(['status' => 'success'], 200);
     }
+
+    public function editADVReport($id)
+    {
+        $report = AdvReport::find($id);
+
+        return response()->json(['status' => 'success', 'data' => $report], 200);
+    }
+
+    public function updateADVReport(Request $request, $id)
+    {
+        $this->validate($request, [
+            'biaya_iklan' => 'required|integer',
+            'cp_wa' => 'required|integer',
+            'date' => 'required|date'
+        ]);
+        $report = AdvReport::find($id);
+        $report->update([
+            'biaya_iklan' => $request->biaya_iklan,
+            'cp_wa' => $request->cp_wa,
+            'date' => $request->date
+        ]);
+        return response()->json(['status' => 'success'], 200);
+    }
+
+    public function destroyReportADV($id)
+    {
+        $report = AdvReport::find($id);
+        $report->delete();
+        return response()->json(['status' => 'success'], 200);
+    }
 }

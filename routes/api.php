@@ -57,6 +57,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/order', [ReportController::class, 'getOrder'])->name('get.order');
     Route::get('/lead-masuk', [ReportController::class, 'leadCS'])->name('get.lead');
     Route::post('/adv-reports', [ReportController::class, 'storeADV'])->name('store.report.adv');
+    Route::get('/adv-edit/{id}', [ReportController::class, 'editADVReport'])->name('edit.report.adv');
+    Route::post('/adv-update/{id}', [ReportController::class, 'updateADVReport'])->name('update.report.adv');
+    Route::delete('/adv-delete/{id}', [ReportController::class, 'destroyReportADV'])->name('delete.report.adv');
+
     // superadmin
     Route::resource('/positions', PositionController::class)->except(['show', 'create']);
     Route::resource('/products', ProductController::class);

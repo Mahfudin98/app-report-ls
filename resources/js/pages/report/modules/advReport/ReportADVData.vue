@@ -44,7 +44,7 @@
                                 lang="en"
                             />
                         </template>
-                        <template #cell(action)>
+                        <template #cell(action)="row">
                             <div class="btn-group dropdown dropdown-triangle">
                                 <button
                                     class="btn btn-brand btn-long dropdown-toggle"
@@ -60,17 +60,15 @@
                                 </button>
                                 <ul class="dropdown-menu nav">
                                     <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
-                                                data-feather="plus-circle"
-                                                class="fas fa-edit"
-                                            ></span
-                                            ><span>Edit</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
+                                        <router-link class="nav-link" :to="{name: 'adv.report.edit', params: { id: row.item.id }}">
+                                            <span data-feather="plus-circle" class="fas fa-edit">
+                                            </span>
+                                            <span>Edit</span>
+                                            <span class="rui-nav-circle"></span>
+                                        </router-link>
                                     </li>
                                     <li>
-                                        <a class="nav-link" href="#"
+                                        <a class="nav-link" @click="deleteReport(row.item.id)"
                                             ><span
                                                 data-feather="x-circle"
                                                 class="fas fa-trash"
@@ -138,21 +136,28 @@ export default {
                 day = ("0" + date.getDate()).slice(-2);
             return [date.getFullYear(), mnth, day].join("-");
         },
-        ...mapActions("advReport", ["getAdvReports", "removePosition"]),
-        deletePosition(id) {
-            this.$swal({
-                title: "Kamu Yakin?",
-                text: "Tindakan ini akan menghapus secara permanent!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Iya, Lanjutkan!"
-            }).then(result => {
-                if (result.value) {
-                    this.removePosition(id);
-                }
-            });
+        ...mapActions("advReport", ["getAdvReports", "removeAdvReport"]),
+        deleteReport(id) {
+            this.$swal
+                .fire({
+                    title: "Kamu Yakin?",
+                    text: "Tindakan ini akan menghapus secara permanent!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+                        this.removeAdvReport(id);
+                        this.$swal(
+                            "Terhapus!",
+                            "Produk sudah dihapus.",
+                            "success"
+                        );
+                    }
+                });
         }
     }
 };

@@ -139,8 +139,8 @@ export default {
         ...mapActions("advReport", [
             "getAdvReports",
             "submitAdvReport",
-            "editTeam",
-            "updateTeam"
+            "editAdvReport",
+            "updateAdvReport"
         ]),
         ...mapMutations("advReport", ["SET_ID_UPDATE"]),
         convert(str) {
