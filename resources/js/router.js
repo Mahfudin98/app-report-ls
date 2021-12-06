@@ -30,6 +30,7 @@ import EditDescription from './pages/report/modules/csReport/components/ReportCS
 import DataADVReport from './pages/report/modules/advReport/ReportADVData.vue'
 import AddADVReport from './pages/report/modules/advReport/ReportADVAdd.vue'
 import EditADVReport from './pages/report/modules/advReport/ReportADVEdit.vue'
+import ViewADVReport from './pages/report/modules/advReport/ReportADVView.vue'
 // stock
 import IndexStock from './pages/stock/Index.vue'
 import DataStock from './pages/stock/modules/StockData.vue'
@@ -223,6 +224,12 @@ const router = new Router({
                     name: 'adv.report.edit',
                     component: EditADVReport,
                     meta: { title: 'Edit Adv' }
+                },
+                {
+                    path: '/adv-report/view/:start/:end',
+                    name: 'adv.report.view',
+                    component: ViewADVReport,
+                    meta: { title: 'View Adv' }
                 }
             ],
         },

@@ -202,7 +202,7 @@ const actions = {
     // list per user
     getListCS({commit}, payload){
         return new Promise((resolve, reject) => {
-            $axios.get(`/list-user-cs`)
+            $axios.get(`/list-user-cs?month=${payload.month}&year=${payload.year}`)
             .then((response) => {
                 commit('ASSIGN_LIST_CS', response.data)
                 resolve(response.data)

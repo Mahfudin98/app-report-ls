@@ -39,6 +39,7 @@ class ReportController extends Controller
         }
         return new CsReportCollection($reports->paginate(10));
     }
+
     public function indexDateCS($date)
     {
         $csReport = CsReport::where('user_id', Auth::user()->id)->with(['order.orderDetail.product'])->where('date', $date)->first();
@@ -106,7 +107,7 @@ class ReportController extends Controller
             $name = NULL;
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
-                $name = Str::slug($request->customer_name. '-' .$request->waybill) . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $name = Str::slug($request->customer_name . '-' . $request->waybill) . '-' . time() . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/orders', $name);
             }
             $order = Order::create([
@@ -222,20 +223,22 @@ class ReportController extends Controller
 
     public function listUserCS()
     {
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
         $auth = request()->user();
-        $user = DB::table('users')->where('parent_id', $auth->id)
-            ->Join('cs_reports', 'users.id', '=', 'cs_reports.user_id')
-            ->select('users.*', 'cs_reports.chat', 'cs_reports.transaksi')
-            ->groupBy('user_id')
-            ->selectRaw('sum(chat) as chats, sum(transaksi) as transaction')
-            ->get();
-        return response()->json(['data' => $user]);
+        $user = User::where('parent_id', $auth->id)->pluck('id')->toArray();
+        $report = CsReport::whereIn('user_id', $user)->where('date', 'LIKE', '%' . $filter . '%')->with(['user']);
+        if (request()->q != '') {
+            $report = $report->where('name', 'LIKE', '%' . request()->q . '%');
+        }
+        return response()->json(['data' => $report->get()]);
     }
 
     public function viewOrderReport()
     {
-        $user = request()->id;
-        $order = Order::where('user_id', $user)->with(['orderDetail.product'])->orderBy('date', 'DESC');
+        $report = request()->id;
+        $order = Order::where('cs_report_id', $report)->with(['orderDetail.product'])->orderBy('date', 'DESC');
         return new OrderCollection($order->paginate(15));
     }
 
@@ -303,10 +306,29 @@ class ReportController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
         foreach ($cs as $row) {
-            $csReport[] = CsReport::where('user_id', $row->id)->whereBetween('date', [$start, $end])->sum('chat');;
+            $csReport[] = CsReport::where('user_id', $row->id)->with(['detailOrder'])->whereBetween('date', [$start, $end])->sum('chat');;
         }
 
         return array_sum($csReport);
+    }
+
+    public function getOmsetADV()
+    {
+        $adv = Auth::user()->id;
+        $cs = User::where('parent_id', $adv)->get();
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ', request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+        foreach ($cs as $row) {
+            $detailOrder[] = DetailOrder::where('user_id', $row->id)->where('status', 1)->whereBetween('date', [$start, $end])->sum('subtotal');
+        }
+
+        return array_sum($detailOrder);
     }
 
     public function storeADV(Request $request)
@@ -314,14 +336,26 @@ class ReportController extends Controller
         $this->validate($request, [
             'biaya_iklan' => 'required|integer',
             'cp_wa' => 'required|integer',
-            'date' => 'required|date'
+            'date' => 'required|date',
+            'lead' => 'required|integer',
+            'dashboard' => 'nullable|integer',
+            'omset' => 'nullable|integer',
+            'date_start' => 'required',
+            'date_end' => 'required',
+            'keterangan' => 'nullable'
         ]);
         $user = Auth::user()->id;
         AdvReport::create([
             'user_id' => $user,
             'biaya_iklan' => $request->biaya_iklan,
+            'lead' => $request->lead,
+            'dashboard' => $request->dashboard,
+            'omset' => $request->omset,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end,
             'cp_wa' => $request->cp_wa,
-            'date' => $request->date
+            'date' => $request->date,
+            'keterangan' => $request->keterangan
         ]);
 
         return response()->json(['status' => 'success'], 200);
@@ -339,13 +373,25 @@ class ReportController extends Controller
         $this->validate($request, [
             'biaya_iklan' => 'required|integer',
             'cp_wa' => 'required|integer',
-            'date' => 'required|date'
+            'date' => 'required|date',
+            'lead' => 'required|integer',
+            'dashboard' => 'nullable|integer',
+            'omset' => 'nullable|integer',
+            'date_start' => 'required',
+            'date_end' => 'required',
+            'keterangan' => 'nullable'
         ]);
         $report = AdvReport::find($id);
         $report->update([
             'biaya_iklan' => $request->biaya_iklan,
+            'lead' => $request->lead,
+            'dashboard' => $request->dashboard,
+            'omset' => $request->omset,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end,
             'cp_wa' => $request->cp_wa,
-            'date' => $request->date
+            'date' => $request->date,
+            'keterangan' => $request->keterangan
         ]);
         return response()->json(['status' => 'success'], 200);
     }
@@ -355,5 +401,21 @@ class ReportController extends Controller
         $report = AdvReport::find($id);
         $report->delete();
         return response()->json(['status' => 'success'], 200);
+    }
+
+    public function viewOmsetADV($start,$end)
+    {
+        $adv = Auth::user()->id;
+        $cs = User::where('parent_id', $adv)->get();
+
+        $filter = [$start, $end];
+        $date = str_replace(' ',' - ', $filter);
+        $mulai = Carbon::parse($date[0])->format('Y-m-d');
+        $akhir = Carbon::parse($date[1])->format('Y-m-d');
+        foreach ($cs as $row) {
+            $csReport = CsReport::where('user_id', $row->id)->with(['user', 'order.orderDetail'])->whereBetween('date', [$mulai, $akhir])->get();
+        }
+
+        return $csReport;
     }
 }

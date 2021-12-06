@@ -60,7 +60,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/adv-edit/{id}', [ReportController::class, 'editADVReport'])->name('edit.report.adv');
     Route::post('/adv-update/{id}', [ReportController::class, 'updateADVReport'])->name('update.report.adv');
     Route::delete('/adv-delete/{id}', [ReportController::class, 'destroyReportADV'])->name('delete.report.adv');
-
+    Route::get('/adv-omset', [ReportController::class, 'getOmsetADV'])->name('omset.adv');
+    Route::get('/adv-view/{start}/{end}', [ReportController::class, 'viewOmsetADV'])->name('omset.view.adv');
     // superadmin
     Route::resource('/positions', PositionController::class)->except(['show', 'create']);
     Route::resource('/products', ProductController::class);

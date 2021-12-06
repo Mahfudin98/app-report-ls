@@ -3,7 +3,8 @@ import $axios from '../api'
 const state = () => ({
     advReports: [],
     page: 1,
-    id: ''
+    id: '',
+    view: []
 })
 
 const mutations = {
@@ -17,6 +18,9 @@ const mutations = {
 
     SET_ID_UPDATE(state, payload) {
         state.id = payload
+    },
+    ASSIGN_VIEW(state, payload){
+        state.view = payload
     }
 }
 
@@ -81,6 +85,20 @@ const actions = {
             .then((response) => {
                 dispatch('getAdvReports').then(() => resolve(response.data))
             })
+        })
+    },
+    viewAdvReport({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/adv-view/${payload.start}/${payload.end}`)
+            .then((response) => {
+                commit('ASSIGN_VIEW',response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error) => {
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+            }
         })
     },
 }

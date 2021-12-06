@@ -20,4 +20,9 @@ class CsReport extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function detailOrder()
+    {
+        return $this->hasMany(DetailOrder::class);
+    }
+
 }

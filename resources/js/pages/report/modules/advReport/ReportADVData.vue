@@ -30,6 +30,9 @@
                         <template #cell(biaya_iklan)="row">
                             Rp. {{ row.item.biaya_iklan | formatNumber }}
                         </template>
+                        <template #cell(omset)="row">
+                            Rp. {{ row.item.omset | formatNumber }}
+                        </template>
                         <template #cell(cp_wa)="row">
                             Rp. {{ row.item.cp_wa | formatNumber }}
                         </template>
@@ -44,41 +47,138 @@
                                 lang="en"
                             />
                         </template>
-                        <template #cell(action)="row">
-                            <div class="btn-group dropdown dropdown-triangle">
-                                <button
-                                    class="btn btn-brand btn-long dropdown-toggle"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <span class="text">Action</span>
-                                    <span class="icon">
-                                        <span class="fas fa-angle-down"></span>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu nav">
-                                    <li>
-                                        <router-link class="nav-link" :to="{name: 'adv.report.edit', params: { id: row.item.id }}">
-                                            <span data-feather="plus-circle" class="fas fa-edit">
-                                            </span>
-                                            <span>Edit</span>
-                                            <span class="rui-nav-circle"></span>
-                                        </router-link>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link" @click="deleteReport(row.item.id)"
-                                            ><span
-                                                data-feather="x-circle"
-                                                class="fas fa-trash"
-                                            ></span
-                                            ><span>Delete</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <template #cell(view)="data">
+                            <button
+                                @click="data.toggleDetails"
+                                class="btn btn-brand btn-long btn-round"
+                            >
+                                <span class="icon">
+                                    <span
+                                        data-feather="check"
+                                        class="fas fa-eye"
+                                    ></span
+                                ></span>
+                                <span class="text">
+                                    {{ data.detailsShowing ? "Hide" : "Show" }}
+                                    Detail
+                                </span>
+                            </button>
+                        </template>
+                        <template #row-details="row">
+                            <b-card>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    Setting
+                                                    <span
+                                                        class="fas fa-cog"
+                                                    ></span>
+                                                </h5>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <router-link
+                                                            :to="{
+                                                                name:
+                                                                    'adv.report.edit',
+                                                                params: {
+                                                                    id:
+                                                                        row.item
+                                                                            .id
+                                                                }
+                                                            }"
+                                                            class="btn btn-warning"
+                                                        >
+                                                            <span class="icon">
+                                                                <span
+                                                                    class="fas fa-edit"
+                                                                ></span>
+                                                            </span>
+                                                            <span class="text"
+                                                                >Edit</span
+                                                            >
+                                                        </router-link>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <button
+                                                            class="btn btn-danger"
+                                                            @click="
+                                                                deleteReport(
+                                                                    row.item.id
+                                                                )
+                                                            "
+                                                        >
+                                                            <span class="icon">
+                                                                <span
+                                                                    class="fas fa-trash"
+                                                                ></span>
+                                                            </span>
+                                                            <span class="text"
+                                                                >Hapus</span
+                                                            >
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h4 class="title-text">
+                                                            Deskripsi Report
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col">
+                                                        <router-link
+                                                            :to="{
+                                                                name:
+                                                                    'adv.report.view',
+                                                                params: {
+                                                                    start:
+                                                                        row.item
+                                                                            .date_start,
+                                                                    end:
+                                                                        row.item
+                                                                            .date_end
+                                                                }
+                                                            }"
+                                                            class="btn btn-brand"
+                                                        >
+                                                            <span class="icon">
+                                                                <span
+                                                                    class="fas fa-eye"
+                                                                ></span>
+                                                            </span>
+                                                            <span class="text"
+                                                                >View Detail</span
+                                                            >
+                                                        </router-link>
+                                                    </div>
+                                                </div>
+                                                <p
+                                                    v-if="
+                                                        row.item.keterangan !=
+                                                            null
+                                                    "
+                                                    v-html="row.item.keterangan"
+                                                ></p>
+                                                <p
+                                                    v-if="
+                                                        row.item.keterangan ==
+                                                            null
+                                                    "
+                                                >
+                                                    <i>Tidak Ada Deskripsi!</i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </b-card>
                         </template>
                     </b-table>
                 </div>
@@ -104,11 +204,19 @@ export default {
             search: {},
             fields: [
                 { key: "index", label: "#" },
+                { key: "lead", label: "Lead" },
+                { key: "dashboard", label: "Dashboard" },
+                { key: "omset", label: "Omset" },
                 { key: "biaya_iklan", label: "Biaya Iklan" },
                 { key: "cp_wa", label: "CP WA" },
                 { key: "date", label: "Date" },
-                { key: "created_at", label: "Created At" },
-                { key: "action", label: "Aksi" }
+                { key: "view", label: "View Detail" }
+            ],
+            det: [
+                { key: "produk", label: "Nama Produk" },
+                { key: "price", label: "Harga" },
+                { key: "qty", label: "Jumlah" },
+                { key: "subtotal", label: "Subtotal" }
             ]
         };
     },

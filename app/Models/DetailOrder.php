@@ -33,4 +33,9 @@ class DetailOrder extends Model
         }
         return '<span class="badge badge-pill badge-brand">Success</span>';
     }
+
+    public function csReport()
+    {
+        return $this->belongsTo(CsReport::class);
+    }
 }
