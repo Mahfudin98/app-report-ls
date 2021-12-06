@@ -413,7 +413,7 @@ class ReportController extends Controller
         $mulai = Carbon::parse($date[0])->format('Y-m-d');
         $akhir = Carbon::parse($date[1])->format('Y-m-d');
         foreach ($cs as $row) {
-            $csReport = CsReport::where('user_id', $row->id)->with(['user', 'order.orderDetail'])->whereBetween('date', [$mulai, $akhir])->get();
+            $csReport = CsReport::where('user_id', $row->id)->with(['user', 'order.orderDetail.product'])->whereBetween('date', [$mulai, $akhir])->get();
         }
 
         return $csReport;

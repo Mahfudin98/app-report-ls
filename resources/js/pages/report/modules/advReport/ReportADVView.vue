@@ -64,17 +64,27 @@
                                                                 "></p>
                                                     </template>
                                                     <template #cell(action)="data">
-                                                        <button @click="info(data.item, data.index, $event.target)" class="btn btn-brand btn-long btn-round">
+                                                        <button @click="info(data.item, data.item.waybill, $event.target)" class="btn btn-brand btn-long btn-round">
                                                             <span class="icon">
-                                                                <span data-feather="check" class="fas fa-eye"></span></span>
-                                                            <span class="text">
-                                                                Info modal
+                                                                <span data-feather="check" class="fas fa-eye"></span>
                                                             </span>
                                                         </button>
                                                     </template>
                                                 </b-table>
-                                                <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-                                                    <pre>data</pre>
+                                                <b-modal :id="infoModal.id" :title="infoModal.title" size="lg" ok-only @hide="resetInfoModal">
+                                                    <div class="table-responsive">
+                                                        <b-table :items="infoModal.content.order_detail" :fields="modtab" show-empty>
+                                                            <template #cell(index)="data">
+                                                                {{ data.index + 1 }}
+                                                            </template>
+                                                            <template #cell(price)="data">
+                                                                Rp. {{ data.item.price | formatNumber }}
+                                                            </template>
+                                                            <template #cell(subtotal)="data">
+                                                                Rp. {{ data.item.subtotal | formatNumber }}
+                                                            </template>
+                                                        </b-table>
+                                                    </div>
                                                 </b-modal>
                                             </div>
                                         </div>
@@ -166,6 +176,27 @@ export default {
                     label: "Action"
                 }
             ],
+            modtab: [{
+                    key: 'index',
+                    label: "#"
+                },
+                {
+                    key: 'product.name',
+                    label: "Nama Produk"
+                },
+                {
+                    key: 'qty',
+                    label: "QTY"
+                },
+                {
+                    key: 'price',
+                    label: "Harga"
+                },
+                {
+                    key: 'subtotal',
+                    label: "Subtotal"
+                }
+            ],
             infoModal: {
                 id: 'info-modal',
                 title: '',
@@ -183,8 +214,8 @@ export default {
     methods: {
         ...mapActions("advReport", ["viewAdvReport"]),
         info(item, index, button) {
-            this.infoModal.title = `Row index: ${index}`
-            this.infoModal.content = JSON.stringify(item, null, 2)
+            this.infoModal.title = `Waybill: ${index}`
+            this.infoModal.content = item
             this.$root.$emit('bv::show::modal', this.infoModal.id, button)
         },
         resetInfoModal() {
