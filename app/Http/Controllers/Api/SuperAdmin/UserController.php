@@ -185,7 +185,7 @@ class UserController extends Controller
 
     public function getAdv()
     {
-        $adv = User::where('position_id', '13')->with(['position'])->orderBy('name', 'ASC')->get();
+        $adv = User::where('position_id', '13')->with(['position', 'child'])->orderBy('name', 'ASC')->get();
         return new UsersCollection($adv);
     }
 }

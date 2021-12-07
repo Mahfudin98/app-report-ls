@@ -2,15 +2,15 @@
 <main>
     <page-loader />
     <div class="rui-page-content">
-        <div class="container-fluid">
+        <!-- for adv -->
+        <div class="container-fluid" v-if="$can('create reports adv')">
             <div class="d-flex justify-content-between align-items-center mb-20">
-                <div class="row xs-gap">
-                    <div class="col-12">
-                        <div class="input-group">
-                            <date-picker v-model="search" placeholder="Pilih range tanggal" range></date-picker>
-                        </div>
-                    </div>
-                </div>
+                <router-link :to="{ name: 'adv.report.data' }" class="btn btn-secondary">
+                    <span class="icon">
+                        <span class="fas fa-arrow-alt-circle-left"></span>
+                    </span>
+                    <span class="text">Back</span>
+                </router-link>
             </div>
             <div class="table-responsive">
                 <b-table :items="view" :fields="fields" show-empty>
@@ -64,7 +64,15 @@
                                                                 "></p>
                                                     </template>
                                                     <template #cell(action)="data">
-                                                        <button @click="info(data.item, data.item.waybill, $event.target)" class="btn btn-brand btn-long btn-round">
+                                                        <button @click="
+                                                                    info(
+                                                                        data.item,
+                                                                        data
+                                                                            .item
+                                                                            .waybill,
+                                                                        $event.target
+                                                                    )
+                                                                " class="btn btn-brand btn-long btn-round">
                                                             <span class="icon">
                                                                 <span data-feather="check" class="fas fa-eye"></span>
                                                             </span>
@@ -73,15 +81,155 @@
                                                 </b-table>
                                                 <b-modal :id="infoModal.id" :title="infoModal.title" size="lg" ok-only @hide="resetInfoModal">
                                                     <div class="table-responsive">
-                                                        <b-table :items="infoModal.content.order_detail" :fields="modtab" show-empty>
+                                                        <b-table :items="
+                                                                    infoModal
+                                                                        .content
+                                                                        .order_detail
+                                                                " :fields="modtab" show-empty>
                                                             <template #cell(index)="data">
-                                                                {{ data.index + 1 }}
+                                                                {{
+                                                                        data.index +
+                                                                            1
+                                                                    }}
                                                             </template>
                                                             <template #cell(price)="data">
-                                                                Rp. {{ data.item.price | formatNumber }}
+                                                                Rp.
+                                                                {{
+                                                                        data
+                                                                            .item
+                                                                            .price
+                                                                            | formatNumber
+                                                                    }}
                                                             </template>
                                                             <template #cell(subtotal)="data">
-                                                                Rp. {{ data.item.subtotal | formatNumber }}
+                                                                Rp.
+                                                                {{
+                                                                        data
+                                                                            .item
+                                                                            .subtotal
+                                                                            | formatNumber
+                                                                    }}
+                                                            </template>
+                                                        </b-table>
+                                                    </div>
+                                                </b-modal>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </b-card>
+                    </template>
+                </b-table>
+            </div>
+        </div>
+        <!-- for manager -->
+        <div class="container-fluid" v-if="$can('read projects')">
+            <div class="d-flex justify-content-between align-items-center mb-20">
+                <router-link :to="{ name: 'adv.report.show', params: { id: $route.params.id } }" class="btn btn-secondary">
+                    <span class="icon">
+                        <span class="fas fa-arrow-alt-circle-left"></span>
+                    </span>
+                    <span class="text">Back</span>
+                </router-link>
+            </div>
+            <div class="table-responsive">
+                <b-table :items="viewManage" :fields="fields" show-empty>
+                    <template #cell(index)="data">
+                        {{ data.index + 1 }}
+                    </template>
+
+                    <template #cell(view)="data">
+                        <button @click="data.toggleDetails" class="btn btn-brand btn-long btn-round">
+                            <span class="icon">
+                                <span data-feather="check" class="fas fa-eye"></span></span>
+                            <span class="text">
+                                {{ data.detailsShowing ? "Hide" : "Show" }}
+                                Detail
+                            </span>
+                        </button>
+                    </template>
+                    <template #row-details="row">
+                        <b-card>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="title-text">
+                                                Deskripsi Report
+                                            </h4>
+                                            <p v-if="
+                                                        row.item.description !=
+                                                            null
+                                                    " v-html="
+                                                        row.item.description
+                                                    "></p>
+                                            <p v-if="
+                                                        row.item.description ==
+                                                            null
+                                                    ">
+                                                <i>Tidak Ada Deskripsi!</i>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <b-table :items="row.item.order" :fields="det" show-empty>
+                                                    <template #cell(status)="data">
+                                                        <p v-html="
+                                                                    data.item
+                                                                        .status_label
+                                                                "></p>
+                                                    </template>
+                                                    <template #cell(action)="data">
+                                                        <button @click="
+                                                                    info(
+                                                                        data.item,
+                                                                        data
+                                                                            .item
+                                                                            .waybill,
+                                                                        $event.target
+                                                                    )
+                                                                " class="btn btn-brand btn-long btn-round">
+                                                            <span class="icon">
+                                                                <span data-feather="check" class="fas fa-eye"></span>
+                                                            </span>
+                                                        </button>
+                                                    </template>
+                                                </b-table>
+                                                <b-modal :id="infoModal.id" :title="infoModal.title" size="lg" ok-only @hide="resetInfoModal">
+                                                    <div class="table-responsive">
+                                                        <b-table :items="
+                                                                    infoModal
+                                                                        .content
+                                                                        .order_detail
+                                                                " :fields="modtab" show-empty>
+                                                            <template #cell(index)="data">
+                                                                {{
+                                                                        data.index +
+                                                                            1
+                                                                    }}
+                                                            </template>
+                                                            <template #cell(price)="data">
+                                                                Rp.
+                                                                {{
+                                                                        data
+                                                                            .item
+                                                                            .price
+                                                                            | formatNumber
+                                                                    }}
+                                                            </template>
+                                                            <template #cell(subtotal)="data">
+                                                                Rp.
+                                                                {{
+                                                                        data
+                                                                            .item
+                                                                            .subtotal
+                                                                            | formatNumber
+                                                                    }}
                                                             </template>
                                                         </b-table>
                                                     </div>
@@ -117,10 +265,19 @@ export default {
     name: "DataReportADV",
 
     created() {
-        this.viewAdvReport({
-            start: this.$route.params.start,
-            end: this.$route.params.end
-        });
+        if (this.$route.name == "adv.report.view") {
+            this.viewAdvReport({
+                start: this.$route.params.start,
+                end: this.$route.params.end
+            });
+        }
+        if (this.$route.name == "adv.report.view.manage") {
+            this.viewManageAdvReport({
+                id: this.$route.params.id,
+                start: this.$route.params.start,
+                end: this.$route.params.end
+            });
+        }
     },
 
     data() {
@@ -177,52 +334,52 @@ export default {
                 }
             ],
             modtab: [{
-                    key: 'index',
+                    key: "index",
                     label: "#"
                 },
                 {
-                    key: 'product.name',
+                    key: "product.name",
                     label: "Nama Produk"
                 },
                 {
-                    key: 'qty',
+                    key: "qty",
                     label: "QTY"
                 },
                 {
-                    key: 'price',
+                    key: "price",
                     label: "Harga"
                 },
                 {
-                    key: 'subtotal',
+                    key: "subtotal",
                     label: "Subtotal"
                 }
             ],
             infoModal: {
-                id: 'info-modal',
-                title: '',
-                content: ''
+                id: "info-modal",
+                title: "",
+                content: ""
             }
         };
     },
 
     computed: {
         ...mapState("advReport", {
-            view: state => state.view
+            view: state => state.view,
+            viewManage: state => state.viewManage
         })
     },
 
     methods: {
-        ...mapActions("advReport", ["viewAdvReport"]),
-        info(item, index, button) {
-            this.infoModal.title = `Waybill: ${index}`
-            this.infoModal.content = item
-            this.$root.$emit('bv::show::modal', this.infoModal.id, button)
+        ...mapActions("advReport", ["viewAdvReport", "viewManageAdvReport"]),
+        info(item, waybill, button) {
+            this.infoModal.title = `Waybill: ${waybill}`;
+            this.infoModal.content = item;
+            this.$root.$emit("bv::show::modal", this.infoModal.id, button);
         },
         resetInfoModal() {
-            this.infoModal.title = ''
-            this.infoModal.content = ''
-        },
-
+            this.infoModal.title = "";
+            this.infoModal.content = "";
+        }
     }
 };
 </script>

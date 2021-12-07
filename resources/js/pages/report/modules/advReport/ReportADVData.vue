@@ -2,7 +2,7 @@
     <main>
         <page-loader />
         <div class="rui-page-content">
-            <div class="container-fluid">
+            <div class="container-fluid" v-if="$can('create reports adv')">
                 <div
                     class="d-flex justify-content-between align-items-center mb-20"
                 >
@@ -154,7 +154,8 @@
                                                                 ></span>
                                                             </span>
                                                             <span class="text"
-                                                                >View Detail</span
+                                                                >View
+                                                                Detail</span
                                                             >
                                                         </router-link>
                                                     </div>
@@ -183,6 +184,56 @@
                     </b-table>
                 </div>
             </div>
+            <!-- for manager -->
+            <div class="container-fluid" v-if="$can('read projects')">
+                <!-- <div
+                    class="d-flex justify-content-between align-items-center mb-20"
+                >
+                    <div class="row xs-gap">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <date-picker
+                                    v-model="search"
+                                    placeholder="Pilih range tanggal"
+                                    range
+                                ></date-picker>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="table-responsive">
+                    <b-table :items="users" :fields="adv" show-empty>
+                        <template #cell(index)="data">
+                            {{ data.index + 1 }}
+                        </template>
+                        <template #cell(count)="data">
+                            <h5><b-badge pill variant="light">{{ data.item.child.length }}</b-badge> Orang</h5>
+                        </template>
+                        <template #cell(view)="data">
+                            <router-link
+                                :to="{
+                                    name: 'adv.report.show',
+                                    params: {
+                                        id: data.item.id
+                                    }
+                                }"
+                                class="btn btn-brand btn-long btn-round"
+                            >
+                                <span class="icon">
+                                    <span
+                                        data-feather="check"
+                                        class="fas fa-eye"
+                                    ></span
+                                ></span>
+                                <span class="text">
+                                    Show
+                                    Detail
+                                </span>
+                            </router-link>
+                        </template>
+                    </b-table>
+                </div>
+            </div>
         </div>
     </main>
 </template>
@@ -197,6 +248,7 @@ export default {
 
     created() {
         this.getAdvReports();
+        this.getAdv();
     },
 
     data() {
@@ -217,6 +269,12 @@ export default {
                 { key: "price", label: "Harga" },
                 { key: "qty", label: "Jumlah" },
                 { key: "subtotal", label: "Subtotal" }
+            ],
+            adv: [
+                { key: "index", label: "#" },
+                { key: "name", label: "Nama ADV" },
+                { key: "count", label: "Jumlah CS" },
+                { key: "view", label: "Detail" }
             ]
         };
     },
@@ -224,6 +282,9 @@ export default {
     computed: {
         ...mapState("advReport", {
             advReports: state => state.advReports
+        }),
+        ...mapState("user", {
+            users: state => state.users
         })
     },
 
@@ -245,6 +306,7 @@ export default {
             return [date.getFullYear(), mnth, day].join("-");
         },
         ...mapActions("advReport", ["getAdvReports", "removeAdvReport"]),
+        ...mapActions("user", ["getAdv"]),
         deleteReport(id) {
             this.$swal
                 .fire({

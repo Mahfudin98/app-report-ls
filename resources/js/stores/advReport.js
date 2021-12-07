@@ -4,7 +4,9 @@ const state = () => ({
     advReports: [],
     page: 1,
     id: '',
-    view: []
+    view: [],
+    show: [],
+    viewManage: [],
 })
 
 const mutations = {
@@ -21,7 +23,13 @@ const mutations = {
     },
     ASSIGN_VIEW(state, payload){
         state.view = payload
-    }
+    },
+    ASSIGN_SHOW(state, payload){
+        state.show = payload
+    },
+    ASSIGN_VIEW_MANAGE(state, payload){
+        state.viewManage = payload
+    },
 }
 
 const actions = {
@@ -92,6 +100,34 @@ const actions = {
             $axios.get(`/adv-view/${payload.start}/${payload.end}`)
             .then((response) => {
                 commit('ASSIGN_VIEW',response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error) => {
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+            }
+        })
+    },
+    ShowAdvReport({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/adv-reports/show/${payload}`)
+            .then((response) => {
+                commit('ASSIGN_SHOW',response.data)
+                resolve(response.data)
+            })
+        })
+        .catch((error) => {
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+            }
+        })
+    },
+    viewManageAdvReport({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/adv-view/${payload.id}/${payload.start}/${payload.end}`)
+            .then((response) => {
+                commit('ASSIGN_VIEW_MANAGE',response.data)
                 resolve(response.data)
             })
         })

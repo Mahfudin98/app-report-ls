@@ -31,6 +31,7 @@ import DataADVReport from './pages/report/modules/advReport/ReportADVData.vue'
 import AddADVReport from './pages/report/modules/advReport/ReportADVAdd.vue'
 import EditADVReport from './pages/report/modules/advReport/ReportADVEdit.vue'
 import ViewADVReport from './pages/report/modules/advReport/ReportADVView.vue'
+import ShowADVReport from './pages/report/modules/advReport/ReportADVShow.vue'
 // stock
 import IndexStock from './pages/stock/Index.vue'
 import DataStock from './pages/stock/modules/StockData.vue'
@@ -230,7 +231,19 @@ const router = new Router({
                     name: 'adv.report.view',
                     component: ViewADVReport,
                     meta: { title: 'View Adv' }
-                }
+                },
+                {
+                    path: '/adv-report/view-manager/:id/:start/:end',
+                    name: 'adv.report.view.manage',
+                    component: ViewADVReport,
+                    meta: { title: 'View Adv' }
+                },
+                {
+                    path: '/adv-report/show/:id',
+                    name: 'adv.report.show',
+                    component: ShowADVReport,
+                    meta: { title: 'Show Adv' }
+                },
             ],
         },
         // project route

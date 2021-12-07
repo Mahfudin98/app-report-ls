@@ -418,4 +418,37 @@ class ReportController extends Controller
 
         return $csReport;
     }
+
+    public function viewOmsetADVManager($id,$start,$end)
+    {
+        $adv = User::find($id);
+        $cs = User::where('parent_id', $adv->id)->get();
+
+        $filter = [$start, $end];
+        $date = str_replace(' ',' - ', $filter);
+        $mulai = Carbon::parse($date[0])->format('Y-m-d');
+        $akhir = Carbon::parse($date[1])->format('Y-m-d');
+        foreach ($cs as $row) {
+            $csReport = CsReport::where('user_id', $row->id)->with(['user', 'order.orderDetail.product'])->whereBetween('date', [$mulai, $akhir])->get();
+        }
+
+        return $csReport;
+    }
+
+    public function showADV($id)
+    {
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ', request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+        $reports = AdvReport::where('user_id', $id)->orderBy('date', 'DESC')->whereBetween('date', [$start, $end]);
+        if (request()->q != '') {
+            $reports = $reports->where('name', 'LIKE', '%' . request()->q . '%');
+        }
+        return new AdvReportCollection($reports->paginate(10));
+    }
 }
