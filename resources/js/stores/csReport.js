@@ -271,6 +271,15 @@ const actions = {
             })
         })
     },
+
+    removeOrder({ dispatch }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.delete(`/delete-order/${payload}`)
+            .then((response) => {
+                dispatch('viewCsReport').then(() => resolve(response.data))
+            })
+        })
+    },
 }
 
 export default {

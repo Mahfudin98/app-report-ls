@@ -142,7 +142,7 @@
                                                                 </router-link>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <button class="btn btn-danger">
+                                                                <button class="btn btn-danger" @click="deleteOrder(row.id)">
                                                                     <span class="icon">
                                                                         <span class="fas fa-trash"></span>
                                                                     </span>
@@ -165,12 +165,24 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <b-img v-show="
-                                                            row.image != null
-                                                        " :src="
+                                                <br>
+                                                <b-card v-show="row.image != null">
+                                                    <h5 class="card-title">
+                                                            Setting
+                                                            <span class="fas fa-cog"></span>
+                                                        </h5>
+                                                    <button class="btn btn-danger card-title">
+                                                        <span class="icon">
+                                                            <span class="fas fa-trash"></span>
+                                                        </span>
+                                                        <span class="text">Hapus</span>
+                                                    </button>
+                                                    <b-img :src="
                                                             '../storage/orders/' +
                                                                 row.image
                                                         " thumbnail fluid alt="Responsive image"></b-img>
+                                                </b-card>
+                                                <br v-if="row.image != null">
                                                 <b-table :items="
                                                             row.order_detail
                                                         " :fields="fields" show-empty>
@@ -329,7 +341,30 @@ export default {
         }
     },
     methods: {
-        ...mapActions("csReport", ["viewCsReport", "removeProductOrder"]),
+        ...mapActions("csReport", ["viewCsReport", "removeProductOrder", "removeOrder"]),
+        deleteOrder(id){
+            this.$swal
+                .fire({
+                    title: "Kamu Yakin?",
+                    text: "Tindakan ini akan menghapus secara permanent!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                })
+                .then(result => {
+                    if (result.isConfirmed) {
+                        this.removeOrder(id);
+                        this.$swal(
+                            "Terhapus!",
+                            "Order sudah dihapus.",
+                            "success"
+                        );
+                        window.location.reload();
+                    }
+                });
+        },
         deleteProduct(id) {
             this.$swal
                 .fire({

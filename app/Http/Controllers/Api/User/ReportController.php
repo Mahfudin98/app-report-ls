@@ -271,6 +271,22 @@ class ReportController extends Controller
         return response()->json(['status' => 'success']);
     }
 
+    public function deleteOrder($id)
+    {
+        $order = Order::find($id);
+        $user = request()->user();
+        $details = DetailOrder::where('order_id', $id)->sum('subtotal');
+        $bulan = Carbon::createFromFormat('Y-m-d', $order->date)->month;
+        $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
+        $target->update([
+            'omset' => $target->omset - $details
+        ]);
+        File::delete(storage_path('app/public/orders/' . $order->image));
+        $order->delete();
+        $detail = DetailOrder::where('order_id', $id)->delete();
+        return response()->json(['status' => 'success']);
+    }
+
     public function listUserCS()
     {
         $year = request()->year;
