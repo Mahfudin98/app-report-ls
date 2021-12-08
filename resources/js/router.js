@@ -26,6 +26,7 @@ import ViewCSReport from './pages/report/modules/csReport/ReportCSView.vue'
 import EditProductOrder from './pages/report/modules/csReport/components/EditProductOrder.vue'
 import ViewOrder from './pages/report/modules/csReport/ViewOrder.vue'
 import EditDescription from './pages/report/modules/csReport/components/ReportCSEditDescription.vue'
+import EditOrder from './pages/report/modules/csReport/components/EditOrder.vue'
 // advReport
 import DataADVReport from './pages/report/modules/advReport/ReportADVData.vue'
 import AddADVReport from './pages/report/modules/advReport/ReportADVAdd.vue'
@@ -205,6 +206,12 @@ const router = new Router({
                     path: '/edit/description/:date',
                     name: 'report.edit.order',
                     component: EditDescription,
+                    meta: { title: 'Edit Order' }
+                },
+                {
+                    path: '/cs-report/edit-order/:id',
+                    name: 'cs.report.edit.order',
+                    component: EditOrder,
                     meta: { title: 'Edit Order' }
                 },
                 // adv report

@@ -10,7 +10,8 @@ const state = () => ({
     editOrderProduct: '',
     listCS: [],
     listAllCS: [],
-    viewOrder: []
+    viewOrder: [],
+    editOrder: [],
 })
 
 const mutations = {
@@ -52,6 +53,10 @@ const mutations = {
 
     ASSIGN_VIEW_ORDER(state, payload){
         state.viewOrder = payload
+    },
+
+    ASSIGN_EDIT_ORDER(state, payload){
+        state.editOrder = payload
     }
 }
 
@@ -234,6 +239,29 @@ const actions = {
     updateCsReport({ state }, payload) {
         return new Promise((resolve, reject) => {
             $axios.post(`/cs-reports/update/${state.id}`, payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                resolve(response.data)
+            })
+        })
+    },
+
+    editOrderCsReport({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.get(`/edit-order/${payload}`)
+            .then((response) => {
+                commit('ASSIGN_EDIT_ORDER', response.data)
+                resolve(response.data)
+            })
+        })
+    },
+
+    updateOrderCsReport({ state }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.post(`/update-order/${state.id}`, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

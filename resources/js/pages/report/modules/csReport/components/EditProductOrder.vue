@@ -18,9 +18,9 @@
                 </router-link>
                 <button @click="submit" class="btn btn-brand">
                     <span class="icon">
-                        <i class="fas fa-save"></i>
+                        <i class="fas fa-sync-alt"></i>
                     </span>
-                    <span class="text">Save</span>
+                    <span class="text">Update</span>
                 </button>
             </div>
             <!-- form -->

@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 
@@ -238,6 +239,35 @@ class ReportController extends Controller
             'omset' => $target->omset - $details
         ]);
         $detail->delete();
+        return response()->json(['status' => 'success']);
+    }
+
+    public function editOrder($id)
+    {
+        $order = Order::find($id);
+        return $order;
+    }
+
+    public function updateOrder(Request $request, $id)
+    {
+        $order = Order::find($id);
+
+        $filename = $order->image;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            File::delete(storage_path('app/public/orders/' . $filename));
+            $filename = Str::slug($request->customer_name . '-' . $request->waybill) . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/orders', $filename);
+        }
+
+        $order->update([
+            'customer_name'     => $request->customer_name,
+            'customer_phone'    => $request->customer_phone,
+            'customer_address'  => $request->customer_address,
+            'waybill'           => $request->waybill,
+            'image'             => $filename,
+        ]);
+
         return response()->json(['status' => 'success']);
     }
 

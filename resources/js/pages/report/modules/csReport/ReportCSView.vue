@@ -134,12 +134,12 @@
                                                         </h5>
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <button class="btn btn-warning">
+                                                                <router-link :to="{ name: 'cs.report.edit.order', params: { id: row.id } }" class="btn btn-warning">
                                                                     <span class="icon">
                                                                         <span class="fas fa-edit"></span>
                                                                     </span>
                                                                     <span class="text">Edit</span>
-                                                                </button>
+                                                                </router-link>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <button class="btn btn-danger">
@@ -158,9 +158,9 @@
                                                                                 row.id
                                                                         }
                                                                     }" class="btn btn-brand btn-long">
-                                                                <span class="icon"><span class="fas fa-plus"></span></span><span class="text">Add
-                                                                    Product</span>
-                                                            </router-link>
+                                                                    <span class="icon"><span class="fas fa-plus"></span></span><span class="text">Add
+                                                                        Product</span>
+                                                                </router-link>
                                                             </div>
                                                         </div>
                                                     </div>
