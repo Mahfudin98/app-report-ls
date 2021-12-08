@@ -201,13 +201,26 @@ class ReportController extends Controller
     public function updateProductOrder(Request $request, $id)
     {
         try {
+            $user = request()->user(); //add user id
+            //batas
             $detail = DetailOrder::find($id);
+            $details = DetailOrder::where('id', $id)->sum('subtotal');
+            $bulan = Carbon::createFromFormat('Y-m-d', $detail->date)->month;
+            $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
+            $target->update([
+                'omset' => $target->omset - $details
+            ]);
             $detail->update([
                 'product_id' => $request->product_id,
                 'price' => $request->price,
                 'qty' => $request->qty,
                 'subtotal' => $request->qty * $request->price,
             ]);
+            //edit this
+            $target->update([
+                'omset' => $target->omset + ($request->qty * $request->price)
+            ]);
+            //to this
             return response()->json(['status' => 'success'], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()]);
@@ -217,6 +230,13 @@ class ReportController extends Controller
     public function deleteOrderProduct($id)
     {
         $detail = DetailOrder::find($id);
+        $user = request()->user();
+        $details = DetailOrder::where('id', $id)->sum('subtotal');
+        $bulan = Carbon::createFromFormat('Y-m-d', $detail->date)->month;
+        $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
+        $target->update([
+            'omset' => $target->omset - $details
+        ]);
         $detail->delete();
         return response()->json(['status' => 'success']);
     }
@@ -403,13 +423,13 @@ class ReportController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function viewOmsetADV($start,$end)
+    public function viewOmsetADV($start, $end)
     {
         $adv = Auth::user()->id;
         $cs = User::where('parent_id', $adv)->get();
 
         $filter = [$start, $end];
-        $date = str_replace(' ',' - ', $filter);
+        $date = str_replace(' ', ' - ', $filter);
         $mulai = Carbon::parse($date[0])->format('Y-m-d');
         $akhir = Carbon::parse($date[1])->format('Y-m-d');
         foreach ($cs as $row) {
@@ -419,13 +439,13 @@ class ReportController extends Controller
         return $csReport;
     }
 
-    public function viewOmsetADVManager($id,$start,$end)
+    public function viewOmsetADVManager($id, $start, $end)
     {
         $adv = User::find($id);
         $cs = User::where('parent_id', $adv->id)->get();
 
         $filter = [$start, $end];
-        $date = str_replace(' ',' - ', $filter);
+        $date = str_replace(' ', ' - ', $filter);
         $mulai = Carbon::parse($date[0])->format('Y-m-d');
         $akhir = Carbon::parse($date[1])->format('Y-m-d');
         foreach ($cs as $row) {
