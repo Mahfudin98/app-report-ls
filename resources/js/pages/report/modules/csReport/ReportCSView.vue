@@ -176,8 +176,7 @@
                                             :href="
                                                 '#' +
                                                     row.customer_name.replace(
-                                                        /\s/g,
-                                                        ''
+                                                        /[- )(]/g,''
                                                     ) +
                                                     row.waybill
                                             "
@@ -200,10 +199,7 @@
                                         </a>
                                         <div
                                             :id="
-                                                row.customer_name.replace(
-                                                    /\s/g,
-                                                    ''
-                                                ) + row.waybill
+                                                row.customer_name.replace(/[- )(]/g,'') + row.waybill
                                             "
                                             class="collapse"
                                             aria-labelledby="headingTwo"
