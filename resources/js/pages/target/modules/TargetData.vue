@@ -122,6 +122,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <button
+                                                        @click="exportData"
                                                             class="btn btn-brand btn-long"
                                                         >
                                                             <span class="icon">
@@ -455,6 +456,10 @@ export default {
                         window.location.reload();
                     }
                 });
+        },
+
+        exportData() {
+            window.open(`/api/export/target?api_token=${this.token}&month=${this.month}&year=${this.year}`)
         }
     }
 };

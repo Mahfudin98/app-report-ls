@@ -15,6 +15,7 @@ use App\Http\Resources\CustomersCollection;
 use App\Models\Target;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade As PDF;
 
 class DashboardController extends Controller
 {
@@ -183,5 +184,13 @@ class DashboardController extends Controller
         $target = Target::find($id);
         $target->delete();
         return response()->json(['status' => 'success'], 200);
+    }
+
+    public function targetExport()
+    {
+        $target = $this->targetIndex()->getOriginalContent();
+        $data = $target['data'];
+        $pdf = PDF::loadView('export.target', compact('data'));
+        return $pdf->stream();
     }
 }
