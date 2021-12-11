@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <title>Persentase Target</title>
-    <style>
+    {{-- <style>
         .progress {
             width: 150px;
             height: 150px;
@@ -108,54 +108,41 @@
             div.h4 {
             line-height: 1rem;
             }
-    </style>
+    </style> --}}
   </head>
   <body>
-    <div class="container py-5">
-        <div class="row">
-            <!-- For demo purpose -->
-            <div class="col-lg-12 mx-auto mb-5 text-center">
-                <h1 class="display-4">Report Target</h1>
-            </div>
-            <!-- END -->
-        </div>
+    <div class="container">
         @foreach ($data as $row)
-            <table class="table table-light">
+            <div class="row">
+                <!-- For demo purpose -->
+                <div class="col-lg-12 mx-auto mb-5 text-center">
+                    <h4>Report Target {{ $nama }}</h4>
+                </div>
+                <!-- END -->
+            </div>
+            <table class="table">
                 <tbody>
                     <tr>
-                        <td><b>{{ $row->adv_name }}</b></td>
-                        <td colspan="2"><b>Target:<span class="badge badge-primary">{{ $row->target }}</span></b></td>
-                        <td><b>Omset:<span class="badge badge-primary">{{ $row->omset }}</span></b></td>
-                        <td><b>Date:<span class="badge badge-primary">{{ $row->start_date }}</span></b></td>
+                        <td style="width:25%;"><b>{{ $row->adv_name }}</b></td>
+                        <td style="width:100%;"><b>Target:<span class="badge badge-primary">Rp {{ number_format($row->target) }}</span></b></td>
+                        <td style="width:50%;"><b>Omset:<span class="badge badge-primary">{{ number_format($row->omset) }}</span></b></td>
+                        <td style="width:25%;"><b>Date:<span class="badge badge-primary">{{ $row->start_date->format('F') }}</span></b></td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <div class="rounded-lg p-5 shadow">PERSENTASE</h2>
-
-                                <!-- Progress bar 1 -->
-                                <div class="progress mx-auto" data-value='10'>
-                                    <span class="progress-left">
-                                        <span class="progress-bar border-primary"></span>
-                                    </span>
-                                    <span class="progress-right">
-                                        <span class="progress-bar border-primary"></span>
-                                    </span>
-                                    <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                                    <div class="h2 font-weight-bold">{{ number_format(($row->omset / $row->target) * 100, 2, ' ') }}<sup class="small">%</sup></div>
-                                    </div>
-                                </div>
-                                <!-- END -->
-                            </div>
+                        <td colspan="4">
+                            {{ number_format(($row->omset / $row->target) * 100, 2, ' ') }}<sup class="small">%</sup>
                         </td>
-                        <td colspan="3">
-                            <table class="table">
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <table class="table table-bordered border-primary">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Nama CS</th>
-                                        <th scope="col">Order</th>
-                                        <th scope="col">Omset</th>
-                                        <th scope="col">Target</th>
-                                        <th scope="col">Persentase</th>
+                                        <th scope="col" style="width:35%;">Nama CS</th>
+                                        <th scope="col" style="width:15%;">Order</th>
+                                        <th scope="col" style="width:75%;">Omset</th>
+                                        <th scope="col" style="width:75%;">Target</th>
+                                        <th scope="col" style="width:25%;">Persentase</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -163,9 +150,9 @@
                                         <tr>
                                             <th>{{ $items->name }}</th>
                                             <td>{{ $cs->where('user_id', $items->id)->sum('qty') }}</td>
-                                            <td>{{ $cs->where('user_id', $items->id)->sum('subtotal') }}</td>
-                                            <td>{{ $row->target / $row->user->child->count() }}</td>
-                                            <td>{{ number_format(($cs->where('user_id', $items->id)->sum('subtotal') / ($row->target / $row->user->child->count()) * 100) , 2, ',', ' ') }}</td>
+                                            <td>Rp {{ number_format($cs->where('user_id', $items->id)->sum('subtotal')) }}</td>
+                                            <td>Rp {{ number_format($row->target / $row->user->child->count()) }}</td>
+                                            <td><span class="badge badge-success">{{ number_format(($cs->where('user_id', $items->id)->sum('subtotal') / ($row->target / $row->user->child->count()) * 100) , 2, ',', ' ') }} %</span></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -174,39 +161,6 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-12 mx-auto mb-5 text-center">
-                            <div class="row">
-                                <div class="col-xl-3 col-lg-6 mb-3">
-                                    <h5></h5>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 mb-3">
-                                    <h5></h5>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 mb-3">
-                                    <h5></h5>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 mb-3">
-                                    <h5></h5>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-                        <div class="col-xl-3 col-lg-6 mb-4">
-
-                        </div>
-                        <div class="col mb-8">
-                            <div class="card">
-                                <div class="card-body">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         @endforeach
     </div>
 

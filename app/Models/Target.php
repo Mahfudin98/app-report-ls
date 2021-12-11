@@ -9,7 +9,7 @@ class Target extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
+    protected $dates = ['start_date'];
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -109,9 +109,7 @@
                                 <div class="accordion-group" v-for="(row, index) in reportcs.order" :key="index">
                                     <a class="collapse-link collapsed" :href="
                                                 '#' +
-                                                    row.customer_name.replace(
-                                                        /[- )(]/g,''
-                                                    ) +
+                                                    row.customer_name.replace(/[- / \ )(]/g,'') +
                                                     row.waybill
                                             " id="headingTwo" data-toggle="collapse" aria-expanded="false" :aria-controls="
                                                 row.customer_name.replace(
@@ -122,7 +120,7 @@
                                         {{ row.customer_name }} [<span class="text-brand">{{ row.waybill }}</span>]<span v-html="row.status_label"></span>
                                     </a>
                                     <div :id="
-                                                row.customer_name.replace(/[- )(]/g,'') + row.waybill
+                                                row.customer_name.replace(/[- / \ )(]/g,'') + row.waybill
                                             " class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                                         <div class="collapse-content">
                                             <div class="table-responsive">

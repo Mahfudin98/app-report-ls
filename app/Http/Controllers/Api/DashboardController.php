@@ -192,9 +192,10 @@ class DashboardController extends Controller
         $data = $target['data'];
         $bulan = Carbon::now()->endOfMonth()->format('M');
         $bulan = Carbon::parse($data[0]->start_date)->format('m');
+        $nama = Carbon::parse($data[0]->start_date)->format('F-Y');
         $cs = DetailOrder::where('status', 1)->whereMonth('date', $bulan)->get();
-        $pdf = PDF::loadView('export.target', compact('data', 'cs'))->setPaper('a4', 'landscape');
-        return $pdf->stream();
+        $pdf = PDF::loadView('export.target', compact('data', 'cs', 'nama'))->setPaper('a4', 'landscape');
+        return $pdf->download('Target-'.$nama.'.pdf');
         // dd($cs);
     }
 }
