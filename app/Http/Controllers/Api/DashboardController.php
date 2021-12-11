@@ -130,7 +130,7 @@ class DashboardController extends Controller
         $mounth = request()->month;
         $filter = $year . '-' . $mounth;
 
-        $data = Target::with(['user', 'user.child.orderDetail'])->where('start_date', 'LIKE', '%' . $filter . '%')->get();
+        $data = Target::with(['user.child.orderDetail'])->where('start_date', 'LIKE', '%' . $filter . '%')->orderBy('omset', 'DESC')->get();
 
         return response()->json(['data' => $data], 200);
     }
@@ -190,7 +190,11 @@ class DashboardController extends Controller
     {
         $target = $this->targetIndex()->getOriginalContent();
         $data = $target['data'];
-        $pdf = PDF::loadView('export.target', compact('data'));
+        $bulan = Carbon::now()->endOfMonth()->format('M');
+        $bulan = Carbon::parse($data[0]->start_date)->format('m');
+        $cs = DetailOrder::where('status', 1)->whereMonth('date', $bulan)->get();
+        $pdf = PDF::loadView('export.target', compact('data', 'cs'))->setPaper('a4', 'landscape');
         return $pdf->stream();
+        // dd($cs);
     }
 }

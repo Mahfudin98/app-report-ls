@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with(['position'])->orderBy('created_at', 'DESC')->team();
+        $users = User::with(['position'])->orderBy('name', 'ASC')->team();
         if (request()->q != '') {
             $users = $users->where('name', 'LIKE', '%' . request()->q . '%');
         }
