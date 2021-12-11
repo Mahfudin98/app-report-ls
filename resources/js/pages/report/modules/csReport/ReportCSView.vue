@@ -110,7 +110,7 @@
                                     <a class="collapse-link collapsed" :href="
                                                 '#' +
                                                     row.customer_name.replace(/[- / \ )(]/g,'') +
-                                                    row.waybill
+                                                    row.waybill.replace(/'/g, '')
                                             " id="headingTwo" data-toggle="collapse" aria-expanded="false" :aria-controls="
                                                 row.customer_name.replace(
                                                     /\s/g,
@@ -120,7 +120,7 @@
                                         {{ row.customer_name }} [<span class="text-brand">{{ row.waybill }}</span>]<span v-html="row.status_label"></span>
                                     </a>
                                     <div :id="
-                                                row.customer_name.replace(/[- / \ )(]/g,'') + row.waybill
+                                                row.customer_name.replace(/[- / \ )(]/g,'') + row.waybill.replace(/'/g, '')
                                             " class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                                         <div class="collapse-content">
                                             <div class="table-responsive">
