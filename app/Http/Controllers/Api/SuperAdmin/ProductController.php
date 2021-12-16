@@ -46,6 +46,7 @@ class ProductController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:100',
             'price' => 'required|integer',
+            'weight' => 'required|integer',
             'type_pembelian' => 'required',
             'type_product' => 'required'
         ]);
@@ -54,6 +55,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'slug' => $request->name,
             'price' => $request->price,
+            'weight' => $request->weight,
             'stock' => 0,
             'type_pembelian' => $request->type_pembelian,
             'type_product' => $request->type_product
@@ -98,6 +100,7 @@ class ProductController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:100',
             'price' => 'required|integer',
+            'weight' => 'required|integer',
             'type_pembelian' => 'required',
             'type_product' => 'required'
         ]);
@@ -106,6 +109,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'slug' => $request->name,
             'price' => $request->price,
+            'weight' => $request->weight,
             'stock' => $request->stock,
             'type_pembelian' => $request->type_pembelian,
             'type_product' => $request->type_product

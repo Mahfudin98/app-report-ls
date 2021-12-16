@@ -99,7 +99,14 @@ class ReportController extends Controller
             'customer_phone'    => 'required|string',
             'customer_address'  => 'required|string',
             'waybill'           => 'required|string',
-            'image'             => 'nullable|image'
+            'image'             => 'nullable|image',
+            'ongkir'            => 'required',
+            'metode'            => 'required',
+            'biaya'             => 'nullable',
+            'total'             => 'required',
+            'courier'           => 'required',
+            'weight'            => 'required',
+            'district_id'       => 'required',
         ]);
 
         try {
@@ -120,6 +127,15 @@ class ReportController extends Controller
                 'waybill'           => $request->waybill,
                 'date'              => $request->date,
                 'image'             => $name,
+                'ongkir'            => $request->ongkir,
+                'metode'            => $request->metode,
+                'biaya'             => $request->biaya,
+                'total'             => $request->total,
+                'courier'           => $request->courier,
+                'weight'            => $request->weight,
+                'prov_id'           => $request->province,
+                'city_id'           => $request->city,
+                'district_id'       => $request->district_id
             ]);
             $orders = Order::find($order['id']);
             foreach ($data['qty'] as $item => $value) {
@@ -201,6 +217,21 @@ class ReportController extends Controller
 
     public function updateProductOrder(Request $request, $id)
     {
+        $this->validate($request, [
+            'customer_name'     => 'required|string',
+            'customer_phone'    => 'required|string',
+            'customer_address'  => 'required|string',
+            'waybill'           => 'required|string',
+            'image'             => 'nullable|image',
+            'ongkir'            => 'required',
+            'metode'            => 'required',
+            'biaya'             => 'nullable',
+            'total'             => 'required',
+            'courier'           => 'required',
+            'weight'            => 'required',
+            'district_id'       => 'required',
+        ]);
+
         try {
             $user = request()->user(); //add user id
             //batas
@@ -245,7 +276,8 @@ class ReportController extends Controller
     public function editOrder($id)
     {
         $order = Order::find($id);
-        return $order;
+        $detail = DetailOrder::where('order_id', $id)->sum('subtotal');
+        return response()->json(['order' => $order, 'detail' => $detail]);
     }
 
     public function updateOrder(Request $request, $id)
@@ -266,6 +298,15 @@ class ReportController extends Controller
             'customer_address'  => $request->customer_address,
             'waybill'           => $request->waybill,
             'image'             => $filename,
+            'ongkir'            => $request->ongkir,
+            'metode'            => $request->metode,
+            'biaya'             => $request->biaya,
+            'total'             => $request->total,
+            'courier'           => $request->courier,
+            'weight'            => $request->weight,
+            'prov_id'           => $request->province,
+            'city_id'           => $request->city,
+            'district_id'       => $request->district_id
         ]);
 
         return response()->json(['status' => 'success']);

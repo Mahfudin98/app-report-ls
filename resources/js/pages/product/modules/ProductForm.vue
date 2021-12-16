@@ -27,6 +27,19 @@
             />
         </div>
         <div class="form-group">
+            <label for="weight">Berat Product (Gram)</label>
+            <input
+                class="form-control"
+                type="number"
+                name="weight"
+                id="weight"
+                placeholder="Product weight"
+                v-model="product.weight"
+                :disabled="authenticated.position_id == 8"
+                required
+            />
+        </div>
+        <div class="form-group">
             <label for="stock">Stock</label>
             <input
                 class="form-control"

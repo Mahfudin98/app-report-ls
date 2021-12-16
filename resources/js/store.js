@@ -13,6 +13,7 @@ import order from './stores/order.js'
 import inventory from './stores/inventory.js'
 import returnOrder from './stores/returnOrder.js'
 import target from './stores/target.js'
+import ongkir from './stores/ongkir.js'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -29,7 +30,8 @@ const store = new Vuex.Store({
         order,
         inventory,
         returnOrder,
-        target
+        target,
+        ongkir
     },
 
     state: {

@@ -161,6 +161,28 @@
                                                                 </router-link>
                                                             </div>
                                                         </div>
+                                                        <div class="table-responsive">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Ongkir</th>
+                                                                        <th>Metode</th>
+                                                                        <th>Kurir</th>
+                                                                        <th>Biaya COD</th>
+                                                                        <th>Total</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Rp. {{ row.ongkir | formatNumber }}</td>
+                                                                        <td><span class="badge badge-brand">{{ row.metode == 1 ? 'COD' : 'Transfer' }}</span></td>
+                                                                        <td><span class="badge badge-brand">{{ row.courier }}</span></td>
+                                                                        <td>Rp. {{ row.metode == 1 ? row.biaya : 0 }}</td>
+                                                                        <td>Rp. {{ row.total | formatNumber }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <br>

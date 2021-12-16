@@ -149,6 +149,7 @@ export default {
                 { key: "type_pembelian", label: "Type Pembelian" },
                 { key: "type_product", label: "Type Product" },
                 { key: "price", label: "Harga" },
+                { key: "weight", label: "Berat (Gram)" },
                 { key: "stock", label: "Stock" },
                 { key: "action", label: "Aksi" }
             ]

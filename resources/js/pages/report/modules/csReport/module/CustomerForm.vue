@@ -1,182 +1,178 @@
 <template>
-    <div class="rui-snippet-preview demo">
-        <form action="">
-            <div class="row vertical-gap sm-gap justify-content-center">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
-                                <label for="customer_name">Customer Name</label>
-                                <input
-                                    id="customer_name"
-                                    class="form-control"
-                                    type="text"
-                                    name="customer_name"
-                                    placeholder="Enter page title"
-                                    v-model="customers.customer_name"
-                                    required
-                                />
-                                <p
-                                    class="text-danger"
-                                    v-if="errors.customer_name"
-                                >
-                                    {{ errors.customer_name[0] }}
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <label for="customer_phone"
-                                    >Customer Phone</label
-                                >
-                                <input
-                                    id="customer_phone"
-                                    class="form-control"
-                                    type="tel"
-                                    name="customer_phone"
-                                    placeholder="Enter page title"
-                                    v-model="customers.customer_phone"
-                                    required
-                                />
-                                <p
-                                    class="text-danger"
-                                    v-if="errors.customer_phone"
-                                >
-                                    {{ errors.customer_phone[0] }}
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <label for="customer_address"
-                                    >Customer Address</label
-                                >
-                                <input
-                                    id="customer_address"
-                                    class="form-control"
-                                    type="text"
-                                    name="customer_address"
-                                    placeholder="Enter page title"
-                                    v-model="customers.customer_address"
-                                    required
-                                />
-                                <p
-                                    class="text-danger"
-                                    v-if="errors.customer_address"
-                                >
-                                    {{ errors.customer_address[0] }}
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <label for="waybill">Waybill</label>
-                                <input
-                                    id="waybill"
-                                    class="form-control"
-                                    type="text"
-                                    name="waybill"
-                                    placeholder="Enter page title"
-                                    v-model="customers.waybill"
-                                    required
-                                />
-                                <p class="text-danger" v-if="errors.waybill">
-                                    {{ errors.waybill[0] }}
-                                </p>
-                            </div>
-                            <div class="form-group" :class="{ 'has-error': errors.image }">
-                                <label for="file-input">Image</label>
-                                <input
-                                    type="file"
-                                    class="form-control"
-                                    accept="image/*"
-                                    @change="uploadImage($event)"
-                                    id="file-input"
-                                />
-                                <p>*Kosongkan jika tidak ingin menambahkan</p>
-                                <p class="text-danger" v-if="errors.image">
-                                    {{ errors.image[0] }}
-                                </p>
-                            </div>
+<div class="rui-snippet-preview demo">
+    <form action="">
+        <div class="row vertical-gap sm-gap justify-content-center">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body mnt-6 mnb-6">
+                        <div class="form-group">
+                            <label for="customer_name">Customer Name</label>
+                            <input id="customer_name" class="form-control" type="text" name="customer_name" placeholder="Enter page title" v-model="customers.customer_name" required />
+                            <p class="text-danger" v-if="errors.customer_name">
+                                {{ errors.customer_name[0] }}
+                            </p>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body mnt-6 mnb-6">
-                            <h5 class="card-title h2">Order</h5>
-                            <section v-for="(row, index) in order" :key="index">
-                                <div class="form-group">
-                                    <label for="produk" class="text-white"
-                                        >Produk</label
-                                    >
-                                    <select
-                                        id="product"
-                                        class="form-control"
-                                        v-model="customers.product_id[index]"
-                                        required
-                                    >
-                                        <option selected disabled="" value=""
-                                            >Pilih Produk</option
-                                        >
-                                        <option
-                                            v-for="row in products.data"
-                                            :key="row.id"
-                                            :value="row"
-                                            >{{ row.name }}
-                                            <p
-                                                v-html="
-                                                    row.type_pembelian_label
-                                                "
-                                            ></p>
-                                            ({{ row.price }})
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="order" class="text-white"
-                                        >Total Order</label
-                                    >
-                                    <input
-                                        class="form-control"
-                                        required
-                                        type="number"
-                                        placeholder="Jumlah Order Product"
-                                        v-model="customers.qty[index]"
-                                    />
-                                </div>
-                                <br />
-                                <button
-                                    class="btn btn-brand"
-                                    type="button"
-                                    @click="removeParent(index)"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                    <span class="text">Remove Product</span>
-                                </button>
-                            </section>
+                        <div class="form-group">
+                            <label for="customer_phone">Customer Phone</label>
+                            <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Enter page title" v-model="customers.customer_phone" required />
+                            <p class="text-danger" v-if="errors.customer_phone">
+                                {{ errors.customer_phone[0] }}
+                            </p>
                         </div>
-                        <div class="card-footer">
-                            <button
-                                class="btn btn-brand"
-                                type="button"
-                                @click="addProduct"
-                            >
-                                <span class="icon">
-                                    <i class="fas fa-plus"></i>
-                                </span>
-                                <span class="text">Add Product</span>
-                            </button>
+                        <!-- form ongkir disini -->
+                        <div class="form-group">
+                            <label for="province">Province</label>
+                            <select class="form-control" @change="provinceId($event)" v-model="ongkir.province">
+                                <option selected disabled="" value="">Pilih Provinsi</option>
+                                <option class="py-1" v-for="province in provinces.data" :key="province.id" :value="province.province_id">{{ province.province }}</option>
+                            </select>
+                            <p class="text-danger" v-if="errors.province">
+                                {{ errors.province[0] }}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <select class="form-control" @change="cityId($event)" v-model="ongkir.city">
+                                <option selected disabled="" value="">Pilih City</option>
+                                <option class="py-1" v-for="city in cities.data" :key="city.id" :value="city.city_id">{{ city.city_name }}</option>
+                            </select>
+                            <p class="text-danger" v-if="errors.city">
+                                {{ errors.city[0] }}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="district">District</label>
+                            <select class="form-control" v-model="ongkir.district">
+                                <option selected disabled="" value="">Pilih District</option>
+                                <option class="py-1" v-for="district in districts.data" :key="district.id" :value="district.subdistrict_id">{{ district.subdistrict_name }}</option>
+                            </select>
+                            <p class="text-danger" v-if="errors.district">
+                                {{ errors.district[0] }}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="courier">Courier</label>
+                            <select class="form-control" v-model="ongkir.courier">
+                                <option selected disabled="" value="">Pilih Courier</option>
+                                <option value="jne">JNE</Option>
+                                <option value="j&t">J&T</Option>
+                                <option value="ninja">NINJA</Option>
+                                <option value="anteraja">ANTER AJA</Option>
+                            </select>
+                            <p class="text-danger" v-if="errors.courier">
+                                {{ errors.courier[0] }}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="metode">Metode</label>
+                            <select class="form-control" v-model="ongkir.metode">
+                                <option selected disabled="" value="">Pilih Metode</option>
+                                <option value="1">COD</Option>
+                                <option value="0">TRANSFER</Option>
+                            </select>
+                            <p class="text-danger" v-if="errors.metode">
+                                {{ errors.metode[0] }}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="ongkir">Ongkir</label>
+                            <input class="form-control" type="text" :value="getOngkir" disabled>
+                        </div>
+                        <div class="form-group" v-if="ongkir.metode == 1">
+                            <label for="biaya">Biaya</label>
+                            <input class="form-control" v-if="ongkir.courier === 'jne'" type="text" :value="biayaJNE" disabled>
+                            <input class="form-control" v-if="ongkir.courier === 'j&t'" type="text" :value="biayaJNT" disabled>
+                            <input class="form-control" v-if="ongkir.courier != 'jne' && ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="total">Total</label>
+                            <input class="form-control" type="text" :value="getTotal" disabled>
+                        </div>
+                        <!-- akhir form ongkir -->
+                        <div class="form-group">
+                            <label for="customer_address">Customer Address</label>
+                            <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Enter page title" v-model="customers.customer_address" required />
+                            <p class="text-danger" v-if="errors.customer_address">
+                                {{ errors.customer_address[0] }}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="waybill">Waybill</label>
+                            <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Enter page title" v-model="customers.waybill" required />
+                            <p class="text-danger" v-if="errors.waybill">
+                                {{ errors.waybill[0] }}
+                            </p>
+                        </div>
+                        <div class="form-group" :class="{ 'has-error': errors.image }">
+                            <label for="file-input">Image</label>
+                            <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
+                            <p>*Kosongkan jika tidak ingin menambahkan</p>
+                            <p class="text-danger" v-if="errors.image">
+                                {{ errors.image[0] }}
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body mnt-6 mnb-6">
+                        <h5 class="card-title h2">Order</h5>
+                        <section v-for="(row, index) in order" :key="index">
+                            <div class="form-group">
+                                <label for="order" class="text-white">Total Order</label>
+                                <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="customers.qty[index]" />
+                            </div>
+                            <div class="form-group">
+                                <label for="produk" class="text-white">Produk</label>
+                                <select id="product" class="form-control" v-model="customers.product_id[index]" @click="submitOngkir" required>
+                                    <option selected disabled="" value="">Pilih Produk</option>
+                                    <option v-for="row in products.data" :key="row.id" :value="row">{{ row.name }}
+                                        <p v-html="
+                                                    row.type_pembelian_label
+                                                "></p>
+                                        ({{ row.price }})
+                                    </option>
+                                </select>
+                            </div>
+                            <br />
+                            <button class="btn btn-brand" type="button" @click="removeParent(index)">
+                                <span class="icon">
+                                    <i class="fas fa-trash"></i>
+                                </span>
+                                <span class="text">Remove Product</span>
+                            </button>
+                        </section>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-brand" type="button" @click="addProduct">
+                            <span class="icon">
+                                <i class="fas fa-plus"></i>
+                            </span>
+                            <span class="text">Add Product</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 </template>
+
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import {
+    mapState,
+    mapActions,
+    mapMutations
+} from "vuex";
 export default {
     name: "ReportCSForm",
     created() {
         this.getAllProducts();
         this.viewCsReport(this.$route.params.date);
+        this.getProvinces();
+        this.getCities();
+        this.getDistricts();
     },
     data() {
         return {
@@ -190,7 +186,15 @@ export default {
                 product_id: [""],
                 qty: [""]
             },
-            order: []
+            order: [],
+            // ongkir
+            ongkir: {
+                province: '',
+                city: '',
+                district: '',
+                courier: '',
+                metode: '',
+            }
         };
     },
     computed: {
@@ -201,23 +205,111 @@ export default {
         ...mapState("product", {
             products: state => state.products
         }),
+        ...mapState("ongkir", {
+            provinces: state => state.provinces,
+            cities: state => state.cities,
+            districts: state => state.districts,
+            costs: state => state.costs
+        }),
         pricesOrder() {
             var result = this.customers.product_id;
-            var res = Object.keys(result).map(function(key) {
+            var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].price);
             });
             return res;
         },
         idOrder() {
             var result = this.customers.product_id;
-            var res = Object.keys(result).map(function(key) {
+            var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].id);
             });
             return res;
+        },
+        weightOrder() {
+            var result = this.customers.product_id;
+            var res = Object.keys(result).map(function (key) {
+                return parseInt(result[key].weight);
+            });
+            var qty = this.customers.qty;
+            var resQty = Object.keys(qty).map(function (key) {
+                return parseInt(qty[key]);
+            });
+            return res.reduce((acc, item) => acc + item) * resQty;
+        },
+        getOngkir() {
+            return this.costs.data
+        },
+        biayaCOD() {
+            var qty = this.customers.qty;
+            var resQty = Object.keys(qty).map(function (key) {
+                return parseInt(qty[key]);
+            });
+            if (this.getOngkir != undefined) {
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty;
+                const biaya = (3 / 100) * harga;
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        biayaJNT() {
+            var qty = this.customers.qty;
+            var resQty = Object.keys(qty).map(function (key) {
+                return parseInt(qty[key]);
+            });
+            if (this.getOngkir != undefined) {
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty;
+                const biaya = (parseInt(harga) * 3) / 100;
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        biayaJNE() {
+            var qty = this.customers.qty;
+            var resQty = Object.keys(qty).map(function (key) {
+                return parseInt(qty[key]);
+            });
+            if (this.getOngkir != undefined) {
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty;
+                const biaya = ((parseInt(harga) + this.getOngkir) * 3) / 100;
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        getTotal() {
+            const harga = this.pricesOrder.reduce((acc, item) => acc + item);
+            if (this.ongkir.metode == 1) {
+                if (this.getOngkir != undefined) {
+                    if (this.ongkir.courier === 'jne') {
+                        const total = this.getOngkir + parseInt(harga) + this.biayaJNE;
+                        return total;
+                    } else if (this.ongkir.courier === 'j&t') {
+                        const total = this.getOngkir + parseInt(harga) + this.biayaJNT;
+                        return total;
+                    } else {
+                        const total = this.getOngkir + parseInt(harga) + this.biayaCOD;
+                        return total;
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                if (this.getOngkir != undefined) {
+                    const total = parseInt(harga) + this.getOngkir;
+                    return total;
+                } else {
+                    return 0;
+                }
+            }
         }
     },
     methods: {
-        addProduct: function() {
+        addProduct: function () {
             this.order.push({
                 value: ""
             });
@@ -227,12 +319,30 @@ export default {
                 product_id: [""],
                 qty: [""]
             }),
-                this.order.splice(index, 1);
+            this.order.splice(index, 1);
         },
+        // onchange
+        provinceId(event) {
+            this.getCities(event.target.value);
+        },
+        cityId(event) {
+            this.getDistricts(event.target.value);
+        },
+        // end
         ...mapActions("product", ["getAllProducts"]),
         ...mapActions("csReport", ["viewCsReport", "submitCustomer"]),
+        ...mapActions("ongkir", ["getProvinces", "getCities", "getDistricts", "submitCost"]),
         uploadImage(event) {
             this.customers.image = event.target.files[0];
+        },
+        submitOngkir() {
+            let form = new FormData();
+            form.append("destination", this.ongkir.district);
+            form.append("weight", this.weightOrder);
+            form.append("courier", this.ongkir.courier);
+            this.submitCost(form).then(() => {
+                this.costs
+            })
         },
         submit() {
             let form = new FormData();
@@ -244,6 +354,27 @@ export default {
             form.append("waybill", this.customers.waybill);
             form.append("image", this.customers.image);
             form.append("date", this.$route.params.date);
+
+            // ongkir
+            form.append("ongkir", this.getOngkir);
+            form.append("metode", this.ongkir.metode);
+            form.append("total", this.getTotal);
+            form.append("courier", this.ongkir.courier);
+            form.append("province", this.ongkir.province);
+            form.append("city", this.ongkir.city);
+            form.append("district_id", this.ongkir.district);
+            form.append("weight", this.weightOrder);
+
+            if (this.ongkir.metode == 1) {
+                if (this.ongkir.courier === 'jne') {
+                    form.append("biaya", this.biayaJNE);
+                } else if (this.ongkir.courier === 'j&t') {
+                    form.append("biaya", this.biayaJNT);
+                } else {
+                    form.append("biaya", this.biayaCOD);
+                }
+            }
+
             // array order
             for (var i = 0; i < this.customers.qty.length; i++) {
                 let qty = this.customers.qty[i];
@@ -264,6 +395,14 @@ export default {
                     // for order
                     product_id: [""],
                     total_order: [""]
+                };
+
+                this.ongkir = {
+                    province: '',
+                    city: '',
+                    district: '',
+                    courier: '',
+                    metode: '',
                 };
 
                 this.$swal({

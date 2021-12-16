@@ -6,6 +6,7 @@ const state = () => ({
     product: {
         name: '',
         price: '',
+        weight: '',
         stock: '',
         type_pembelian: '',
         type_product: ''
@@ -15,7 +16,7 @@ const state = () => ({
 })
 
 const mutations = {
-    ASSIGN_DATA(state, payload){
+    ASSIGN_DATA(state, payload) {
         state.products = payload
     },
 
@@ -23,21 +24,23 @@ const mutations = {
         state.page = payload
     },
 
-    ASSIGN_FORM(state, payload){
+    ASSIGN_FORM(state, payload) {
         state.product = {
             name: payload.name,
             price: payload.price,
             stock: payload.stock,
+            weight: payload.weight,
             type_pembelian: payload.type_pembelian,
             type_product: payload.type_product
         }
     },
 
-    CLEAR_FORM(state, payload){
+    CLEAR_FORM(state, payload) {
         state.product = {
             name: '',
             price: '',
             stock: '',
+            weight: '',
             type_pembelian: '',
             type_product: ''
         }
@@ -45,81 +48,81 @@ const mutations = {
 }
 
 const actions = {
-    getProducts({commit, state}, payload){
-        let search = typeof payload != 'undefined' ? payload:''
+    getProducts({ commit, state }, payload) {
+        let search = typeof payload != 'undefined' ? payload : ''
         return new Promise((resolve, reject) => {
-            $axios.get(`/products?page=${state.page}&q=${search}`)
-            .then((response) => {
-                commit('ASSIGN_DATA', response.data)
-                resolve(response.data)
-            })
-        })
-        .catch((error)=>{
-            if (error.response.status == 422) {
-                commit('SET_ERRORS', error.response.data.errors, {root:true})
-            }
-        })
-    },
-
-    submitProduct({dispatch, commit, state}){
-        return new Promise((resolve, reject) => {
-            $axios.post(`/products`, state.product)
-            .then((response) => {
-                dispatch('getProducts').then(() => {
-                    commit('CLEAR_FORM')
-                    resolve(response.data)
-                })
+                $axios.get(`/products?page=${state.page}&q=${search}`)
+                    .then((response) => {
+                        commit('ASSIGN_DATA', response.data)
+                        resolve(response.data)
+                    })
             })
             .catch((error) => {
                 if (error.response.status == 422) {
-                    commit('SET_ERRORS', error.response.data.errors, { root:true })
+                    commit('SET_ERRORS', error.response.data.errors, { root: true })
                 }
             })
+    },
+
+    submitProduct({ dispatch, commit, state }) {
+        return new Promise((resolve, reject) => {
+            $axios.post(`/products`, state.product)
+                .then((response) => {
+                    dispatch('getProducts').then(() => {
+                        commit('CLEAR_FORM')
+                        resolve(response.data)
+                    })
+                })
+                .catch((error) => {
+                    if (error.response.status == 422) {
+                        commit('SET_ERRORS', error.response.data.errors, { root: true })
+                    }
+                })
         })
     },
 
-    editProduct({commit}, payload){
+    editProduct({ commit }, payload) {
         return new Promise((resolve, reject) => {
             $axios.get(`/products/${payload}/edit`)
-            .then((response) => {
-                commit('ASSIGN_FORM', response.data.data)
-                resolve(response.data)
-            })
+                .then((response) => {
+                    commit('ASSIGN_FORM', response.data.data)
+                    resolve(response.data)
+                })
         })
     },
 
-    updateProduct({state, commit}, payload){
+    updateProduct({ state, commit }, payload) {
         return new Promise((resolve, reject) => {
             $axios.put(`/products/${payload}`, state.product)
-            .then((response) => {
-                commit('CLEAR_FORM')
-                resolve(response.data)
-            })
+                .then((response) => {
+                    commit('CLEAR_FORM')
+                    resolve(response.data)
+                })
         })
     },
 
-    removeProduct({dispatch}, payload){
+    removeProduct({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             $axios.delete(`/products/${payload}`)
-            .then((response) => {
-                dispatch('getProducts').then(() => resolve())
-            })
+                .then((response) => {
+                    dispatch('getProducts').then(() => resolve())
+                })
         })
     },
 
-    getAllProducts({commit, state}, payload){
+    getAllProducts({ commit, state }, payload) {
         return new Promise((resolve, reject) => {
-            $axios.get(`/all-product`)
-            .then((response) => {
-                commit('ASSIGN_DATA', response.data)
-                resolve(response.data)
+                $axios.get(`/all-product`)
+                    .then((response) => {
+                        commit('ASSIGN_DATA', response.data)
+                        resolve(response.data)
+                    })
             })
-        })
-        .catch((error)=>{
-            if (error.response.status == 422) {
-                commit('SET_ERRORS', error.response.data.errors, {root:true})
-            }
-        })
+            .catch((error) => {
+                if (error.response.status == 422) {
+                    commit('SET_ERRORS', error.response.data.errors, { root: true })
+                }
+            })
     },
 }
 

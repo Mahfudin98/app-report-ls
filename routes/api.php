@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SuperAdmin\PositionController;
 use App\Http\Controllers\Api\SuperAdmin\ProductController;
+use App\Http\Controllers\Api\SuperAdmin\RajaOngkirController;
 use App\Http\Controllers\Api\SuperAdmin\RolePermissionController;
 use App\Http\Controllers\Api\SuperAdmin\UserController;
 use App\Http\Controllers\Api\User\InventoryController;
@@ -31,6 +32,13 @@ Route::get('export', [DashboardController::class, 'exportData'])->name('export.o
 Route::get('export/customer', [DashboardController::class, 'exportDataCustomers'])->name('export.customers');
 Route::get('export/target', [DashboardController::class, 'targetExport'])->name('export.target');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+// get ongkir
+Route::get('/provinces', [RajaOngkirController::class, 'getProvinces']);
+Route::get('/cities/{id}', [RajaOngkirController::class, 'getCities']);
+Route::get('/district/{id}', [RajaOngkirController::class, 'getDistricts']);
+Route::post('/checkOngkir', [RajaOngkirController::class, 'checkOngkir']);
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     // dashboard
