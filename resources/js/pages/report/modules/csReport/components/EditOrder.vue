@@ -100,13 +100,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="ongkir">Ongkir</label>
-                                    <input class="form-control" type="text" :value="getOngkir" disabled required>
+                                    <input class="form-control" type="text" :value="getOngkir != undefined ? getOngkir : 'loading...'" disabled required>
                                 </div>
                                 <div class="form-group" v-if="ongkir.metode == 1">
                                     <label for="biaya">Biaya</label>
                                     <input class="form-control" v-if="ongkir.courier === 'jne'" type="text" :value="biayaJNE" disabled>
                                     <input class="form-control" v-if="ongkir.courier === 'j&t'" type="text" :value="biayaJNT" disabled>
-                                    <input class="form-control" v-if="ongkir.courier != 'jne' || ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
+                                    <input class="form-control" v-if="ongkir.courier != 'jne' && ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="total">Total</label>
@@ -155,13 +155,13 @@ export default {
                 waybill: res.order.waybill,
                 image: "",
             };
-            // this.ongkir = {
-            //     courier: res.order.courier,
-            //     province: res.order.prov_id,
-            //     city: res.order.city_id,
-            //     district: res.order.district_id,
-            //     metode: res.order.metode
-            // }
+            this.ongkir = {
+                // courier: res.order.courier,
+                // province: res.order.prov_id,
+                // city: res.order.city_id,
+                // district: res.order.district_id,
+                metode: res.order.metode
+            }
         });
 
         this.getProvinces();
@@ -207,22 +207,34 @@ export default {
             return this.costs.data
         },
         biayaCOD() {
-            const harga = this.editOrder.detail
-            const biaya = (3 / 100) * harga;
+            if (this.getOngkir != undefined) {
+                const harga = this.editOrder.detail
+                const biaya = (3 / 100) * parseInt(harga);
 
-            return biaya;
+                return biaya;
+            } else {
+                return 0;
+            }
         },
         biayaJNT() {
-            const harga = this.editOrder.detail
-            const biaya = (parseInt(harga) * 3) / 100;
+            if (this.getOngkir != undefined) {
+                const harga = this.editOrder.detail
+                const biaya = (parseInt(harga) * 3) / 100;
 
-            return biaya;
+                return biaya;
+            } else {
+                return 0;
+            }
         },
         biayaJNE() {
-            const harga = this.editOrder.detail
-            const biaya = ((parseInt(harga) + this.getOngkir) * 3) / 100;
+            if (this.getOngkir != undefined) {
+                const harga = this.editOrder.detail
+                const biaya = ((parseInt(harga) + this.getOngkir) * 3) / 100;
 
-            return biaya;
+                return biaya;
+            } else {
+                return 0;
+            }
         },
         getTotal() {
             const harga = this.editOrder.detail

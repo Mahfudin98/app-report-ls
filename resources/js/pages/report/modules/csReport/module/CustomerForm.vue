@@ -12,7 +12,7 @@
                                 {{ errors.customer_name[0] }}
                             </p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="customers.customer_name != ''">
                             <label for="customer_phone">Customer Phone</label>
                             <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Enter page title" v-model="customers.customer_phone" required />
                             <p class="text-danger" v-if="errors.customer_phone">
@@ -20,7 +20,7 @@
                             </p>
                         </div>
                         <!-- form ongkir disini -->
-                        <div class="form-group">
+                        <div class="form-group" v-if="customers.customer_phone != ''">
                             <label for="province">Province</label>
                             <select class="form-control" @change="provinceId($event)" v-model="ongkir.province">
                                 <option selected disabled="" value="">Pilih Provinsi</option>
@@ -30,7 +30,7 @@
                                 {{ errors.province[0] }}
                             </p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="ongkir.province != ''">
                             <label for="city">City</label>
                             <select class="form-control" @change="cityId($event)" v-model="ongkir.city">
                                 <option selected disabled="" value="">Pilih City</option>
@@ -40,7 +40,7 @@
                                 {{ errors.city[0] }}
                             </p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="ongkir.city != ''">
                             <label for="district">District</label>
                             <select class="form-control" v-model="ongkir.district">
                                 <option selected disabled="" value="">Pilih District</option>
@@ -50,7 +50,7 @@
                                 {{ errors.district[0] }}
                             </p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="ongkir.district != ''">
                             <label for="courier">Courier</label>
                             <select class="form-control" v-model="ongkir.courier">
                                 <option selected disabled="" value="">Pilih Courier</option>
@@ -63,7 +63,7 @@
                                 {{ errors.courier[0] }}
                             </p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="ongkir.courier != ''">
                             <label for="metode">Metode</label>
                             <select class="form-control" v-model="ongkir.metode">
                                 <option selected disabled="" value="">Pilih Metode</option>
@@ -74,9 +74,9 @@
                                 {{ errors.metode[0] }}
                             </p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="ongkir.metode != ''">
                             <label for="ongkir">Ongkir</label>
-                            <input class="form-control" type="text" :value="getOngkir" disabled>
+                            <input class="form-control" type="text" :value="getOngkir != undefined ? getOngkir : 'loading...'" disabled>
                         </div>
                         <div class="form-group" v-if="ongkir.metode == 1">
                             <label for="biaya">Biaya</label>
@@ -84,26 +84,26 @@
                             <input class="form-control" v-if="ongkir.courier === 'j&t'" type="text" :value="biayaJNT" disabled>
                             <input class="form-control" v-if="ongkir.courier != 'jne' && ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="ongkir.metode != ''">
                             <label for="total">Total</label>
                             <input class="form-control" type="text" :value="getTotal" disabled>
                         </div>
                         <!-- akhir form ongkir -->
-                        <div class="form-group">
+                        <div class="form-group" v-if="ongkir.metode != ''">
                             <label for="customer_address">Customer Address</label>
                             <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Enter page title" v-model="customers.customer_address" required />
                             <p class="text-danger" v-if="errors.customer_address">
                                 {{ errors.customer_address[0] }}
                             </p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="customers.customer_address != ''">
                             <label for="waybill">Waybill</label>
                             <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Enter page title" v-model="customers.waybill" required />
                             <p class="text-danger" v-if="errors.waybill">
                                 {{ errors.waybill[0] }}
                             </p>
                         </div>
-                        <div class="form-group" :class="{ 'has-error': errors.image }">
+                        <div class="form-group" v-if="customers.waybill != ''" :class="{ 'has-error': errors.image }">
                             <label for="file-input">Image</label>
                             <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
                             <p>*Kosongkan jika tidak ingin menambahkan</p>
@@ -114,7 +114,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12" v-if="customers.waybill != ''">
                 <div class="card">
                     <div class="card-body mnt-6 mnb-6">
                         <h5 class="card-title h2">Order</h5>
@@ -165,6 +165,7 @@ import {
     mapActions,
     mapMutations
 } from "vuex";
+import axios from 'axios';
 export default {
     name: "ReportCSForm",
     created() {
@@ -194,7 +195,7 @@ export default {
                 district: '',
                 courier: '',
                 metode: '',
-            }
+            },
         };
     },
     computed: {
@@ -230,11 +231,14 @@ export default {
             var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].weight);
             });
-            var qty = this.customers.qty;
-            var resQty = Object.keys(qty).map(function (key) {
-                return parseInt(qty[key]);
+            var qtys = this.customers.qty;
+            var resQty = Object.keys(qtys).map(function (key) {
+                return parseInt(qtys[key]);
             });
-            return res.reduce((acc, item) => acc + item) * resQty;
+            var sum = res.map(function (num, idx) {
+                return num * resQty[idx];
+            })
+            return sum.reduce((acc, item) => acc + item);
         },
         getOngkir() {
             return this.costs.data
@@ -245,7 +249,7 @@ export default {
                 return parseInt(qty[key]);
             });
             if (this.getOngkir != undefined) {
-                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty;
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
                 const biaya = (3 / 100) * harga;
 
                 return biaya;
@@ -259,7 +263,7 @@ export default {
                 return parseInt(qty[key]);
             });
             if (this.getOngkir != undefined) {
-                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty;
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
                 const biaya = (parseInt(harga) * 3) / 100;
 
                 return biaya;
@@ -273,7 +277,7 @@ export default {
                 return parseInt(qty[key]);
             });
             if (this.getOngkir != undefined) {
-                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty;
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
                 const biaya = ((parseInt(harga) + this.getOngkir) * 3) / 100;
 
                 return biaya;
