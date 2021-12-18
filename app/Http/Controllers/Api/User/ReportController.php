@@ -174,7 +174,8 @@ class ReportController extends Controller
     public function addProductForm($id)
     {
         $order = Order::find($id);
-        return $order;
+        $detail = DetailOrder::where('order_id', $id)->sum('subtotal');
+        return response()->json(['order' => $order, 'detail' => $detail]);
     }
 
     public function submitProductOrder(Request $request)
@@ -202,6 +203,13 @@ class ReportController extends Controller
             $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
             $target->update([
                 'omset' => $target->omset + $details
+            ]);
+            $order = Order::find($request->order_id);
+            $order->update([
+                'ongkir'            => $request->ongkir,
+                'biaya'             => $request->biaya,
+                'total'             => $request->total,
+                'weight'            => $request->weight,
             ]);
             return response()->json(['status' => 'success'], 200);
         } catch (\Throwable $e) {

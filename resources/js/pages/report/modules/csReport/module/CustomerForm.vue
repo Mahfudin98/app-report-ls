@@ -250,7 +250,7 @@ export default {
             });
             if (this.getOngkir != undefined) {
                 const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
-                const biaya = (3 / 100) * harga;
+                const biaya = (3 / 100) * parseInt(harga);
 
                 return biaya;
             } else {

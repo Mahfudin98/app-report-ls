@@ -1,128 +1,78 @@
 <template>
-    <div class="rui-page-content">
-        <div class="container-fluid">
-            <div
-                class="d-flex justify-content-between align-items-center mb-20"
-            >
-                <router-link
-                    :to="{
+<div class="rui-page-content">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-20">
+            <router-link :to="{
                         name: 'report.data.date',
-                        params: { date: orders.date }
-                    }"
-                    class="btn btn-secondary"
-                >
-                    <span class="icon">
-                        <span class="fas fa-arrow-alt-circle-left"></span>
-                    </span>
-                    <span class="text">Back</span>
-                </router-link>
-                <button @click="submit" class="btn btn-brand">
-                    <span class="icon">
-                        <i class="fas fa-save"></i>
-                    </span>
-                    <span class="text">Save</span>
-                </button>
-            </div>
-            <!-- form -->
-            <div class="rui-snippet-preview demo">
-                <form action="">
-                    <div class="row vertical-gap sm-gap justify-content-center">
-                        <div class="col-sm-12">
-                            <div class="card">
-                                <div class="card-body mnt-6 mnb-6">
-                                    <h5 class="card-title h2">Order</h5>
-                                    <section
-                                        v-for="(row, index) in order"
-                                        :key="index"
-                                    >
-                                        <div class="form-group">
-                                            <label
-                                                for="produk"
-                                                class="text-white"
-                                                >Produk</label
-                                            >
-                                            <select
-                                                id="product"
-                                                class="form-control"
-                                                v-model="
-                                                    orderProduk.product_id[
-                                                        index
-                                                    ]
-                                                "
-                                                required
-                                            >
-                                                <option
-                                                    selected
-                                                    disabled=""
-                                                    value=""
-                                                    >Pilih Produk</option
-                                                >
-                                                <option
-                                                    v-for="row in products.data"
-                                                    :key="row.id"
-                                                    :value="row"
-                                                    >{{ row.name }}
-                                                    <p
-                                                        v-html="
-                                                            row.type_pembelian_label
-                                                        "
-                                                    ></p>
-                                                    ({{ row.price }})
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label
-                                                for="order"
-                                                class="text-white"
-                                                >Total Order</label
-                                            >
-                                            <input
-                                                class="form-control"
-                                                required
-                                                type="number"
-                                                placeholder="Jumlah Order Product"
-                                                v-model="orderProduk.qty[index]"
-                                            />
-                                        </div>
-                                        <br />
-                                        <button
-                                            class="btn btn-danger"
-                                            type="button"
-                                            @click="removeParent(index)"
-                                        >
-                                            <span class="icon">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                            <span class="text"
-                                                >Remove Product</span
-                                            >
-                                        </button>
-                                    </section>
-                                </div>
-                                <div class="card-footer">
-                                    <button
-                                        class="btn btn-brand"
-                                        type="button"
-                                        @click="addProduct"
-                                    >
+                        params: { date: orders.order.date }
+                    }" class="btn btn-secondary">
+                <span class="icon">
+                    <span class="fas fa-arrow-alt-circle-left"></span>
+                </span>
+                <span class="text">Back</span>
+            </router-link>
+            <button @click="submit" class="btn btn-brand" :disabled="getOngkir == undefined">
+                <span class="icon">
+                    <i class="fas fa-save"></i>
+                </span>
+                <span class="text">Save</span>
+            </button>
+        </div>
+        <!-- form -->
+        <div class="rui-snippet-preview demo">
+            <form action="">
+                <div class="row vertical-gap sm-gap justify-content-center">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body mnt-6 mnb-6">
+                                <h5 class="card-title h2">Order</h5>
+                                <section v-for="(row, index) in order" :key="index">
+                                    <div class="form-group">
+                                        <label for="order" class="text-white">Total Order</label>
+                                        <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="orderProduk.qty[index]" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="produk" class="text-white">Produk</label>
+                                        <select id="product" class="form-control" v-model="orderProduk.product_id[index]" @click="submitOngkir" required>
+                                            <option selected disabled="" value="">Pilih Produk</option>
+                                            <option v-for="row in products.data" :key="row.id" :value="row">
+                                                {{ row.name }}
+                                                <p v-html="row.type_pembelian_label"></p>({{ row.price }})
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-danger" type="button" @click="removeParent(index)">
                                         <span class="icon">
-                                            <i class="fas fa-plus"></i>
+                                            <i class="fas fa-trash"></i>
                                         </span>
-                                        <span class="text">Add Product</span>
+                                        <span class="text">Remove Product</span>
                                     </button>
-                                </div>
+                                </section>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-brand" type="button" @click="addProduct">
+                                    <span class="icon">
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                    <span class="text">Add Product</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import {
+    mapActions,
+    mapState,
+    mapMutations
+} from "vuex";
 export default {
     name: "AddProductOrder",
     created() {
@@ -145,23 +95,112 @@ export default {
         ...mapState("csReport", {
             orders: state => state.orderProduct
         }),
+        ...mapState("ongkir", {
+            costs: state => state.costs
+        }),
+        getOngkir() {
+            return this.costs.data
+        },
         pricesOrder() {
             var result = this.orderProduk.product_id;
-            var res = Object.keys(result).map(function(key) {
+            var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].price);
             });
             return res;
         },
         idOrder() {
             var result = this.orderProduk.product_id;
-            var res = Object.keys(result).map(function(key) {
+            var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].id);
             });
             return res;
+        },
+        weightOrder() {
+            var result = this.orderProduk.product_id;
+            var res = Object.keys(result).map(function (key) {
+                return parseInt(result[key].weight);
+            });
+            var qtys = this.orderProduk.qty;
+            var resQty = Object.keys(qtys).map(function (key) {
+                return parseInt(qtys[key]);
+            });
+            var sum = res.map(function (num, idx) {
+                return num * resQty[idx];
+            })
+            return sum.reduce((acc, item) => acc + item);
+        },
+        // fitur baru
+        biayaCOD() {
+            var qty = this.orderProduk.qty;
+            var resQty = Object.keys(qty).map(function (key) {
+                return parseInt(qty[key]);
+            });
+            if (this.getOngkir != undefined) {
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
+                const biaya = (3 / 100) * (parseInt(harga) + parseInt(this.orders.detail));
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        biayaJNT() {
+            var qty = this.orderProduk.qty;
+            var resQty = Object.keys(qty).map(function (key) {
+                return parseInt(qty[key]);
+            });
+            if (this.getOngkir != undefined) {
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
+                const biaya = ((parseInt(harga) + parseInt(this.orders.detail)) * 3) / 100;
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        biayaJNE() {
+            var qty = this.orderProduk.qty;
+            var resQty = Object.keys(qty).map(function (key) {
+                return parseInt(qty[key]);
+            });
+            if (this.getOngkir != undefined) {
+                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
+                const biaya = ((parseInt(harga) + this.getOngkir + parseInt(this.orders.detail)) * 3) / 100;
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        getTotal() {
+            const harga = this.pricesOrder.reduce((acc, item) => acc + item);
+            if (this.orders.order.metode == 1) {
+                if (this.getOngkir != undefined) {
+                    if (this.orders.order.courier === 'jne') {
+                        const total = this.getOngkir + parseInt(harga) + this.biayaJNE + parseInt(this.orders.detail);
+                        return total;
+                    } else if (this.orders.order.courier === 'j&t') {
+                        const total = this.getOngkir + parseInt(harga) + this.biayaJNT + parseInt(this.orders.detail);
+                        return total;
+                    } else {
+                        const total = this.getOngkir + parseInt(harga) + this.biayaCOD + parseInt(this.orders.detail);
+                        return total;
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                if (this.getOngkir != undefined) {
+                    const total = parseInt(harga) + this.getOngkir + parseInt(this.orders.detail);
+                    return total;
+                } else {
+                    return 0;
+                }
+            }
         }
     },
     methods: {
-        addProduct: function() {
+        addProduct: function () {
             this.order.push({
                 value: ""
             });
@@ -171,17 +210,40 @@ export default {
                 product_id: [""],
                 qty: [""]
             }),
-                this.order.splice(index, 1);
+            this.order.splice(index, 1);
         },
         ...mapActions("product", ["getAllProducts"]),
         ...mapActions("csReport", ["addProductOrder", "submitProductOrder"]),
+        ...mapActions("ongkir", ["submitCost"]),
+        submitOngkir() {
+            let form = new FormData();
+            form.append("destination", this.orders.order.district_id);
+            form.append("weight", parseInt(this.orders.order.weight) + parseInt(this.weightOrder));
+            form.append("courier", this.orders.order.courier);
+            this.submitCost(form).then(() => {
+                this.costs
+            })
+        },
         submit() {
             let form = new FormData();
+            form.append("ongkir", this.getOngkir);
+            form.append("total", this.getTotal);
+            form.append("weight", parseInt(this.orders.order.weight) + parseInt(this.weightOrder));
 
-            form.append("cs_report_id", this.orders.cs_report_id);
-            form.append("order_id", this.orders.id);
-            form.append("date", this.orders.date);
-            form.append("status", this.orders.status);
+            if (this.orders.order.metode == 1) {
+                if (this.orders.order.courier === 'jne') {
+                    form.append("biaya", this.biayaJNE);
+                } else if (this.orders.order.courier === 'j&t') {
+                    form.append("biaya", this.biayaJNT);
+                } else {
+                    form.append("biaya", this.biayaCOD);
+                }
+            }
+
+            form.append("cs_report_id", this.orders.order.cs_report_id);
+            form.append("order_id", this.orders.order.id);
+            form.append("date", this.orders.order.date);
+            form.append("status", this.orders.order.status);
             // array order
             for (var i = 0; i < this.orderProduk.qty.length; i++) {
                 let qty = this.orderProduk.qty[i];
@@ -197,15 +259,20 @@ export default {
                     product_id: [""],
                     qty: [""]
                 }),
-                    this.$swal({
-                        background: "#FFFFFF",
-                        title: "Ditambah!",
-                        text: "Data Berhasil ditambah!",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                this.$router.push({ name: "report.data.date", params: {date: this.orders.date} });
+                this.$swal({
+                    background: "#FFFFFF",
+                    title: "Ditambah!",
+                    text: "Data Berhasil ditambah!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                this.$router.push({
+                    name: "report.data.date",
+                    params: {
+                        date: this.orders.order.date
+                    }
+                });
             });
         }
     }
