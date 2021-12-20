@@ -31,7 +31,7 @@ Vue.use(BootstrapVueIcons)
 
 var numeral = require("numeral");
 
-Vue.filter("formatNumber", function (value) {
+Vue.filter("formatNumber", function(value) {
     return numeral(value).format("0,0");
 });
 
