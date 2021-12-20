@@ -333,6 +333,10 @@ class ReportController extends Controller
         File::delete(storage_path('app/public/orders/' . $order->image));
         $order->delete();
         $detail = DetailOrder::where('order_id', $id)->delete();
+        $csReport = CsReport::where('date', $order->date)->where('user_id', $user->id)->first();
+        $csReport->update([
+            'transaksi' => $csReport->transaksi - 1
+        ]);
         return response()->json(['status' => 'success']);
     }
 
