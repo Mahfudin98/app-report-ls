@@ -83,6 +83,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/teams/{slug}', [UserController::class, 'show'])->name('teams.show.slug');
     Route::post('/teams-update/{id}', [UserController::class, 'update'])->name('teams.update');
 
+    // analisis produk
+    Route::get('/product-chart', [ProductController::class, 'chartProduct'])->name('product.chart');
+    Route::get('/product-chart-list', [ProductController::class, 'listChartProduct'])->name('product.list');
+
     // permissions
     Route::get('roles', [RolePermissionController::class, 'getAllRole'])->name('roles');
     Route::get('permissions', [RolePermissionController::class, 'getAllPermission'])->name('permission');

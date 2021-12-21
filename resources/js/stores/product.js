@@ -11,7 +11,8 @@ const state = () => ({
         type_pembelian: '',
         type_product: ''
     },
-
+    bar: [],
+    lists: [],
     page: 1
 })
 
@@ -44,6 +45,14 @@ const mutations = {
             type_pembelian: '',
             type_product: ''
         }
+    },
+
+    // analisis
+    ASSIGN_DATA_BAR(state, payload) {
+        state.bar = payload
+    },
+    ASSIGN_DATA_LIST(state, payload) {
+        state.lists = payload
     }
 }
 
@@ -124,6 +133,28 @@ const actions = {
                 }
             })
     },
+
+    // analisis
+    getChartBar({ commit }, payload) {
+        let barOmset = typeof payload != 'undefined' ? payload : ''
+        return new Promise((resolve, reject) => {
+            $axios.get(`/product-chart?date=${barOmset}`)
+                .then((response) => {
+                    commit('ASSIGN_DATA_BAR', response.data)
+                    resolve(response.data)
+                })
+        })
+    },
+    getListChart({ commit }, payload) {
+        let barOmset = typeof payload != 'undefined' ? payload : ''
+        return new Promise((resolve, reject) => {
+            $axios.get(`/product-chart-list?date=${barOmset}`)
+                .then((response) => {
+                    commit('ASSIGN_DATA_LIST', response.data)
+                    resolve(response.data)
+                })
+        })
+    }
 }
 
 export default {

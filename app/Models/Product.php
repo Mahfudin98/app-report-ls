@@ -11,9 +11,9 @@ class Product extends Model
     use HasFactory;
     protected $guarded = [];
     protected $appends = ['type_pembelian_label', 'type_product_label'];
-    public function order()
+    public function orderDetail()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(DetailOrder::class);
     }
 
     public function setSlugAttribute($value)

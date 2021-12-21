@@ -15,6 +15,7 @@ import EditPosition from './pages/position/modules/PositionEdit.vue'
 import IndexProduct from './pages/product/Index.vue'
 import DataProduct from './pages/product/modules/ProductData.vue'
 import EditProduct from './pages/product/modules/ProductEdit.vue'
+import AnalisisProduct from './pages/product/components/Analisis.vue'
 // report
 import IndexReport from './pages/report/Index.vue'
 import DataReport from './pages/report/modules/ReportData.vue'
@@ -104,8 +105,7 @@ const router = new Router({
             path: '/position',
             component: IndexPosition,
             meta: { requiresAuth: true },
-            children: [
-                {
+            children: [{
                     path: '',
                     name: 'position.data',
                     component: DataPosition,
@@ -124,8 +124,7 @@ const router = new Router({
             path: '/product',
             component: IndexProduct,
             meta: { requiresAuth: true },
-            children: [
-                {
+            children: [{
                     path: '',
                     name: 'product.data',
                     component: DataProduct,
@@ -137,6 +136,12 @@ const router = new Router({
                     component: EditProduct,
                     meta: { title: 'Edit Product' }
                 },
+                {
+                    path: '/chart',
+                    name: 'product.chart',
+                    component: AnalisisProduct,
+                    meta: { title: 'Analisis Product' }
+                },
             ],
         },
         // stock route
@@ -144,22 +149,19 @@ const router = new Router({
             path: '/stock',
             component: IndexStock,
             meta: { requiresAuth: true },
-            children: [
-                {
-                    path: '',
-                    name: 'stock.data',
-                    component: DataStock,
-                    meta: { title: 'Manage Stock' }
-                }
-            ],
+            children: [{
+                path: '',
+                name: 'stock.data',
+                component: DataStock,
+                meta: { title: 'Manage Stock' }
+            }],
         },
         // report route
         {
             path: '/report',
             component: IndexReport,
             meta: { requiresAuth: true },
-            children: [
-                {
+            children: [{
                     path: '',
                     name: 'report.data',
                     component: DataReport,
@@ -258,36 +260,31 @@ const router = new Router({
             path: '/project',
             component: IndexProject,
             meta: { requiresAuth: true },
-            children: [
-                {
-                    path: '',
-                    name: 'project.data',
-                    component: DataProject,
-                    meta: { title: 'Manage Project' }
-                },
-            ],
+            children: [{
+                path: '',
+                name: 'project.data',
+                component: DataProject,
+                meta: { title: 'Manage Project' }
+            }, ],
         },
         // content
         {
             path: '/content',
             component: IndexContent,
             meta: { requiresAuth: true },
-            children: [
-                {
-                    path: '',
-                    name: 'content.data',
-                    component: DataContent,
-                    meta: { title: 'Manage Content' }
-                }
-            ],
+            children: [{
+                path: '',
+                name: 'content.data',
+                component: DataContent,
+                meta: { title: 'Manage Content' }
+            }],
         },
         // team
         {
             path: '/teams',
             component: IndexTeam,
             meta: { requiresAuth: true },
-            children: [
-                {
+            children: [{
                     path: '',
                     name: 'teams.data',
                     component: DataTeam,
@@ -318,22 +315,19 @@ const router = new Router({
             path: '/setting',
             component: Setting,
             meta: { requiresAuth: true },
-            children: [
-                {
-                    path: 'role-permission',
-                    name: 'role.permissions',
-                    component: SetPermission,
-                    meta: { title: 'Set Permissions' }
-                },
-            ]
+            children: [{
+                path: 'role-permission',
+                name: 'role.permissions',
+                component: SetPermission,
+                meta: { title: 'Set Permissions' }
+            }, ]
         },
         // inventory
         {
             path: '/inventory',
             component: IndexInventory,
             meta: { requiresAuth: true },
-            children: [
-                {
+            children: [{
                     path: '',
                     name: 'inventory.data',
                     component: DataInventory,
@@ -370,22 +364,19 @@ const router = new Router({
             path: '/customer',
             component: IndexCustomer,
             meta: { requiresAuth: true },
-            children: [
-                {
-                    path: '',
-                    name: 'customer.data',
-                    component: DataCustomer,
-                    meta: { title: 'Manage Customer' }
-                },
-            ],
+            children: [{
+                path: '',
+                name: 'customer.data',
+                component: DataCustomer,
+                meta: { title: 'Manage Customer' }
+            }, ],
         },
         // return
         {
             path: '/return',
             component: IndexReturn,
             meta: { requiresAuth: true },
-            children: [
-                {
+            children: [{
                     path: '',
                     name: 'return.data',
                     component: DataReturn,
@@ -410,8 +401,7 @@ const router = new Router({
             path: '/target',
             component: IndexTarget,
             meta: { requiresAuth: true },
-            children: [
-                {
+            children: [{
                     path: '',
                     name: 'target.data',
                     component: DataTarget,
@@ -432,12 +422,13 @@ const router = new Router({
             ],
         },
     ],
-    scrollBehavior (to, from, savedPosition) {
+    scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
             return savedPosition
         } else {
             return {
-                x: 0, y: 0,
+                x: 0,
+                y: 0,
                 behavior: 'smooth',
             }
         }

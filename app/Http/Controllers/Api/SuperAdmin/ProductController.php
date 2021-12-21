@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Carbon\Carbon;
+use App\Models\CsReport;
+use App\Models\DetailOrder;
 
 class ProductController extends Controller
 {
@@ -136,5 +139,43 @@ class ProductController extends Controller
         $products = Product::orderBy('created_at', 'DESC');
 
         return new ProductCollection($products->get());
+    }
+
+    public function chartProduct()
+    {
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ' ,request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+        $data = [];
+        $order = DetailOrder::with(['product'])->whereBetween('date', [$start, $end])->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
+        foreach ($order as $rows) {
+            $data[] = [
+                'labels' => substr($rows->product->name, 0, 10). '...',
+                'date' => $rows->date,
+                'total' => $rows->sum
+            ];
+        }
+
+        return $data;
+    }
+
+    public function listChartProduct()
+    {
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        if (request()->date != '') {
+            $date = explode(' - ' ,request()->date);
+            $start = Carbon::parse($date[0])->format('Y-m-d');
+            $end = Carbon::parse($date[1])->format('Y-m-d');
+        }
+        $order = DetailOrder::with(['product'])->whereBetween('date', [$start, $end])->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
+
+        return response()->json(['data' => $order], 200);
     }
 }

@@ -29,7 +29,7 @@ class DashboardController extends Controller
             $start = Carbon::parse($date[0])->format('Y-m-d');
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
-        $orders = DetailOrder::with(['user', 'order'])->where('status', 1)->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(subtotal) as sum')->get(['user_id', 'qty', 'price', 'date']);
+        $orders = DetailOrder::with(['user', 'order'])->where('status', 1)->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(subtotal) as sum')->orderBy('sum', 'DESC')->get(['user_id', 'qty', 'price', 'date']);
         $data = [];
         foreach ($orders as $row) {
             $data[] = [
@@ -53,7 +53,7 @@ class DashboardController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
 
-        $reports = CsReport::with(['user','order.orderDetail.product'])->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(chat) as sum')->get();
+        $reports = CsReport::with(['user','order.orderDetail.product'])->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(chat) as sum')->orderBy('sum', 'DESC')->get();
 
         $data = [];
         foreach ($reports as $row) {
