@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // analisis produk
     Route::get('/product-chart', [ProductController::class, 'chartProduct'])->name('product.chart');
     Route::get('/product-chart-list', [ProductController::class, 'listChartProduct'])->name('product.list');
+    Route::get('/product-presentase', [ProductController::class, 'persentaseProduct'])->name('product.presentase');
 
     // permissions
     Route::get('roles', [RolePermissionController::class, 'getAllRole'])->name('roles');

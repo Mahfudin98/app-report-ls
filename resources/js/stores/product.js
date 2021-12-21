@@ -13,6 +13,7 @@ const state = () => ({
     },
     bar: [],
     lists: [],
+    donat: [],
     page: 1
 })
 
@@ -53,6 +54,9 @@ const mutations = {
     },
     ASSIGN_DATA_LIST(state, payload) {
         state.lists = payload
+    },
+    ASSIGN_DATA_DONAT(state, payload) {
+        state.donat = payload
     }
 }
 
@@ -136,9 +140,8 @@ const actions = {
 
     // analisis
     getChartBar({ commit }, payload) {
-        let barOmset = typeof payload != 'undefined' ? payload : ''
         return new Promise((resolve, reject) => {
-            $axios.get(`/product-chart?date=${barOmset}`)
+            $axios.get(`/product-chart?month=${payload.month}&year=${payload.year}`)
                 .then((response) => {
                     commit('ASSIGN_DATA_BAR', response.data)
                     resolve(response.data)
@@ -146,15 +149,24 @@ const actions = {
         })
     },
     getListChart({ commit }, payload) {
-        let barOmset = typeof payload != 'undefined' ? payload : ''
         return new Promise((resolve, reject) => {
-            $axios.get(`/product-chart-list?date=${barOmset}`)
+            $axios.get(`/product-chart-list?month=${payload.month}&year=${payload.year}`)
                 .then((response) => {
                     commit('ASSIGN_DATA_LIST', response.data)
                     resolve(response.data)
                 })
         })
-    }
+    },
+
+    getDonatChart({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.get(`/product-presentase?month=${payload.month}&year=${payload.year}`)
+                .then((response) => {
+                    commit('ASSIGN_DATA_DONAT', response.data)
+                    resolve(response.data)
+                })
+        })
+    },
 }
 
 export default {

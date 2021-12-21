@@ -4,19 +4,52 @@
         <div class="container-fluid">
             <!--Omset CS Chart-->
             <h2>Bar Chart</h2>
-            <div class="d-flex justify-content-between align-items-center mb-20">
-                <div class="row xs-gap">
-                    <div class="col-12">
-                        <div class="input-group">
-                            <date-picker v-model="barOmset" placeholder="Pilih range tanggal" range></date-picker>
-                        </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="">Bulan</label>
+                        <select v-model="month" class="form-control">
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
                     </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="">Tahun</label>
+                        <select v-model="year" class="form-control">
+                            <option v-for="(y, i) in years" :key="i" :value="y">{{ y }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Export To Excel</label>
+                    <button class="btn btn-primary btn-sm pull-right" @click="exportData">
+                        Export
+                    </button>
                 </div>
             </div>
             <div class="row vertical-gap">
-                <div class="col-lg-12">
+                <div class="col-lg-8">
                     <div class="rui-widget p-0">
                         <bar-chart v-if="bar.length > 0" :data="bar" :options="chartOptions" :labels="bar" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="rui-widget">
+                        <div class="rui-widget-content">
+                            <donat-chart v-if="donat.length > 0" :data="donat" :options="chartOptions" :labels="donat" />
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -25,6 +58,9 @@
                             <b-table :items="lists.data" :fields="fields" show-empty>
                                 <template #cell(index)="data">
                                     {{ data.index + 1 }}
+                                </template>
+                                <template #cell(type)="row">
+                                    <span v-html="row.item.product.type_product_label"></span>
                                 </template>
                             </b-table>
                         </div>
@@ -41,7 +77,7 @@ import moment from "moment";
 import _ from "lodash";
 
 import BarChart from "./modules/Barchart.vue";
-import DatePicker from "vue2-datepicker";
+import DonatChart from "./modules/DonatChart.vue";
 import {
     mapActions,
     mapState
@@ -49,11 +85,21 @@ import {
 export default {
     components: {
         BarChart,
-        DatePicker
+        DonatChart
     },
     created() {
-        this.getChartBar();
-        this.getListChart();
+        this.getChartBar({
+            month: this.month,
+            year: this.year
+        });
+        this.getListChart({
+            month: this.month,
+            year: this.year
+        });
+        this.getDonatChart({
+            month: this.month,
+            year: this.year
+        });
     },
     data() {
         return {
@@ -62,6 +108,9 @@ export default {
                 maintainAspectRatio: false
             },
             barOmset: {},
+            persen: {},
+            month: moment().format("MM"),
+            year: moment().format("Y"),
 
             fields: [{
                     key: "index",
@@ -76,6 +125,10 @@ export default {
                     label: "Total"
                 },
                 {
+                    key: "type",
+                    label: "Tipe Produk"
+                },
+                {
                     key: "date",
                     label: "Date"
                 }
@@ -83,37 +136,60 @@ export default {
         };
     },
     watch: {
-        barOmset() {
-            this.getChartBar(
-                this.convert(this.barOmset[0]) +
-                "+-+" +
-                this.convert(this.barOmset[1])
-            );
-            this.getListChart(
-                this.convert(this.barOmset[0]) +
-                "+-+" +
-                this.convert(this.barOmset[1])
-            );
+        month() {
+            this.getChartBar({
+                month: this.month,
+                year: this.year
+            });
+            this.getListChart({
+                month: this.month,
+                year: this.year
+            });
+            this.getDonatChart({
+                month: this.month,
+                year: this.year
+            });
         },
+        year() {
+            this.getChartBar({
+                month: this.month,
+                year: this.year
+            });
+            this.getListChart({
+                month: this.month,
+                year: this.year
+            });
+            this.getDonatChart({
+                month: this.month,
+                year: this.year
+            });
+        }
     },
     computed: {
         ...mapState("product", {
             bar: state => state.bar,
-            lists: state => state.lists
+            lists: state => state.lists,
+            donat: state => state.donat
         }),
+        years() {
+            return _.range(
+                2019,
+                moment()
+                .add(1, "years")
+                .format("Y")
+            );
+        },
     },
 
     methods: {
-        convert(str) {
-            var date = new Date(str),
-                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-                day = ("0" + date.getDate()).slice(-2);
-            return [date.getFullYear(), mnth, day].join("-");
-        },
         ...mapActions("product", [
             "getChartBar",
-            "getListChart"
+            "getListChart",
+            "getDonatChart"
         ]),
+        exportData() {
+            window.open(`/api/export?api_token=${this.token}&month=${this.month}&year=${this.year}`)
+        }
     }
 };
 </script>

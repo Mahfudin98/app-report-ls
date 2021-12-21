@@ -9,6 +9,7 @@ use App\Models\Product;
 use Carbon\Carbon;
 use App\Models\CsReport;
 use App\Models\DetailOrder;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -143,20 +144,15 @@ class ProductController extends Controller
 
     public function chartProduct()
     {
-        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
 
-        if (request()->date != '') {
-            $date = explode(' - ' ,request()->date);
-            $start = Carbon::parse($date[0])->format('Y-m-d');
-            $end = Carbon::parse($date[1])->format('Y-m-d');
-        }
         $data = [];
-        $order = DetailOrder::with(['product'])->whereBetween('date', [$start, $end])->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
+        $order = DetailOrder::with(['product'])->where('date', 'LIKE', '%' . $filter . '%')->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
         foreach ($order as $rows) {
             $data[] = [
                 'labels' => substr($rows->product->name, 0, 10). '...',
-                'date' => $rows->date,
                 'total' => $rows->sum
             ];
         }
@@ -166,16 +162,39 @@ class ProductController extends Controller
 
     public function listChartProduct()
     {
-        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
-
-        if (request()->date != '') {
-            $date = explode(' - ' ,request()->date);
-            $start = Carbon::parse($date[0])->format('Y-m-d');
-            $end = Carbon::parse($date[1])->format('Y-m-d');
-        }
-        $order = DetailOrder::with(['product'])->whereBetween('date', [$start, $end])->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
+        $order = DetailOrder::with(['product'])->where('date', 'LIKE', '%' . $filter . '%')->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
 
         return response()->json(['data' => $order], 200);
+    }
+
+    public function persentaseProduct()
+    {
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
+
+        $product = DB::table('products')
+            ->join('detail_orders', 'products.id', '=', 'detail_orders.product_id')
+            ->select('products.type_product',
+                     'detail_orders.qty',
+                     DB::raw('YEAR(detail_orders.date) year, MONTH(detail_orders.date) month'))
+            ->groupBy('products.type_product')
+            ->groupBy('month', 'year')
+            ->where('detail_orders.date', 'LIKE', '%' . $filter . '%')
+            ->selectRaw('detail_orders.qty, sum(qty) as sum')
+            ->get();
+
+        $data = [];
+        foreach ($product as $row) {
+            $data[] = [
+                'labels' => $row->type_product == 0 ? 'BPOM' : 'Farma',
+                'total' => $row->sum
+            ];
+        }
+
+        return $data;
     }
 }
