@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\SuperAdmin\RolePermissionController;
 use App\Http\Controllers\Api\SuperAdmin\UserController;
 use App\Http\Controllers\Api\User\InventoryController;
 use App\Http\Controllers\Api\User\ReportController;
+use App\Http\Controllers\Api\User\ReportWebController;
 use App\Http\Controllers\Api\User\ReturnController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -82,7 +83,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('/teams', UserController::class)->except(['create', 'show', 'update']);
     Route::get('/teams/{slug}', [UserController::class, 'show'])->name('teams.show.slug');
     Route::post('/teams-update/{id}', [UserController::class, 'update'])->name('teams.update');
-
+    // report web
+    Route::resource('/report-web', ReportWebController::class);
     // analisis produk
     Route::get('/product-chart', [ProductController::class, 'chartProduct'])->name('product.chart');
     Route::get('/product-chart-list', [ProductController::class, 'listChartProduct'])->name('product.list');

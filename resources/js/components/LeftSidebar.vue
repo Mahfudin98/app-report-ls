@@ -89,32 +89,20 @@
                         <span>Target</span>
                     </router-link>
                 </li>
-                <!-- project -->
-                <!--disabled dulu-->
-                <!--
-                    <li
-                        v-if="$can('read projects')"
-                        :class="
+                <!-- web static -->
+                <li v-if="$can('read projects')" :class="
                             this.$route.name == 'project.data'
                                 ? 'yay-item-active'
                                 : ''
-                        "
-                    >
-                        <router-link
-                            :to="{ name: 'project.data' }"
-                            class="active"
-                        >
-                            <span class="yay-icon">
-                                <span
-                                    data-feather="git"
-                                    class="rui-icon fas fa-chart-area"
-                                ></span>
-                            </span>
-                            <span>Web Statistik</span>
-                            <span class="rui-yaybar-circle"></span>
-                        </router-link>
-                    </li>
-                    -->
+                        ">
+                    <router-link :to="{ name: 'project.data' }" class="active">
+                        <span class="yay-icon">
+                            <span data-feather="git" class="rui-icon fas fa-chart-area"></span>
+                        </span>
+                        <span>Web Statistik</span>
+                        <span class="rui-yaybar-circle"></span>
+                    </router-link>
+                </li>
                 <!-- content -->
                 <!--disabled dulu-->
                 <!--
