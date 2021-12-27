@@ -2,94 +2,7 @@
     <main>
         <div class="rui-page-content">
             <div class="container-fluid">
-                <div
-                    class="d-flex justify-content-between align-items-center mb-20"
-                >
-                    <div class="row xs-gap">
-                        <div class="col-12">
-                            <div class="input-group">
-                                <button
-                                    type="button"
-                                    class="btn btn-clean btn-uniform btn-grey-5"
-                                    data-toggle="button"
-                                    aria-pressed="false"
-                                >
-                                    <span
-                                        style="font-size: 17px;"
-                                        class="rui-icon fas fa-search"
-                                    ></span>
-                                </button>
-                                <input
-                                    type="search"
-                                    class="form-control form-control-clean"
-                                    placeholder="Type to search..."
-                                    data-toggle="input"
-                                    autocomplete="off"
-                                    v-model="search"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <b-table
-                        :items="products.data"
-                        :fields="fields"
-                        striped
-                        hover
-                    >
-                        <template #cell(index)="data">
-                            {{ data.index + 1 }}
-                        </template>
-                        <template #cell(type_pembelian)="row">
-                            <span v-html="row.item.type_pembelian_label"></span>
-                        </template>
-                        <template #cell(type_product)="row">
-                            <span v-html="row.item.type_product_label"></span>
-                        </template>
-                        <template #cell(price)="row">
-                            Rp. {{ row.item.price | formatNumber }}
-                        </template>
-                        <template #cell(action)>
-                            <div class="btn-group dropdown dropdown-triangle">
-                                <button
-                                    class="btn btn-brand btn-long dropdown-toggle"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <span class="text">Action</span>
-                                    <span class="icon">
-                                        <span class="fas fa-angle-down"></span>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu nav">
-                                    <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
-                                                data-feather="plus-circle"
-                                                class="fas fa-edit"
-                                            ></span
-                                            ><span>Edit</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link" href="#"
-                                            ><span
-                                                data-feather="x-circle"
-                                                class="fas fa-trash"
-                                            ></span
-                                            ><span>Delete</span
-                                            ><span class="rui-nav-circle"></span
-                                        ></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </template>
-                    </b-table>
-                </div>
+                <Calender />
             </div>
         </div>
     </main>
@@ -97,8 +10,10 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import VueMomentsAgo from "vue-moments-ago";
+import Calender from "./Calendar.vue";
+import moment from "moment";
 export default {
-    components: { VueMomentsAgo },
+    components: { VueMomentsAgo, Calender },
     created() {
         this.getProducts();
     },

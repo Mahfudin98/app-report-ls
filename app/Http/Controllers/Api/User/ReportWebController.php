@@ -16,9 +16,9 @@ class ReportWebController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($date)
+    public function index()
     {
-        $report = ReportWeb::where('date', $date)->orderBy('page', 'DESC');
+        $report = ReportWeb::with(['page'])->orderBy('date', 'DESC');
         return new ReportWebCollection($report->get());
     }
 
