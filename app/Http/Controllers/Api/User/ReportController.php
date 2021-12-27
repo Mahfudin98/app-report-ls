@@ -25,20 +25,17 @@ class ReportController extends Controller
     //report CS
     public function indexCS()
     {
-        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
-
-        if (request()->date != '') {
-            $date = explode(' - ', request()->date);
-            $start = Carbon::parse($date[0])->format('Y-m-d');
-            $end = Carbon::parse($date[1])->format('Y-m-d');
-        }
-
-        $reports = CsReport::where('user_id', Auth::user()->id)->with(['order.orderDetail.product'])->orderBy('date', 'DESC')->whereBetween('date', [$start, $end]);
-        if (request()->q != '') {
-            $reports = $reports->where('name', 'LIKE', '%' . request()->q . '%');
-        }
-        return new CsReportCollection($reports->paginate(10));
+        $user = request()->user();
+        $reports = DB::table('cs_reports')
+        ->join('orders', 'cs_reports.id', '=', 'orders.cs_report_id')
+        ->join('detail_orders', 'cs_reports.id', '=', 'detail_orders.cs_report_id')
+        ->select('cs_reports.*', 'orders.total', 'orders.ongkir', 'detail_orders.subtotal', 'detail_orders.cs_report_id')
+        ->where('cs_reports.user_id', $user->id)
+        ->groupBy('detail_orders.cs_report_id')
+        ->selectRaw('detail_orders.subtotal, sum(subtotal) as subtotals')
+        ->orderBy('date', 'DESC')
+        ->get();
+        return response()->json(['data' => $reports]);
     }
 
     public function indexDateCS($date)
