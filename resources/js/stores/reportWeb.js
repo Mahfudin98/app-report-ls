@@ -26,20 +26,23 @@ const actions = {
             })
     },
 
-    submitProduct({ dispatch, commit, state }) {
+    submitReportWebs({dispatch, commit}, payload) {
         return new Promise((resolve, reject) => {
-            $axios.post(`/products`, state.product)
-                .then((response) => {
-                    dispatch('getProducts').then(() => {
-                        commit('CLEAR_FORM')
-                        resolve(response.data)
-                    })
+            $axios.post(`/report-web`, payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                dispatch('getReportWebs').then(() => {
+                    resolve(response.data)
                 })
-                .catch((error) => {
-                    if (error.response.status == 422) {
-                        commit('SET_ERRORS', error.response.data.errors, { root: true })
-                    }
-                })
+            })
+            .catch((error) => {
+                if (error.response.status == 422) {
+                    commit('SET_ERRORS', error.response.data.errors, { root: true })
+                }
+            })
         })
     },
 

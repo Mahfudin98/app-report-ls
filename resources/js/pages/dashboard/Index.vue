@@ -73,6 +73,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="rui-gap-2"></div>
                 <!--Omset CS Chart-->
                 <h2>Omset CS</h2>
                 <div

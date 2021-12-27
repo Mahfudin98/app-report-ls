@@ -21,24 +21,16 @@ export default {
 
                 var arrTotal = array[i].total;
                 var arrDate = array[i].date;
+                var arrUrl = array[i].url;
 
-                var lengthPage = array[i].page.length;
-                var arrayPage = array[i].page;
-                for (let j = 0; j < lengthPage; j++) {
-                    var arrPage = arrayPage[j].page;
-                    var arrCount = arrayPage[j].count;
-                    this.calendarOptions.events.push({
-                            title: "Total View : " + arrTotal + " view",
-                            date: arrDate
-                        },
-                        {
-                            title: arrPage + " : " + arrCount + " view",
-                            start: arrDate + 'T00:00:00',
-                            end: arrDate + 'T23:59:59'
-                        }
-                    )
-
-                }
+                this.calendarOptions.events.push({
+                    title: "URL : " + arrUrl,
+                    date: arrDate
+                }, {
+                    title: 'Total : ' + arrTotal + ' view',
+                    start: arrDate + 'T00:00:00',
+                    end: arrDate + 'T23:59:59'
+                })
             }
 
         });
