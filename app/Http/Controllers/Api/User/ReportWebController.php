@@ -124,6 +124,12 @@ class ReportWebController extends Controller
         //
     }
 
+    public function view($date)
+    {
+        $report = ReportWeb::with(['page'])->where('date', $date)->first();
+        return response()->json(['data' => $report], 200);
+    }
+
     public function barChart()
     {
         $year = request()->year;

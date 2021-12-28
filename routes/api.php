@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // report web
     Route::resource('/report-web', ReportWebController::class);
     Route::get('/chart-web', [ReportWebController::class, 'barChart'])->name('chart.web');
+    Route::get('/report-web/view/{date}', [ReportWebController::class, 'view'])->name('view.web');
     // analisis produk
     Route::get('/product-chart', [ProductController::class, 'chartProduct'])->name('product.chart');
     Route::get('/product-chart-list', [ProductController::class, 'listChartProduct'])->name('product.list');

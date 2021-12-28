@@ -2,7 +2,8 @@ import $axios from '../api'
 
 const state = () => ({
     reportWebs: [],
-    webBar: []
+    webBar: [],
+    viewReportWebs: []
 })
 
 const mutations = {
@@ -12,6 +13,10 @@ const mutations = {
 
     ASSIGN_WEB_BAR_DATA(state, payload) {
         state.webBar = payload
+    },
+
+    ASSIGN_VIEW_REPORT_WEB(state, payload) {
+        state.viewReportWebs = payload
     }
 }
 
@@ -51,48 +56,19 @@ const actions = {
         })
     },
 
-    editProduct({ commit }, payload) {
+    getViewReportWeb({commit}, payload){
         return new Promise((resolve, reject) => {
-            $axios.get(`/products/${payload}/edit`)
-                .then((response) => {
-                    commit('ASSIGN_FORM', response.data.data)
-                    resolve(response.data)
-                })
-        })
-    },
-
-    updateProduct({ state, commit }, payload) {
-        return new Promise((resolve, reject) => {
-            $axios.put(`/products/${payload}`, state.product)
-                .then((response) => {
-                    commit('CLEAR_FORM')
-                    resolve(response.data)
-                })
-        })
-    },
-
-    removeProduct({ dispatch }, payload) {
-        return new Promise((resolve, reject) => {
-            $axios.delete(`/products/${payload}`)
-                .then((response) => {
-                    dispatch('getProducts').then(() => resolve())
-                })
-        })
-    },
-
-    getAllProducts({ commit, state }, payload) {
-        return new Promise((resolve, reject) => {
-                $axios.get(`/all-product`)
-                    .then((response) => {
-                        commit('ASSIGN_DATA', response.data)
-                        resolve(response.data)
-                    })
+            $axios.get(`/report-web/view/${payload}`)
+            .then((response) => {
+                commit('ASSIGN_VIEW_REPORT_WEB',response.data)
+                resolve(response.data)
             })
-            .catch((error) => {
-                if (error.response.status == 422) {
-                    commit('SET_ERRORS', error.response.data.errors, { root: true })
-                }
-            })
+        })
+        .catch((error) => {
+            if (error.response.status == 422) {
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+            }
+        })
     },
 
     // analisis

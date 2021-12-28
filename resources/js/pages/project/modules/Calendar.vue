@@ -80,7 +80,7 @@ export default {
     methods: {
         ...mapActions("reportWeb", ["getReportWebs"]),
         handleDateClick: function (arg) {
-            this.$router.push("/cs-report/" + arg.dateStr)
+            this.$router.push("/project/view/" + arg.dateStr)
         }
     }
 };

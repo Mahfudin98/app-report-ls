@@ -41,7 +41,8 @@ import DataStock from "./pages/stock/modules/StockData.vue";
 import IndexProject from "./pages/project/Index.vue";
 import DataProject from "./pages/project/modules/ProjectData.vue";
 import AddProject from "./pages/project/modules/ProjectAdd.vue";
-import EditProject from "./pages/project/modules/ProjectEdit";
+import EditProject from "./pages/project/modules/ProjectEdit.vue";
+import ViewProject from "./pages/project/modules/ProjectView.vue";
 // content
 import IndexContent from "./pages/content/Index.vue";
 import DataContent from "./pages/content/modules/ContentData.vue";
@@ -279,6 +280,12 @@ const router = new Router({
                     name: "project.edit",
                     component: EditProject,
                     meta: { title: "Edit Web Statistik" }
+                },
+                {
+                    path: "view/:date",
+                    name: "project.view",
+                    component: ViewProject,
+                    meta: { title: "View Web Statistik" }
                 },
                 {
                     path: "/add",
