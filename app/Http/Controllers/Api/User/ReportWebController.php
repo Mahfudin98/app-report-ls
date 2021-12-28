@@ -8,6 +8,7 @@ use App\Models\ReportPage;
 use App\Models\ReportWeb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ReportWebController extends Controller
 {
@@ -121,5 +122,23 @@ class ReportWebController extends Controller
     public function destroy(ReportWeb $reportWeb)
     {
         //
+    }
+
+    public function barChart()
+    {
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
+
+        $data = [];
+        $web = ReportWeb::where('date', 'LIKE', '%' . $filter . '%')->orderBy('total', 'DESC')->get();
+        foreach ($web as $rows) {
+            $data[] = [
+                'labels' => $rows->date,
+                'total' => $rows->total
+            ];
+        }
+
+        return $data;
     }
 }

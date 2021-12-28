@@ -2,12 +2,17 @@ import $axios from '../api'
 
 const state = () => ({
     reportWebs: [],
+    webBar: []
 })
 
 const mutations = {
     ASSIGN_DATA(state, payload) {
         state.reportWebs = payload
     },
+
+    ASSIGN_WEB_BAR_DATA(state, payload) {
+        state.webBar = payload
+    }
 }
 
 const actions = {
@@ -91,30 +96,11 @@ const actions = {
     },
 
     // analisis
-    getChartBar({ commit }, payload) {
+    getChartBarWeb({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            $axios.get(`/product-chart?month=${payload.month}&year=${payload.year}`)
+            $axios.get(`/chart-web?month=${payload.month}&year=${payload.year}`)
                 .then((response) => {
-                    commit('ASSIGN_DATA_BAR', response.data)
-                    resolve(response.data)
-                })
-        })
-    },
-    getListChart({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            $axios.get(`/product-chart-list?month=${payload.month}&year=${payload.year}`)
-                .then((response) => {
-                    commit('ASSIGN_DATA_LIST', response.data)
-                    resolve(response.data)
-                })
-        })
-    },
-
-    getDonatChart({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            $axios.get(`/product-presentase?month=${payload.month}&year=${payload.year}`)
-                .then((response) => {
-                    commit('ASSIGN_DATA_DONAT', response.data)
+                    commit('ASSIGN_WEB_BAR_DATA', response.data)
                     resolve(response.data)
                 })
         })

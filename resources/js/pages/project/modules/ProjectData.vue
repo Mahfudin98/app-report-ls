@@ -51,6 +51,7 @@
                 <div class="col-lg-12">
                     <div class="rui-widget p-0">
                         <!-- for chart -->
+                        <bar-chart v-if="webBar.length > 0" :data="webBar" :options="chartOptions" :labels="webBar" />
                     </div>
                 </div>
             </div>
@@ -70,25 +71,35 @@ import {
 import VueMomentsAgo from "vue-moments-ago";
 import Calender from "./Calendar.vue";
 import moment from "moment";
+import BarChart from "./Barchart.vue";
 export default {
     components: {
+        BarChart,
         VueMomentsAgo,
         Calender
     },
     created() {
-        this.getProducts();
+        this.getChartBarWeb({
+            month: this.month,
+            year: this.year
+        });
     },
 
     data() {
         return {
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+            barOmset: {},
             month: moment().format("MM"),
             year: moment().format("Y")
         };
     },
 
     computed: {
-        ...mapState("product", {
-            products: state => state.products
+        ...mapState("reportWeb", {
+            webBar: state => state.webBar
         }),
         years() {
             return _.range(
@@ -101,28 +112,22 @@ export default {
     },
 
     watch: {
-        search() {
-            this.getProducts(this.search);
+        month() {
+            this.getChartBarWeb({
+                month: this.month,
+                year: this.year
+            });
+        },
+        year() {
+            this.getChartBarWeb({
+                month: this.month,
+                year: this.year
+            });
         }
     },
 
     methods: {
-        ...mapActions("product", ["getProducts", "removeProduct"]),
-        deleteProduct(id) {
-            this.$swal({
-                title: "Kamu Yakin?",
-                text: "Tindakan ini akan menghapus secara permanent!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Iya, Lanjutkan!"
-            }).then(result => {
-                if (result.value) {
-                    this.removeProduct(id);
-                }
-            });
-        }
+        ...mapActions("reportWeb", ["getChartBarWeb"]),
     }
 };
 </script>
