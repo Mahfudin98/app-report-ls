@@ -130,12 +130,18 @@ class ReportWebController extends Controller
         $mounth = request()->month;
         $filter = $year . '-' . $mounth;
 
+        $parse = Carbon::parse($filter);
+        $array_date = range($parse->startOfMonth()->format('d'), $parse->endOfMonth()->format('d'));
+
+        $web = ReportWeb::where('date', 'LIKE', '%' . $filter . '%')->get();
         $data = [];
-        $web = ReportWeb::where('date', 'LIKE', '%' . $filter . '%')->orderBy('total', 'DESC')->get();
-        foreach ($web as $rows) {
+        foreach ($array_date as $row) {
+            $f_date = strlen($row) == 1 ? 0 . $row:$row;
+            $date = $filter . '-' . $f_date;
+            $total = $web->firstWhere('date', $date);
             $data[] = [
-                'labels' => $rows->date,
-                'total' => $rows->total
+                'labels' => $date,
+                'total' => $total ? $total->total:0
             ];
         }
 

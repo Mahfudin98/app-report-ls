@@ -51,7 +51,7 @@
                 <div class="col-lg-12">
                     <div class="rui-widget p-0">
                         <!-- for chart -->
-                        <bar-chart v-if="webBar.length > 0" :data="webBar" :options="chartOptions" :labels="webBar" />
+                        <bar-chart v-if="webBar.length > 0" :data="total" :options="chartOptions" :labels="labels" />
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@ import {
 import VueMomentsAgo from "vue-moments-ago";
 import Calender from "./Calendar.vue";
 import moment from "moment";
-import BarChart from "./Barchart.vue";
+import BarChart from "./BarChart.vue";
 export default {
     components: {
         BarChart,
@@ -109,6 +109,18 @@ export default {
                 .format("Y")
             );
         },
+
+        labels() {
+            return _.map(this.webBar, function(o) {
+                return moment(o.labels).format("DD");
+            });
+        },
+        total() {
+            let total = _.map(this.webBar, function(o) {
+                return o.total;
+            });
+            return total;
+        }
     },
 
     watch: {
