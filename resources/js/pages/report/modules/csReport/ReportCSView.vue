@@ -166,6 +166,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Ongkir</th>
+                                                                        <th>Potongan Ongkir</th>
                                                                         <th>Metode</th>
                                                                         <th>Kurir</th>
                                                                         <th>Biaya COD</th>
@@ -175,6 +176,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>Rp. {{ row.ongkir | formatNumber }}</td>
+                                                                        <td>Rp. {{ row.ongkir_discount | formatNumber }}</td>
                                                                         <td><span class="badge badge-brand">{{ row.metode == 1 ? 'COD' : 'Transfer' }}</span></td>
                                                                         <td><span class="badge badge-brand">{{ row.courier }}</span></td>
                                                                         <td>Rp. {{ row.metode == 1 ? row.biaya : 0 }}</td>

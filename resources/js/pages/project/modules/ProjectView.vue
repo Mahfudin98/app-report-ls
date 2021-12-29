@@ -3,8 +3,8 @@
     <page-loader/>
     <div class="rui-page-content">
         <div class="container-fluid" v-if="viewReportWebs.data != null">
-            <div class="row">
-                <div class="col-6">
+            <div class="row vertical-gap sm-gap justify-content-center">
+                <div class="col-sm-6">
                     <b-card bg-variant="brand" text-variant="white" :title="'Report URL ' + urlShow">
                         <b-card-text>
                             Total {{ viewReportWebs.data.total }} View
@@ -26,7 +26,7 @@
                         </b-img>
                     </b-modal>
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     <b-card border-variant="brand" :header="'Report Tanggal ' + viewReportWebs.data.date" header-bg-variant="brand" header-text-variant="white" align="center">
                         <div class="table-responsive">
                             <b-table :items="viewReportWebs.data.page" :fields="fields" show-empty>

@@ -104,6 +104,7 @@ class ReportController extends Controller
             'courier'           => 'required',
             'weight'            => 'required',
             'district_id'       => 'required',
+            'ongkir_discount'   => 'nullable'
         ]);
 
         try {
@@ -125,6 +126,7 @@ class ReportController extends Controller
                 'date'              => $request->date,
                 'image'             => $name,
                 'ongkir'            => $request->ongkir,
+                'ongkir_discount'   => $request->ongkir_discount,
                 'metode'            => $request->metode,
                 'biaya'             => $request->biaya,
                 'total'             => $request->total,

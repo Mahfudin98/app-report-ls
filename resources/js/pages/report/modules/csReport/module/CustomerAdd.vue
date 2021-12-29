@@ -9,14 +9,15 @@
                         <div class="card-body mnt-6 mnb-6">
                             <div class="form-group">
                                 <label for="customer_name">Customer Name</label>
-                                <input id="customer_name" class="form-control" type="text" name="customer_name" placeholder="Enter page title" v-model="customers.customer_name" required />
+                                <input id="customer_name" class="form-control" type="text" name="customer_name" placeholder="Nama Customer" v-model="customers.customer_name" required />
+                                <p>*Nama tidak boleh menggunakan karakter (*/-.\_+=)</p>
                                 <p class="text-danger" v-if="errors.customer_name">
                                     {{ errors.customer_name[0] }}
                                 </p>
                             </div>
                             <div class="form-group" v-if="customers.customer_name != ''">
                                 <label for="customer_phone">Customer Phone</label>
-                                <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Enter page title" v-model="customers.customer_phone" required />
+                                <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Nomor HP Customer" v-model="customers.customer_phone" required />
                                 <p class="text-danger" v-if="errors.customer_phone">
                                     {{ errors.customer_phone[0] }}
                                 </p>
@@ -90,17 +91,22 @@
                                 <label for="total">Total</label>
                                 <input class="form-control" type="text" :value="getTotal" disabled>
                             </div>
+                            <div class="form-group" v-if="ongkir.metode != ''">
+                                <label for="ongkir_discount">Potongan Ongkir</label>
+                                <input id="ongkir_discount" class="form-control" type="number" name="ongkir_discount" placeholder="Masukan Potongan Ongkir misal : 5000" v-model="customers.ongkir_discount" :disabled="getOngkir == undefined"/>
+                                <p>*Biarkan 0 jika tidak ada Potongan</p>
+                            </div>
                             <!-- akhir form ongkir -->
                             <div class="form-group" v-if="ongkir.metode != ''">
                                 <label for="customer_address">Customer Address</label>
-                                <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Enter page title" v-model="customers.customer_address" required />
+                                <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Alamat Customer" v-model="customers.customer_address" required />
                                 <p class="text-danger" v-if="errors.customer_address">
                                     {{ errors.customer_address[0] }}
                                 </p>
                             </div>
                             <div class="form-group" v-if="customers.customer_address != ''">
                                 <label for="waybill">Waybill</label>
-                                <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Enter page title" v-model="customers.waybill" required />
+                                <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Waybill" v-model="customers.waybill" required />
                                 <p class="text-danger" v-if="errors.waybill">
                                     {{ errors.waybill[0] }}
                                 </p>
@@ -201,6 +207,7 @@ export default {
                 customer_address: "",
                 waybill: "",
                 image: "",
+                ongkir_discount: 0,
                 // for order
                 product_id: [""],
                 qty: [""]
@@ -264,7 +271,12 @@ export default {
             return sum.reduce((acc, item) => acc + item);
         },
         getOngkir() {
-            return this.costs.data
+            if (this.customers.ongkir_discount != "" && this.customers.ongkir_discount != 0) {
+                var total = this.costs.data - parseInt(this.customers.ongkir_discount)
+                return total
+            } else {
+                return this.costs.data
+            }
         },
         biayaCOD() {
             var qty = this.customers.qty;
@@ -385,7 +397,7 @@ export default {
             form.append("waybill", this.customers.waybill);
             form.append("image", this.customers.image);
             form.append("date", this.$route.params.date);
-
+            form.append("ongkir_discount", this.customers.ongkir_discount);
             // ongkir
             form.append("ongkir", this.getOngkir);
             form.append("metode", this.ongkir.metode);
@@ -423,6 +435,7 @@ export default {
                     omset: "",
                     date: "",
                     image: "",
+                    ongkir_discount: 0,
                     // for order
                     product_id: [""],
                     total_order: [""]
