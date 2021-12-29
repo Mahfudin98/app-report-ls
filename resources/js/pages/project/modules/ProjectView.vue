@@ -1,5 +1,6 @@
 <template>
 <main>
+    <page-loader/>
     <div class="rui-page-content">
         <div class="container-fluid" v-if="viewReportWebs.data != null">
             <div class="row">
@@ -66,8 +67,10 @@ import {
     mapState
 } from "vuex";
 import moment from "moment";
+import PageLoader from '../../../components/PageLoader.vue'
 export default {
     name: "ViewProject",
+    components: {PageLoader},
     created() {
         this.getViewReportWeb(this.$route.params.date);
     },

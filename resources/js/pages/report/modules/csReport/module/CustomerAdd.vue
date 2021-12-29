@@ -57,7 +57,7 @@
                                 <select class="form-control" v-model="ongkir.courier">
                                     <option selected disabled="" value="">Pilih Courier</option>
                                     <option value="jne">JNE</Option>
-                                    <option value="j&t">J&T</Option>
+                                    <option value="jnt">J&T</Option>
                                     <option value="ninja">NINJA</Option>
                                     <option value="anteraja">ANTER AJA</Option>
                                 </select>

@@ -122,14 +122,6 @@ export default {
 
             if (this.$route.name == "project.add") {
                 this.submitReportWebs(form).then(() => {
-                    this.web = {
-                        url: 'lsskincarepusat.id',
-                        date: '',
-                        image: ''
-                    };
-
-                    this.pages = [];
-
                     this.$swal({
                         background: "#FFFFFF",
                         title: "Ditambah!",
@@ -140,8 +132,19 @@ export default {
                     });
 
                     this.$router.push({
-                        name: "project.data"
+                        name: 'project.view',
+                        params: {
+                            date: this.web.date
+                        }
                     });
+
+                    this.web = {
+                        url: 'lsskincarepusat.id',
+                        date: '',
+                        image: ''
+                    };
+
+                    this.pages = [];
                 });
             }
         }
