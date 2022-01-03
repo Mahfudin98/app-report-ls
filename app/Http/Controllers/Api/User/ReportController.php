@@ -224,30 +224,29 @@ class ReportController extends Controller
 
     public function updateProductOrder(Request $request, $id)
     {
-        $this->validate($request, [
-            'customer_name'     => 'required|string',
-            'customer_phone'    => 'required|string',
-            'customer_address'  => 'required|string',
-            'waybill'           => 'required|string',
-            'image'             => 'nullable|image',
-            'ongkir'            => 'required',
-            'metode'            => 'required',
-            'biaya'             => 'nullable',
-            'total'             => 'required',
-            'courier'           => 'required',
-            'weight'            => 'required',
-            'district_id'       => 'required',
-        ]);
+        // $this->validate($request, [
+        //     'customer_name'     => 'required|string',
+        //     'customer_phone'    => 'required|string',
+        //     'customer_address'  => 'required|string',
+        //     'waybill'           => 'required|string',
+        //     'image'             => 'nullable|image',
+        //     'ongkir'            => 'required',
+        //     'metode'            => 'required',
+        //     'biaya'             => 'nullable',
+        //     'total'             => 'required',
+        //     'courier'           => 'required',
+        //     'weight'            => 'required',
+        //     'district_id'       => 'required',
+        // ]);
 
         try {
             $user = request()->user(); //add user id
             //batas
             $detail = DetailOrder::find($id);
-            $details = DetailOrder::where('id', $id)->sum('subtotal');
             $bulan = Carbon::createFromFormat('Y-m-d', $detail->date)->month;
             $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
             $target->update([
-                'omset' => $target->omset - $details
+                'omset' => $target->omset - $detail->subtotal
             ]);
             $detail->update([
                 'product_id' => $request->product_id,
