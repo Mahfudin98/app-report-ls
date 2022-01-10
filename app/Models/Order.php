@@ -29,9 +29,9 @@ class Order extends Model
     public function getStatusLabelAttribute()
     {
         if ($this->status == 0) {
-            return '<span class="badge badge-pill badge-secondary">Retur</span>';
+            return '<span class="badge bg-danger rounded-pill">Retur</span>';
         }
-        return '<span class="badge badge-pill badge-brand">Success</span>';
+        return '<span class="badge bg-success rounded-pill">Success</span>';
     }
 
     public function returnOrder()

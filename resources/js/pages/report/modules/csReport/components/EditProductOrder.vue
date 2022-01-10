@@ -1,92 +1,61 @@
 <template>
-    <div class="rui-page-content">
-        <div class="container-fluid">
-            <div
-                class="d-flex justify-content-between align-items-center mb-20"
-            >
-                <router-link
-                    :to="{
-                        name: 'report.data.date',
-                        params: { date: orders.date }
-                    }"
-                    class="btn btn-secondary"
-                >
-                    <span class="icon">
-                        <span class="fas fa-arrow-alt-circle-left"></span>
+<div class="container-fluid p-0">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center mb-20">
+                <router-link :to="{name: 'report.data.date', params: { date: orders.date }}" class="btn btn-secondary">
+                    <span class="material-icons align-middle">
+                        reply
                     </span>
-                    <span class="text">Back</span>
+                    <span class="align-middle">Back</span>
                 </router-link>
-                <button @click="submit" class="btn btn-brand">
-                    <span class="icon">
-                        <i class="fas fa-sync-alt"></i>
+                <button @click="submit" class="btn btn-primary">
+                    <span class="material-icons align-middle">
+                        update
                     </span>
-                    <span class="text">Update</span>
+                    <span class="align-middle">Update</span>
                 </button>
             </div>
-            <!-- form -->
-            <div class="rui-snippet-preview demo">
-                <form action="">
-                    <div class="row vertical-gap sm-gap justify-content-center">
-                        <div class="col-sm-12">
-                            <div class="card">
-                                <div class="card-body mnt-6 mnb-6">
-                                    <h5 class="card-title h2">Order</h5>
-                                    <div class="form-group">
-                                        <label for="produk" class="text-white"
-                                            >Produk</label
-                                        >
-                                        <select
-                                            id="product"
-                                            class="form-control"
-                                            v-model="
+        </div>
+        <div class="card-body">
+            <div class="row vertical-gap sm-gap justify-content-center">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body mnt-6 mnb-6">
+                            <h5 class="card-title h2">Order</h5>
+                            <div class="form-group">
+                                <label for="produk" class="text-white">Produk</label>
+                                <select id="product" class="form-control" v-model="
                                                 orderProduk.product_id
-                                            "
-                                            required
-                                        >
-                                            <option
-                                                selected
-                                                disabled=""
-                                                value=""
-                                                >Pilih Produk</option
-                                            >
-                                            <option
-                                                v-for="row in products.data"
-                                                :key="row.id"
-                                                :value="row.id"
-                                                >{{ row.name }}
-                                                <p
-                                                    v-html="
+                                            " required>
+                                    <option selected disabled="" value="">Pilih Produk</option>
+                                    <option v-for="row in products.data" :key="row.id" :value="row.id">{{ row.name }}
+                                        <p v-html="
                                                         row.type_pembelian_label
-                                                    "
-                                                ></p>
-                                                ({{ row.price }})
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="order" class="text-white"
-                                            >Total Order</label
-                                        >
-                                        <input
-                                            class="form-control"
-                                            required
-                                            type="number"
-                                            placeholder="Jumlah Order Product"
-                                            v-model="orderProduk.qty"
-                                        />
-                                    </div>
-                                </div>
+                                                    "></p>
+                                        ({{ row.price }})
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="order" class="text-white">Total Order</label>
+                                <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="orderProduk.qty" />
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import {
+    mapActions,
+    mapState,
+    mapMutations
+} from "vuex";
 export default {
     name: "EditProductOrder",
     created() {
@@ -136,17 +105,19 @@ export default {
                     product_id: "",
                     qty: ""
                 }),
-                    this.$swal({
-                        background: "#FFFFFF",
-                        title: "Diupdate!",
-                        text: "Data Berhasil diupdate!",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
+                this.$swal({
+                    background: "#FFFFFF",
+                    title: "Diupdate!",
+                    text: "Data Berhasil diupdate!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
                 this.$router.push({
                     name: "report.data.date",
-                    params: { date: this.orders.date }
+                    params: {
+                        date: this.orders.date
+                    }
                 });
             });
         }

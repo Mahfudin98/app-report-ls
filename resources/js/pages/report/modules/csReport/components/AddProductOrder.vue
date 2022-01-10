@@ -1,67 +1,55 @@
 <template>
-<div class="rui-page-content">
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-20">
-            <router-link :to="{
-                        name: 'report.data.date',
-                        params: { date: orders.order.date }
-                    }" class="btn btn-secondary">
-                <span class="icon">
-                    <span class="fas fa-arrow-alt-circle-left"></span>
-                </span>
-                <span class="text">Back</span>
-            </router-link>
-            <button @click="submit" class="btn btn-brand" :disabled="getOngkir == undefined">
-                <span class="icon">
-                    <i class="fas fa-save"></i>
-                </span>
-                <span class="text">Save</span>
-            </button>
+<div class="container-fluid p-0">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center mb-20">
+                <router-link :to="{name: 'report.data.date', params: { date: orders.order.date } }" class="btn btn-secondary">
+                    <span class="material-icons align-middle">
+                        reply
+                    </span>
+                    <span class="align-middle">Back</span>
+                </router-link>
+                <button @click="submit" class="btn btn-primary" :disabled="getOngkir == undefined">
+                    <span class="material-icons align-middle">
+                        save
+                    </span>
+                    <span class="align-middle">Save</span>
+                </button>
+            </div>
         </div>
-        <!-- form -->
-        <div class="rui-snippet-preview demo">
-            <form action="">
-                <div class="row vertical-gap sm-gap justify-content-center">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-body mnt-6 mnb-6">
-                                <h5 class="card-title h2">Order</h5>
-                                <section v-for="(row, index) in order" :key="index">
-                                    <div class="form-group">
-                                        <label for="order" class="text-white">Total Order</label>
-                                        <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="orderProduk.qty[index]" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="produk" class="text-white">Produk</label>
-                                        <select id="product" class="form-control" v-model="orderProduk.product_id[index]" @click="submitOngkir" required>
-                                            <option selected disabled="" value="">Pilih Produk</option>
-                                            <option v-for="row in products.data" :key="row.id" :value="row">
-                                                {{ row.name }}
-                                                <p v-html="row.type_pembelian_label"></p>({{ row.price }})
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <br />
-                                    <button class="btn btn-danger" type="button" @click="removeParent(index)">
-                                        <span class="icon">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                        <span class="text">Remove Product</span>
-                                    </button>
-                                </section>
-                            </div>
-                            <div class="card-footer">
-                                <button class="btn btn-brand" type="button" @click="addProduct">
-                                    <span class="icon">
-                                        <i class="fas fa-plus"></i>
-                                    </span>
-                                    <span class="text">Add Product</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card-body">
+            <h5 class="card-title h2">Order</h5>
+            <section v-for="(row, index) in order" :key="index">
+                <div class="mb-3">
+                    <label for="order" class="text-white">Total Order</label>
+                    <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="orderProduk.qty[index]" />
                 </div>
-            </form>
+                <div class="mb-3">
+                    <label for="produk" class="text-white">Produk</label>
+                    <select id="product" class="form-control" v-model="orderProduk.product_id[index]" @click="submitOngkir" required>
+                        <option selected disabled="" value="">Pilih Produk</option>
+                        <option v-for="row in products.data" :key="row.id" :value="row">
+                            {{ row.name }}
+                            <p v-html="row.type_pembelian_label"></p>({{ row.price }})
+                        </option>
+                    </select>
+                </div>
+                <br />
+                <button class="btn btn-danger" type="button" @click="removeParent(index)">
+                    <span class="material-icons align-middle">
+                        delete
+                    </span>
+                    <span class="align-middle">Remove Product</span>
+                </button>
+            </section>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" type="button" @click="addProduct">
+                <span class="material-icons align-middle">
+                    add_circle_outline
+                </span>
+                <span class="align-middle">Add Product</span>
+            </button>
         </div>
     </div>
 </div>

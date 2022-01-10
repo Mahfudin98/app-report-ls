@@ -1,31 +1,33 @@
 <template>
-<main>
+<div class="row">
     <page-loader />
-    <div class="rui-page-content">
-        <div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center mb-20">
                 <router-link :to="{ name: 'project.data' }" class="btn btn-secondary">
-                    <span class="icon">
-                        <span class="fas fa-arrow-alt-circle-left"></span>
+                    <span class="material-icons align-middle">
+                        reply
                     </span>
-                    <span class="text">Back</span>
+                    <span class="align-middle">Back</span>
                 </router-link>
                 <b-overlay :show="busy" rounded opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block float-right mb-2" @hidden="onHidden">
-                    <button ref="button" :disabled="busy" @click="onClick" class="btn btn-brand">
-                        <span class="icon">
-                            <i class="fas fa-save"></i>
+                    <button ref="button" :disabled="busy" @click="onClick" class="btn btn-primary">
+                        <span class="material-icons align-middle">
+                            save
                         </span>
-                        <span class="text">Save</span>
+                        <span class="align-middle">Save</span>
                     </button>
                     <!-- <b-button ref="button" :disabled="busy" variant="brand" @click="onClick">
                     Save <b-icon  icon="upload" aria-hidden="true"></b-icon>
                 </b-button> -->
                 </b-overlay>
             </div>
+        </div>
+        <div class="card-body">
             <form-project ref="projectForm"></form-project>
         </div>
     </div>
-</main>
+</div>
 </template>
 
 <script>

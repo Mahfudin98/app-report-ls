@@ -1,199 +1,233 @@
 <template>
-    <nav class="main-nav--bg">
-        <div class="container main-nav">
-            <div class="main-nav-start">
-                <div class="search-wrapper">
-                    <i data-feather="search" aria-hidden="true"></i>
-                    <input
-                        type="text"
-                        placeholder="Enter keywords ..."
-                        required
-                    />
+<b-navbar>
+    <a class="sidebar-toggle js-sidebar-toggle">
+        <i class="hamburger align-self-center"></i>
+    </a>
+
+    <b-collapse class="navbar-collapse collapse" id="nav-collapse" is-nav>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="navbar-align">
+            <b-nav-item-dropdown center>
+                <!-- Using 'button-content' slot -->
+                <template #button-content>
+                    <a class="nav-icon d-inline-block d-sm-none" href="#">
+                        <i class="align-middle" data-feather="settings"></i>
+                    </a>
+                    <a class="nav-link d-none d-sm-inline-block" href="#">
+                        <img v-if="authenticated.image != null" class="avatar img-fluid rounded me-1" :src="'../storage/teams/' + authenticated.image" :alt="authenticated.name" />
+                        <span class="text-dark">{{authenticated.name}}</span>
+                    </a>
+                </template>
+                <b-dropdown-item href="#">Profile</b-dropdown-item>
+                <b-dropdown-item href="#" @click="logoutPost">
+                    <span class="material-icons align-middle">
+                        logout
+                    </span>
+                    <span class="align-middle">Logout</span>
+                </b-dropdown-item>
+            </b-nav-item-dropdown>
+        </b-navbar-nav>
+    </b-collapse>
+</b-navbar>
+<!-- <nav class="navbar navbar-expand navbar-light navbar-bg">
+    <a class="sidebar-toggle js-sidebar-toggle">
+        <i class="hamburger align-self-center"></i>
+    </a>
+
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav navbar-align">
+            <li class="nav-item dropdown">
+                <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+                    <div class="position-relative">
+                        <i class="align-middle" data-feather="bell"></i>
+                        <span class="indicator">4</span>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+                    <div class="dropdown-menu-header">
+                        4 New Notifications
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <i class="text-danger" data-feather="alert-circle"></i>
+                                </div>
+                                <div class="col-10">
+                                    <div class="text-dark">Update completed</div>
+                                    <div class="text-muted small mt-1">Restart server 12 to complete the
+                                        update.</div>
+                                    <div class="text-muted small mt-1">30m ago</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <i class="text-warning" data-feather="bell"></i>
+                                </div>
+                                <div class="col-10">
+                                    <div class="text-dark">Lorem ipsum</div>
+                                    <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
+                                        hendrerit et.</div>
+                                    <div class="text-muted small mt-1">2h ago</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <i class="text-primary" data-feather="home"></i>
+                                </div>
+                                <div class="col-10">
+                                    <div class="text-dark">Login from 192.186.1.8</div>
+                                    <div class="text-muted small mt-1">5h ago</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <i class="text-success" data-feather="user-plus"></i>
+                                </div>
+                                <div class="col-10">
+                                    <div class="text-dark">New connection</div>
+                                    <div class="text-muted small mt-1">Christina accepted your request.
+                                    </div>
+                                    <div class="text-muted small mt-1">14h ago</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="dropdown-menu-footer">
+                        <a href="#" class="text-muted">Show all notifications</a>
+                    </div>
                 </div>
-            </div>
-            <div class="main-nav-end">
-                <button
-                    class="sidebar-toggle transparent-btn"
-                    title="Menu"
-                    type="button"
-                >
-                    <span class="sr-only">Toggle menu</span>
-                    <span
-                        class="icon menu-toggle--gray"
-                        aria-hidden="true"
-                    ></span>
-                </button>
-                <div class="lang-switcher-wrapper">
-                    <button class="lang-switcher transparent-btn" type="button">
-                        EN
-                        <i data-feather="chevron-down" aria-hidden="true"></i>
-                    </button>
-                    <ul class="lang-menu dropdown">
-                        <li><a href="##">English</a></li>
-                        <li><a href="##">French</a></li>
-                        <li><a href="##">Uzbek</a></li>
-                    </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown">
+                    <div class="position-relative">
+                        <i class="align-middle" data-feather="message-square"></i>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="messagesDropdown">
+                    <div class="dropdown-menu-header">
+                        <div class="position-relative">
+                            4 New Messages
+                        </div>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <img src="img/avatars/avatar-5.jpg" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
+                                </div>
+                                <div class="col-10 ps-2">
+                                    <div class="text-dark">Vanessa Tucker</div>
+                                    <div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu
+                                        tortor.</div>
+                                    <div class="text-muted small mt-1">15m ago</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <img src="img/avatars/avatar-2.jpg" class="avatar img-fluid rounded-circle" alt="William Harris">
+                                </div>
+                                <div class="col-10 ps-2">
+                                    <div class="text-dark">William Harris</div>
+                                    <div class="text-muted small mt-1">Curabitur ligula sapien euismod
+                                        vitae.</div>
+                                    <div class="text-muted small mt-1">2h ago</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <img src="img/avatars/avatar-4.jpg" class="avatar img-fluid rounded-circle" alt="Christina Mason">
+                                </div>
+                                <div class="col-10 ps-2">
+                                    <div class="text-dark">Christina Mason</div>
+                                    <div class="text-muted small mt-1">Pellentesque auctor neque nec urna.
+                                    </div>
+                                    <div class="text-muted small mt-1">4h ago</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <img src="img/avatars/avatar-3.jpg" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
+                                </div>
+                                <div class="col-10 ps-2">
+                                    <div class="text-dark">Sharon Lessman</div>
+                                    <div class="text-muted small mt-1">Aenean tellus metus, bibendum sed,
+                                        posuere ac, mattis non.</div>
+                                    <div class="text-muted small mt-1">5h ago</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="dropdown-menu-footer">
+                        <a href="#" class="text-muted">Show all messages</a>
+                    </div>
                 </div>
-                <button
-                    class="theme-switcher gray-circle-btn"
-                    type="button"
-                    title="Switch theme"
-                >
-                    <span class="sr-only">Switch theme</span>
-                    <i
-                        class="sun-icon"
-                        data-feather="sun"
-                        aria-hidden="true"
-                    ></i>
-                    <i
-                        class="moon-icon"
-                        data-feather="moon"
-                        aria-hidden="true"
-                    ></i>
-                </button>
-                <div class="notification-wrapper">
-                    <button
-                        class="gray-circle-btn dropdown-btn"
-                        title="To messages"
-                        type="button"
-                    >
-                        <span class="sr-only">To messages</span>
-                        <span
-                            class="icon notification active"
-                            aria-hidden="true"
-                        ></span>
-                    </button>
-                    <ul
-                        class="users-item-dropdown notification-dropdown dropdown"
-                    >
-                        <li>
-                            <a href="##">
-                                <div class="notification-dropdown-icon info">
-                                    <i data-feather="check"></i>
-                                </div>
-                                <div class="notification-dropdown-text">
-                                    <span class="notification-dropdown__title"
-                                        >System just updated</span
-                                    >
-                                    <span
-                                        class="notification-dropdown__subtitle"
-                                        >The system has been successfully
-                                        upgraded. Read more here.</span
-                                    >
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="##">
-                                <div class="notification-dropdown-icon danger">
-                                    <i
-                                        data-feather="info"
-                                        aria-hidden="true"
-                                    ></i>
-                                </div>
-                                <div class="notification-dropdown-text">
-                                    <span class="notification-dropdown__title"
-                                        >The cache is full!</span
-                                    >
-                                    <span
-                                        class="notification-dropdown__subtitle"
-                                        >Unnecessary caches take up a lot of
-                                        memory space and interfere ...</span
-                                    >
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="##">
-                                <div class="notification-dropdown-icon info">
-                                    <i
-                                        data-feather="check"
-                                        aria-hidden="true"
-                                    ></i>
-                                </div>
-                                <div class="notification-dropdown-text">
-                                    <span class="notification-dropdown__title"
-                                        >New Subscriber here!</span
-                                    >
-                                    <span
-                                        class="notification-dropdown__subtitle"
-                                        >A new subscriber has subscribed.</span
-                                    >
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="link-to-page" href="##"
-                                >Go to Notifications page</a
-                            >
-                        </li>
-                    </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                    <i class="align-middle" data-feather="settings"></i>
+                </a>
+
+                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                    <img v-if="authenticated.image != null" class="avatar img-fluid rounded me-1" :src="'../storage/teams/' + authenticated.image" :alt="authenticated.name"/>
+                    <span class="text-dark">{{authenticated.name}}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                    <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
+                    <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Log out</a>
                 </div>
-                <div class="nav-user-wrapper">
-                    <button
-                        href="##"
-                        class="nav-user-btn dropdown-btn"
-                        title="My profile"
-                        type="button"
-                    >
-                        <span class="sr-only">My profile</span>
-                        <span class="nav-user-img">
-                            <picture
-                                ><source srcset="" type="image/webp"/>
-                                <img v-show="authenticated.image != null" :src="'../storage/teams/' + authenticated.image" :alt="authenticated.name">
-                            </picture>
-                        </span>
-                    </button>
-                    <ul class="users-item-dropdown nav-user-dropdown dropdown">
-                        <li>
-                            <a href="##">
-                                <i data-feather="user" aria-hidden="true"></i>
-                                <span>{{ authenticated.name }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="##">
-                                <i
-                                    data-feather="settings"
-                                    aria-hidden="true"
-                                ></i>
-                                <span>Account settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="danger" href="javascript:void(0)" @click="logout">
-                                <i
-                                    data-feather="log-out"
-                                    aria-hidden="true"
-                                ></i>
-                                <span>Log out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+            </li>
+        </ul>
+    </div>
+</nav> -->
 </template>
+
 <script>
-import { mapState } from 'vuex'
+import {
+    mapState,
+    mapActions
+} from "vuex";
 export default {
     name: "NavBar",
+    data() {
+        return {
+            mainProps: {
+                width: 40,
+                height: 40,
+                class: "m1"
+            }
+        };
+    },
     computed: {
-        ...mapState('user', {
+        ...mapState("user", {
             authenticated: state => state.authenticated
         })
     },
     methods: {
-        logout() {
-            return new Promise((resolve, reject) => {
-                localStorage.removeItem('token')
-                resolve()
-            }).then(() => {
-                this.$store.state.token = localStorage.getItem('token')
-                this.$router.push('/login')
-            })
-        },
+        ...mapActions("auth", ["logout"]),
+        logoutPost() {
+            this.logout().then(() => {
+                this.$store.state.token = localStorage.getItem("token");
+                this.$router.push("/login");
+            });
+        }
     }
-}
+};
 </script>

@@ -1,7 +1,7 @@
 <template>
-<main>
-    <div class="rui-page-content">
-        <div class="container-fluid">
+<div class="row">
+    <div class="card">
+        <div class="card-header">
             <h2>Bar Chart</h2>
             <div class="row">
                 <div class="col-md-5">
@@ -41,26 +41,29 @@
                         <button type="button" class="btn btn-primary">
                             <b-icon icon="printer-fill"></b-icon>
                         </button>
-                        <router-link :to="{ name: 'project.add' }" class="btn btn-brand" v-if="$can('create projects')">
-                            <b-icon icon="plus-circle-fill"></b-icon>
+                        <router-link :to="{ name: 'project.add' }" class="btn btn-primary" v-if="$can('create projects')">
+                            <span class="material-icons align-middle">
+                                add_circle_outline
+                            </span>
                         </router-link>
                     </div>
                 </div>
             </div>
-            <div class="row vertical-gap">
-                <div class="col-lg-12">
-                    <div class="rui-widget p-0">
-                        <!-- for chart -->
-                        <bar-chart v-if="webBar.length > 0" :data="total" :options="chartOptions" :labels="labels" />
-                    </div>
+        </div>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <div class="rui-widget p-0">
+                    <!-- for chart -->
+                    <bar-chart v-if="webBar.length > 0" :data="total" :options="chartOptions" :labels="labels" />
                 </div>
             </div>
-            <div class="rui-gap-2"></div>
+        </div>
+        <div class="card-footer">
             <h2>Calendar</h2>
             <Calender />
         </div>
     </div>
-</main>
+</div>
 </template>
 
 <script>
@@ -111,12 +114,12 @@ export default {
         },
 
         labels() {
-            return _.map(this.webBar, function(o) {
+            return _.map(this.webBar, function (o) {
                 return moment(o.labels).format("DD");
             });
         },
         total() {
-            let total = _.map(this.webBar, function(o) {
+            let total = _.map(this.webBar, function (o) {
                 return o.total;
             });
             return total;

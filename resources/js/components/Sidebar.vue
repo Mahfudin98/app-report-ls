@@ -1,210 +1,174 @@
 <template>
-    <aside class="sidebar">
-        <div class="sidebar-start">
-            <div class="sidebar-head">
-                <router-link :to="{ name: 'home' }" class="logo-wrapper">
-                    <span class="sr-only">Home</span>
-                    <span class="icon logo" aria-hidden="true"></span>
-                    <div class="logo-text">
-                        <span class="logo-title">Elegant</span>
-                        <span class="logo-subtitle">Dashboard</span>
-                    </div>
+<nav id="sidebar" class="sidebar js-sidebar">
+    <div class="sidebar-content js-simplebar">
+        <router-link class="sidebar-brand" :to="{ name: 'home' }">
+            <img class="img-fluid" :src="'/images/logo.png'" width="100" height="100" alt="logo">
+        </router-link>
+        <!-- <a class="sidebar-brand" href="index.html">
+            <img class="img-fluid" :src="'/images/logo.png'" width="100" height="100" alt="logo">
+            <span class="align-middle">AdminKit</span>
+        </a> -->
+
+        <ul class="sidebar-nav">
+            <li :class="this.$route.name == 'home' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'home' }">
+                    <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
                 </router-link>
-                <button
-                    class="sidebar-toggle transparent-btn"
-                    title="Menu"
-                    type="button"
-                >
-                    <span class="sr-only">Toggle menu</span>
-                    <span class="icon menu-toggle" aria-hidden="true"></span>
-                </button>
-            </div>
-            <div class="sidebar-body">
-                <ul class="sidebar-body-menu">
-                    <!-- dashboard -->
-                    <li>
-                        <router-link :to="{ name: 'home' }" class="active">
-                            <lord-icon
-                                src="https://cdn.lordicon.com/gmzxduhd.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Dashboard
-                        </router-link>
-                    </li>
-                    <!-- report -->
-                    <li>
-                        <a class="show-cat-btn" href="##">
-                            <lord-icon
-                                src="https://cdn.lordicon.com/nocovwne.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Report
-                            <span
-                                class="category__btn transparent-btn"
-                                title="Open list"
-                            >
-                                <span class="sr-only">Open list</span>
-                                <span
-                                    class="icon arrow-down"
-                                    aria-hidden="true"
-                                ></span>
-                            </span>
-                        </a>
-                        <ul class="cat-sub-menu">
-                            <li>
-                                <router-link :to="{ name: 'cs.report.data' }">Report CS</router-link>
-                            </li>
-                            <li>
-                                <router-link :to="{ name: 'adv.report.data' }">Report ADV</router-link>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- project -->
-                    <li>
-                        <router-link
-                            :to="{ name: 'project.data' }"
-                            class="active"
-                        >
-                            <lord-icon
-                                src="https://cdn.lordicon.com/jvucoldz.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Project
-                        </router-link>
-                    </li>
-                    <!-- content -->
-                    <li>
-                        <router-link
-                            :to="{ name: 'content.data' }"
-                            class="active"
-                        >
-                            <lord-icon
-                                src="https://cdn.lordicon.com/tdxypxgp.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Content
-                        </router-link>
-                    </li>
-                    <!-- stock -->
-                    <li>
-                        <router-link
-                            :to="{ name: 'stock.data' }"
-                            class="active"
-                        >
-                            <lord-icon
-                                src="https://cdn.lordicon.com/iyqamhwd.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Stock
-                        </router-link>
-                    </li>
-                </ul>
-                <span class="system-menu__title">superadmin</span>
-                <ul class="sidebar-body-menu">
-                    <!-- teams -->
-                    <li>
-                        <router-link
-                            :to="{ name: 'teams.data' }"
-                            class="active"
-                        >
-                            <lord-icon
-                                src="https://cdn.lordicon.com/uukerzzv.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            ></lord-icon>
-                            Team
-                        </router-link>
-                    </li>
-                    <!-- position -->
-                    <li>
-                        <router-link
-                            :to="{ name: 'position.data' }"
-                            class="active"
-                        >
-                            <lord-icon
-                                src="https://cdn.lordicon.com/soseozvi.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Position
-                        </router-link>
-                    </li>
-                    <!-- product -->
-                    <li>
-                        <router-link
-                            :to="{ name: 'product.data' }"
-                            class="active"
-                        >
-                            <lord-icon
-                                src="https://cdn.lordicon.com/wfroncyf.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Product
-                        </router-link>
-                    </li>
-                    <!-- permissions -->
-                    <li>
-                        <router-link
-                            :to="{ name: 'role.permissions' }"
-                            class="active"
-                        >
-                            <lord-icon
-                                src="https://cdn.lordicon.com/sbiheqdr.json"
-                                trigger="loop-on-hover"
-                                colors="primary:#ffffff,secondary:#fad1e6"
-                                style="width:30px;height:30px"
-                            >
-                            </lord-icon>
-                            Settings
-                        </router-link>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="sidebar-footer">
-            <a href="https://www.instagram.com/mahfudin_nawawi/" class="sidebar-user">
-                <span class="sidebar-user-img">
-                    <lord-icon
-                        src="https://cdn.lordicon.com/nobciafz.json"
-                        trigger="loop-on-hover"
-                        colors="primary:#121331,secondary:#08a88a"
-                        style="width:50px;height:50px"
+            </li>
+            <!--Analisis Product-->
+            <li :class="this.$route.name == 'product.chart' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'product.chart' }">
+                    <i class="align-middle" data-feather="trending-up"></i> <span class="align-middle">Product Analisis</span>
+                </router-link>
+            </li>
+            <!-- report -->
+            <li :class="this.$route.name == 'cs.report.data' || this.$route.name == 'adv.report.data' || this.$route.name == 'report.data.date' ? 'sidebar-item active' : 'sidebar-item'">
+                <a v-b-toggle="'collapse-2'" class="sidebar-link">
+                    <i class="align-middle" data-feather="layers"></i> <span class="align-middle">Report</span>
+                </a>
+                <!-- <b-button v-b-toggle="'collapse-2'" class="m-1">Toggle Collapse</b-button> -->
+                <b-collapse id="collapse-2">
+                    <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
+                        <li v-if="$can('read reports cs')" :class="this.$route.name == 'cs.report.data' || this.$route.name == 'report.data.date' ? 'sidebar-item active' : 'sidebar-item'">
+                            <router-link class="sidebar-link" :to="{ name: 'cs.report.data' }">Report CS</router-link>
+                        </li>
+                        <li v-if="$can('read reports adv')" :class="this.$route.name == 'adv.report.data' ? 'sidebar-item active' : 'sidebar-item'">
+                            <router-link class="sidebar-link" :to="{ name: 'adv.report.data' }">Report ADV</router-link>
+                        </li>
+                    </ul>
+                </b-collapse>
+            </li>
+            <!-- return -->
+            <li v-if="$can('read reports returns')" :class="this.$route.name == 'return.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'return.data' }">
+                    <i class="align-middle" data-feather="trending-down"></i> <span class="align-middle">Report Return</span>
+                </router-link>
+            </li>
+            <!-- target -->
+            <li v-if="authenticated.role == 0 || $can('read teams')" :class="this.$route.name == 'target.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'target.data' }">
+                    <i class="align-middle" data-feather="target"></i> <span class="align-middle">Target</span>
+                </router-link>
+            </li>
+            <!-- web static -->
+            <li v-if="$can('read projects')" :class="this.$route.name == 'project.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'project.data' }">
+                    <i class="align-middle" data-feather="globe"></i> <span class="align-middle">Web Statistik</span>
+                </router-link>
+            </li>
+            <!-- content -->
+            <!--disabled dulu-->
+            <!--
+                    <li
+                        v-if="$can('read contents')"
+                        :class="
+                            this.$route.name == 'content.data'
+                                ? 'sidebar-item active'
+                                : 'sidebar-item'
+                        "
                     >
-                    </lord-icon>
-                </span>
-                <div class="sidebar-user-info">
-                    <span class="sidebar-user__title">{{ authenticated.name }}</span>
-                    <span class="sidebar-user__subtitle" v-if="authenticated.position_id != null">{{ authenticated.position }}</span>
+                        <router-link class="sidebar-link"
+                            :to="{ name: 'content.data' }"
+
+                        >
+                            <span class="yay-icon">
+                                <span class="fas fa-film"></span>
+                            </span>
+                            <span>Conent</span>
+                        </router-link>
+                    </li>
+                    -->
+            <!-- stock -->
+            <!--disabled dulu-->
+            <!--
+                    <li
+                        v-if="$can('read stocks')"
+                        :class="
+                            this.$route.name == 'stock.data'
+                                ? 'sidebar-item active'
+                                : 'sidebar-item'
+                        "
+                    >
+                        <router-link class="sidebar-link"
+                            :to="{ name: 'stock.data' }"
+
+                        >
+                            <span class="yay-icon">
+                                <span class="fas fa-people-carry"></span>
+                            </span>
+                            <span>Stock</span>
+                        </router-link>
+                    </li>
+                    -->
+            <li class="sidebar-header">
+                Super Admin
+            </li>
+            <!-- teams -->
+            <li v-if="$can('read teams')" :class="this.$route.name == 'teams.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'teams.data' }">
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Team</span>
+                </router-link>
+            </li>
+            <!-- inventory -->
+            <li v-if="$can('read inventories')" :class="this.$route.name == 'inventory.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'inventory.data' }">
+                    <i class="align-middle" data-feather="package"></i> <span class="align-middle">Inventories</span>
+                </router-link>
+            </li>
+            <!-- customer data -->
+            <li v-if="$can('read inventories')" :class="this.$route.name == 'customer.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'customer.data' }">
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Data Customer</span>
+                </router-link>
+            </li>
+            <!-- position -->
+            <li v-if="$can('read positions')" :class="this.$route.name == 'position.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'position.data' }">
+                    <i class="align-middle" data-feather="tag"></i> <span class="align-middle">Position</span>
+                </router-link>
+            </li>
+            <!-- product -->
+            <li v-if="$can('read products')" :class="this.$route.name == 'product.data' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'product.data' }">
+                    <i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Product</span>
+                </router-link>
+            </li>
+            <!-- permissions -->
+            <li v-if="authenticated.role == 0 || $can('create teams')" :class="this.$route.name == 'role.permissions' ? 'sidebar-item active' : 'sidebar-item'">
+                <router-link class="sidebar-link" :to="{ name: 'role.permissions' }">
+                    <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+                </router-link>
+            </li>
+
+        </ul>
+
+        <div class="sidebar-cta">
+            <div class="sidebar-cta-content">
+                <strong class="d-inline-block mb-2">Upgrade to Pro</strong>
+                <div class="mb-3 text-sm">
+                    Are you looking for more components? Check out our premium version.
                 </div>
-            </a>
+                <div class="d-grid">
+                    <a href="upgrade-to-pro.html" class="btn btn-primary">Upgrade to Pro</a>
+                </div>
+            </div>
         </div>
-    </aside>
+    </div>
+</nav>
 </template>
+
 <script>
-import { mapState, mapActions } from 'vuex'
+import {
+    mapState,
+    mapActions
+} from 'vuex'
 export default {
     name: "SideBar",
+    data() {
+        return {
+            visible: true
+        }
+    },
     computed: {
         ...mapState('user', {
             authenticated: state => state.authenticated

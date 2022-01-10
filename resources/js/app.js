@@ -15,13 +15,13 @@ import store from './store.js'
 // import plugin sweet alert & bootstrap vue
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2';
-import 'sweetalert2/src/sweetalert2.scss'
+// import 'sweetalert2/src/sweetalert2.scss'
 import Permissions from './mixins/permission.js'
 
 Vue.use(require('vue-moment'));
 // import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
 // import DateRangePicker from "vue2-daterange-picker";
-
+import Swal from 'sweetalert2'
 
 Vue.mixin(Permissions)
 
@@ -36,13 +36,15 @@ Vue.filter("formatNumber", function(value) {
 });
 
 import { mapActions, mapGetters } from 'vuex'
-
+const feather = require('feather-icons')
 const app = new Vue({
     router,
     store,
+    Swal,
+    feather,
     el: "#app",
     components: {
-        New
+        App
     },
     computed: {
         ...mapGetters(['isAuth'])

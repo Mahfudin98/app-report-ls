@@ -1,13 +1,13 @@
 <template>
 <b-modal id="addCustomer" title="Add Customers">
     <!-- <customer-form ref="customerForm" /> -->
-    <div class="rui-snippet-preview demo">
+    <div class="container-fluid p-0">
         <form action="">
             <div class="row vertical-gap sm-gap justify-content-center">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="customer_name">Customer Name</label>
                                 <input id="customer_name" class="form-control" type="text" name="customer_name" placeholder="Nama Customer" v-model="customers.customer_name" required />
                                 <p>*Nama tidak boleh menggunakan karakter (*/-.\_+=)</p>
@@ -15,7 +15,7 @@
                                     {{ errors.customer_name[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="customers.customer_name != ''">
+                            <div class="mb-3" v-if="customers.customer_name != ''">
                                 <label for="customer_phone">Customer Phone</label>
                                 <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Nomor HP Customer" v-model="customers.customer_phone" required />
                                 <p class="text-danger" v-if="errors.customer_phone">
@@ -23,7 +23,7 @@
                                 </p>
                             </div>
                             <!-- form ongkir disini -->
-                            <div class="form-group" v-if="customers.customer_phone != ''">
+                            <div class="mb-3" v-if="customers.customer_phone != ''">
                                 <label for="province">Province</label>
                                 <select class="form-control" @change="provinceId($event)" v-model="ongkir.province">
                                     <option selected disabled="" value="">Pilih Provinsi</option>
@@ -33,7 +33,7 @@
                                     {{ errors.province[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="ongkir.province != ''">
+                            <div class="mb-3" v-if="ongkir.province != ''">
                                 <label for="city">City</label>
                                 <select class="form-control" @change="cityId($event)" v-model="ongkir.city">
                                     <option selected disabled="" value="">Pilih City</option>
@@ -43,7 +43,7 @@
                                     {{ errors.city[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="ongkir.city != ''">
+                            <div class="mb-3" v-if="ongkir.city != ''">
                                 <label for="district">District</label>
                                 <select class="form-control" v-model="ongkir.district">
                                     <option selected disabled="" value="">Pilih District</option>
@@ -53,7 +53,7 @@
                                     {{ errors.district[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="ongkir.district != ''">
+                            <div class="mb-3" v-if="ongkir.district != ''">
                                 <label for="courier">Courier</label>
                                 <select class="form-control" v-model="ongkir.courier">
                                     <option selected disabled="" value="">Pilih Courier</option>
@@ -66,7 +66,7 @@
                                     {{ errors.courier[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="ongkir.courier != ''">
+                            <div class="mb-3" v-if="ongkir.courier != ''">
                                 <label for="metode">Metode</label>
                                 <select class="form-control" v-model="ongkir.metode">
                                     <option selected disabled="" value="">Pilih Metode</option>
@@ -77,41 +77,41 @@
                                     {{ errors.metode[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="ongkir.metode != ''">
+                            <div class="mb-3" v-if="ongkir.metode != ''">
                                 <label for="ongkir">Ongkir</label>
                                 <input class="form-control" type="text" :value="getOngkir != undefined ? getOngkir : 'loading...'" disabled>
                             </div>
-                            <div class="form-group" v-if="ongkir.metode == 1">
+                            <div class="mb-3" v-if="ongkir.metode == 1">
                                 <label for="biaya">Biaya</label>
                                 <input class="form-control" v-if="ongkir.courier === 'jne'" type="text" :value="biayaJNE" disabled>
                                 <input class="form-control" v-if="ongkir.courier === 'j&t'" type="text" :value="biayaJNT" disabled>
                                 <input class="form-control" v-if="ongkir.courier != 'jne' && ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
                             </div>
-                            <div class="form-group" v-if="ongkir.metode != ''">
+                            <div class="mb-3" v-if="ongkir.metode != ''">
                                 <label for="total">Total</label>
                                 <input class="form-control" type="text" :value="getTotal" disabled>
                             </div>
-                            <div class="form-group" v-if="ongkir.metode != ''">
+                            <div class="mb-3" v-if="ongkir.metode != ''">
                                 <label for="ongkir_discount">Potongan Ongkir</label>
-                                <input id="ongkir_discount" class="form-control" type="number" name="ongkir_discount" placeholder="Masukan Potongan Ongkir misal : 5000" v-model="customers.ongkir_discount" :disabled="getOngkir == undefined"/>
+                                <input id="ongkir_discount" class="form-control" type="number" name="ongkir_discount" placeholder="Masukan Potongan Ongkir misal : 5000" v-model="customers.ongkir_discount" :disabled="getOngkir == undefined" />
                                 <p>*Biarkan 0 jika tidak ada Potongan</p>
                             </div>
                             <!-- akhir form ongkir -->
-                            <div class="form-group" v-if="ongkir.metode != ''">
+                            <div class="mb-3" v-if="ongkir.metode != ''">
                                 <label for="customer_address">Customer Address</label>
                                 <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Alamat Customer" v-model="customers.customer_address" required />
                                 <p class="text-danger" v-if="errors.customer_address">
                                     {{ errors.customer_address[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="customers.customer_address != ''">
+                            <div class="mb-3" v-if="customers.customer_address != ''">
                                 <label for="waybill">Waybill</label>
                                 <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Waybill" v-model="customers.waybill" required />
                                 <p class="text-danger" v-if="errors.waybill">
                                     {{ errors.waybill[0] }}
                                 </p>
                             </div>
-                            <div class="form-group" v-if="customers.waybill != ''" :class="{ 'has-error': errors.image }">
+                            <div class="mb-3" v-if="customers.waybill != ''" :class="{ 'has-error': errors.image }">
                                 <label for="file-input">Image</label>
                                 <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
                                 <p>*Kosongkan jika tidak ingin menambahkan</p>
@@ -127,11 +127,11 @@
                         <div class="card-body mnt-6 mnb-6">
                             <h5 class="card-title h2">Order</h5>
                             <section v-for="(row, index) in order" :key="index">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label for="order" class="text-white">Total Order</label>
                                     <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="customers.qty[index]" />
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label for="produk" class="text-white">Produk</label>
                                     <select id="product" class="form-control" v-model="customers.product_id[index]" @click="submitOngkir" required>
                                         <option selected disabled="" value="">Pilih Produk</option>
@@ -144,20 +144,20 @@
                                     </select>
                                 </div>
                                 <br />
-                                <button class="btn btn-brand" type="button" @click="removeParent(index)">
-                                    <span class="icon">
-                                        <i class="fas fa-trash"></i>
+                                <button class="btn btn-danger" type="button" @click="removeParent(index)">
+                                    <span class="material-icons align-middle">
+                                        delete
                                     </span>
-                                    <span class="text">Remove Product</span>
+                                    <span class="align-middle">Remove Product</span>
                                 </button>
                             </section>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-brand" type="button" @click="addProduct">
-                                <span class="icon">
-                                    <i class="fas fa-plus"></i>
+                            <button class="btn btn-primary" type="button" @click="addProduct">
+                                <span class="material-icons align-middle">
+                                    add_circle_outline
                                 </span>
-                                <span class="text">Add Product</span>
+                                <span class="align-middle">Add Product</span>
                             </button>
                         </div>
                     </div>
@@ -171,11 +171,11 @@
                 Simpan
             </b-button> -->
             <b-overlay :show="busy" rounded opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block float-right" @hidden="onHidden">
-                <button ref="button" :disabled="busy || checkVal" @click="onClick" class="btn btn-brand">
-                    <span class="icon">
-                        <i class="fas fa-save"></i>
+                <button ref="button" :disabled="busy || checkVal" @click="onClick" class="btn btn-primary">
+                    <span class="material-icons align-middle">
+                        save
                     </span>
-                    <span class="text">Save</span>
+                    <span class="align-middle">Save</span>
                 </button>
             </b-overlay>
         </div>

@@ -1,66 +1,62 @@
 <template>
-<div class="rui-snippet-preview demo">
-    <form action="">
-        <div class="row vertical-gap sm-gap justify-content-center">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body mnt-6 mnb-6">
-                        <div class="form-group" :class="{ 'has-error': errors.url }">
-                            <label for="url">URL Name</label>
-                            <input class="form-control" id="url" required type="text" v-model="web.url" readonly />
-                            <p class="text-danger" v-if="errors.url">
-                                {{ errors.url[0] }}
-                            </p>
-                        </div>
-                        <div class="form-group" :class="{ 'has-error': errors.date }">
-                            <label for="date">Date</label>
-                            <input class="form-control" id="date" required type="date" placeholder="Enter Date" v-model="web.date" />
-                            <p class="text-danger" v-if="errors.date">
-                                {{ errors.date[0] }}
-                            </p>
-                        </div>
-                        <div class="form-group" :class="{ 'has-error': errors.image }">
-                            <label for="file-input">Image</label>
-                            <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
-                            <p class="text-danger" v-if="errors.image">
-                                {{ errors.image[0] }}
-                            </p>
-                        </div>
-                    </div>
+<div class="row vertical-gap sm-gap justify-content-center">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body mnt-6 mnb-6">
+                <div class="mb-3" :class="{ 'has-error': errors.url }">
+                    <label for="url">URL Name</label>
+                    <input class="form-control" id="url" required type="text" v-model="web.url" readonly />
+                    <p class="text-danger" v-if="errors.url">
+                        {{ errors.url[0] }}
+                    </p>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body mnt-6 mnb-6">
-                        <section v-for="(row, index) in pages" :key="index">
-                            <div class="form-group">
-                                <label for="page" class="text-white">Page Name</label>
-                                <input class="form-control" id="page" required type="text" placeholder="Nama Page" v-model="row.page" />
-                            </div>
-                            <div class="form-group">
-                                <label for="count" class="text-white">Total View</label>
-                                <input class="form-control" id="count" required type="number" placeholder="Jumlah Total View" v-model="row.count" />
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-brand" type="button" @click="removePages(index)">
-                                    <span class="icon">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                    <span class="text">Remove Pages</span>
-                                </button>
-                            </div>
-                        </section>
-                        <button class="btn btn-brand" type="button" @click="addPages">
-                            <span class="icon">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                            <span class="text">Add Pages</span>
-                        </button>
-                    </div>
+                <div class="mb-3" :class="{ 'has-error': errors.date }">
+                    <label for="date">Date</label>
+                    <input class="form-control" id="date" required type="date" placeholder="Enter Date" v-model="web.date" />
+                    <p class="text-danger" v-if="errors.date">
+                        {{ errors.date[0] }}
+                    </p>
+                </div>
+                <div class="mb-3" :class="{ 'has-error': errors.image }">
+                    <label for="file-input">Image</label>
+                    <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
+                    <p class="text-danger" v-if="errors.image">
+                        {{ errors.image[0] }}
+                    </p>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body mnt-6 mnb-6">
+                <section v-for="(row, index) in pages" :key="index">
+                    <div class="mb-3">
+                        <label for="page" class="text-white">Page Name</label>
+                        <input class="form-control" id="page" required type="text" placeholder="Nama Page" v-model="row.page" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="count" class="text-white">Total View</label>
+                        <input class="form-control" id="count" required type="number" placeholder="Jumlah Total View" v-model="row.count" />
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-brand" type="button" @click="removePages(index)">
+                            <span class="icon">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                            <span class="text">Remove Pages</span>
+                        </button>
+                    </div>
+                </section>
+                <button class="btn btn-brand" type="button" @click="addPages">
+                    <span class="icon">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Add Pages</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 

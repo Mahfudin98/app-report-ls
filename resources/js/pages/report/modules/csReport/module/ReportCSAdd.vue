@@ -7,11 +7,11 @@
                 Simpan
             </b-button> -->
             <b-overlay :show="busy" rounded opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block float-right mb-2" @hidden="onHidden">
-                <button ref="button" :disabled="busy" @click="onClick" class="btn btn-brand">
-                    <span class="icon">
-                        <i class="fas fa-save"></i>
+                <button ref="button" :disabled="busy" @click="onClick" class="btn btn-primary">
+                    <span class="material-icons align-middle">
+                        save
                     </span>
-                    <span class="text">Save</span>
+                    <span class="align-middle">Save</span>
                 </button>
                 <!-- <b-button ref="button" :disabled="busy" variant="brand" @click="onClick">
                     Save <b-icon  icon="upload" aria-hidden="true"></b-icon>

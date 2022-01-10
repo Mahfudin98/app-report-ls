@@ -1,16 +1,16 @@
 <template>
     <main>
-        <div class="layer"></div>
-        <main class="page-center" v-if="!isAuth">
+        <!-- <div class="layer"></div> -->
+        <main class="d-flex w-100" v-if="!isAuth">
             <!-- ! Main Login -->
             <router-view v-if="!isAuth"></router-view>
         </main>
         <!-- ! Body -->
-        <a class="skip-link sr-only" href="#skip-target" v-if="isAuth">Skip to content</a>
-        <div class="page-flex" v-if="isAuth">
+        <!-- <a class="skip-link sr-only" href="#skip-target" v-if="isAuth">Skip to content</a> -->
+        <div class="wrapper" v-if="isAuth">
             <!-- ! Sidebar -->
             <Sidebar v-if="isAuth"/>
-            <div class="main-wrapper" v-if="isAuth">
+            <div class="main" v-if="isAuth">
                 <!-- ! Main nav -->
                 <Navbar v-if="isAuth"/>
                 <!-- ! Main -->

@@ -1,5 +1,289 @@
 <template>
-<main>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="">Bulan</label>
+                            <select v-model="month" class="form-control">
+                                <option value="01">Januari</option>
+                                <option value="02">Februari</option>
+                                <option value="03">Maret</option>
+                                <option value="04">April</option>
+                                <option value="05">Mei</option>
+                                <option value="06">Juni</option>
+                                <option value="07">Juli</option>
+                                <option value="08">Agustus</option>
+                                <option value="09">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="">Tahun</label>
+                            <select v-model="year" class="form-control">
+                                <option v-for="(y, i) in years" :key="i" :value="y">{{ y }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2" v-if="authenticated.role == 0 || $can('add teams')">
+                        <div class="form-group">
+                            <label>Add Target</label>
+                            <router-link :to="{name: 'target.add'}" class="btn btn-primary">
+                                <span class="material-icons align-middle">
+                                    add_circle_outline
+                                </span>
+                                <span class="align-middle">Add Target</span>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <b-table :items="targets.data" :fields="fields" show-empty>
+                        <template #cell(index)="data">
+                            {{ data.index + 1 }}
+                        </template>
+                        <template #cell(omset)="row">
+                            Rp. {{ row.item.omset | formatNumber }}
+                        </template>
+                        <template #cell(target)="row">
+                            Rp. {{ row.item.target | formatNumber }}
+                        </template>
+                        <template #cell(date)="row">
+                            {{
+                                moment(row.item.start_date).format(
+                                    "MMMM - YYYY"
+                                )
+                            }}
+                        </template>
+                        <template #cell(percent)="row">
+                            <h3 class="badge bg-primary rounded-pill">
+                                {{
+                                    (
+                                        (row.item.omset / row.item.target) *
+                                        100
+                                    ).toFixed(2)
+                                }}
+                                %
+                            </h3>
+                        </template>
+                        <template #cell(action)="data">
+                            <button @click="data.toggleDetails" class="btn btn-primary btn-long btn-round">
+                                <span class="material-icons align-middle">
+                                    visibility
+                                </span>
+                                <span class="align-middle">View Detail</span>
+                            </button>
+                        </template>
+                        <template #row-details="row">
+                            <b-card>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card" v-if="
+                                                authenticated.role == 0 ||
+                                                    $can('edit teams')
+                                            ">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <span class="material-icons align-middle">
+                                                        settings
+                                                    </span>
+                                                    <span class="align-middle">Setting</span>
+                                                </h5>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <button @click="exportData" class="btn btn-primary btn-long">
+                                                            <span class="material-icons align-middle">
+                                                                file_download
+                                                            </span>
+                                                            <span class="align-middle">Export</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <router-link :to="{ name: 'target.edit', params: { id: row.item.id}}" class="btn btn-warning">
+                                                            <span class="material-icons align-middle">
+                                                                edit
+                                                            </span>
+                                                            <span class="align-middle">Edit</span>
+                                                        </router-link>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <button class="btn btn-danger" @click=" deleteTarget(row.item.id)">
+                                                            <span class="material-icons align-middle">
+                                                                delete
+                                                            </span>
+                                                            <span class="align-middle">Hapus</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <span class="align-middle">Persentase</span>
+                                                    <span class="material-icons align-middle">
+                                                        percent
+                                                    </span>
+                                                </h5>
+                                                <Progress strokeColor="#00C58E" :transitionDuration="1000" :radius="50" :strokeWidth="10" :value="
+                                                        (
+                                                            (row.item.omset /
+                                                                row.item
+                                                                    .target) *
+                                                            100
+                                                        ).toFixed(2)
+                                                    ">
+                                                    <template v-slot:footer>
+                                                        <b>Bulan
+                                                            {{
+                                                                moment(
+                                                                    row.item
+                                                                        .start_date
+                                                                ).format(
+                                                                    "MMMM - YYYY"
+                                                                )
+                                                            }}</b>
+                                                    </template>
+                                                </Progress>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    List Persentase CS
+                                                </h5>
+                                                <b-table :items="row.item.user.child" :fields="csdetail" show-empty>
+                                                    <template #cell(name)="datas">
+                                                        {{ datas.item.name }}
+                                                    </template>
+                                                    <template #cell(order)="datas">
+                                                        {{
+                                                            datas.item.order_detail
+                                                                .filter(
+                                                                    itemInArray =>
+                                                                        itemInArray.status ===
+                                                                            1 &&
+                                                                        moment(
+                                                                            itemInArray.date
+                                                                        ).format(
+                                                                            "M"
+                                                                        ) ===
+                                                                            month
+                                                                )
+                                                                .reduce(
+                                                                    (
+                                                                        acc,
+                                                                        item
+                                                                    ) =>
+                                                                        acc +
+                                                                        item.qty,
+                                                                    0
+                                                                )
+                                                        }}
+                                                    </template>
+                                                    <template #cell(omsets)="datas">
+                                                        Rp.
+                                                        {{
+                                                            datas.item.order_detail
+                                                                .filter(
+                                                                    itemInArray =>
+                                                                        itemInArray.status ===
+                                                                            1 &&
+                                                                        moment(
+                                                                            itemInArray.date
+                                                                        ).format(
+                                                                            "M"
+                                                                        ) ===
+                                                                            month
+                                                                )
+                                                                .reduce(
+                                                                    (
+                                                                        acc,
+                                                                        item
+                                                                    ) =>
+                                                                        acc +
+                                                                        item.subtotal,
+                                                                    0
+                                                                ) | formatNumber
+                                                        }}
+                                                    </template>
+                                                    <template #cell(targetcs)="datas">
+                                                        Rp.
+                                                        {{
+                                                            (row.item.target /
+                                                                row.item.user
+                                                                    .child
+                                                                    .length)
+                                                                | formatNumber
+                                                        }}
+                                                    </template>
+                                                    <template #cell(percents)="datas">
+                                                        <h3 class="badge bg-primary rounded-pill">
+                                                            {{
+                                                                (
+                                                                    (datas.item.order_detail
+                                                                        .filter(
+                                                                            itemInArray =>
+                                                                                itemInArray.status ===
+                                                                                    1 &&
+                                                                                moment(
+                                                                                    itemInArray.date
+                                                                                ).format(
+                                                                                    "M"
+                                                                                ) ===
+                                                                                    month
+                                                                        )
+                                                                        .reduce(
+                                                                            (
+                                                                                acc,
+                                                                                item
+                                                                            ) =>
+                                                                                acc +
+                                                                                item.subtotal,
+                                                                            0
+                                                                        ) /
+                                                                        (row
+                                                                            .item
+                                                                            .target /
+                                                                            row
+                                                                                .item
+                                                                                .user
+                                                                                .child
+                                                                                .length)) *
+                                                                    100
+                                                                ).toFixed(2)
+                                                            }}
+                                                            %
+                                                        </h3>
+                                                    </template>
+                                                </b-table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </b-card>
+                        </template>
+                    </b-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <main>
     <div class="rui-page-content">
         <div class="container-fluid">
             <div class="row">
@@ -63,7 +347,7 @@
                             }}
                     </template>
                     <template #cell(percent)="row">
-                        <h3 class="badge badge-brand">
+                        <h3 class="badge bg-primary rounded-pill">
                             {{
                                     (
                                         (row.item.omset / row.item.target) *
@@ -241,7 +525,7 @@
                                                         }}
                                                 </template>
                                                 <template #cell(percents)="datas">
-                                                    <h3 class="badge badge-brand">
+                                                    <h3 class="badge bg-primary rounded-pill">
                                                         {{
                                                                 (
                                                                     (datas.item.order_detail
@@ -290,7 +574,7 @@
             </div>
         </div>
     </div>
-</main>
+</main> -->
 </template>
 
 <script>

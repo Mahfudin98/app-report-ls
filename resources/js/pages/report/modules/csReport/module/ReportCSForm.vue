@@ -1,11 +1,11 @@
 <template>
-    <div class="rui-snippet-preview demo">
+    <div class="container-fluid p-0">
         <form action="">
             <div class="row vertical-gap sm-gap justify-content-center">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="chat">Chat</label>
                                 <input
                                     id="chat"
@@ -20,7 +20,7 @@
                                     {{ errors.chat[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="transaksi">Transaksi</label>
                                 <input
                                     id="transaksi"
@@ -34,7 +34,7 @@
                                     {{ errors.transaksi[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="date">Date</label>
                                 <input
                                     id="date"
@@ -49,7 +49,7 @@
                                     {{ errors.date[0] }}
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label
                                     >Berikan keterangan report kamu dibawah
                                     ini!</label

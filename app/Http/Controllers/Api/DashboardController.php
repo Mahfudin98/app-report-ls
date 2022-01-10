@@ -29,10 +29,11 @@ class DashboardController extends Controller
             $start = Carbon::parse($date[0])->format('Y-m-d');
             $end = Carbon::parse($date[1])->format('Y-m-d');
         }
-        $orders = DetailOrder::with(['user', 'order'])->where('status', 1)->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(subtotal) as sum')->orderBy('sum', 'DESC')->get(['user_id', 'qty', 'price', 'date']);
+        $orders = DetailOrder::with(['user.position', 'order'])->where('status', 1)->whereBetween('date', [$start, $end])->groupBy('user_id')->selectRaw('*, sum(subtotal) as sum')->orderBy('sum', 'DESC')->get(['user_id', 'qty', 'price', 'date']);
         $data = [];
         foreach ($orders as $row) {
             $data[] = [
+                'position' => $row->user->position->name,
                 'image' => $row->user->image,
                 'labels' => $row->user->name,
                 'date' => $row->date,

@@ -1,138 +1,129 @@
 <template>
-<div class="rui-page-content">
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-20">
-            <router-link :to="{ name: 'report.data.date', params: { date: editOrder.order.date } }" class="btn btn-secondary">
-                <span class="icon">
-                    <span class="fas fa-arrow-alt-circle-left"></span>
-                </span>
-                <span class="text">Back</span>
-            </router-link>
-            <button @click="submit" class="btn btn-brand">
-                <span class="icon">
-                    <i class="fas fa-sync-alt"></i>
-                </span>
-                <span class="text">Update</span>
-            </button>
+<div class="container-fluid p-0">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center mb-20">
+                <router-link :to="{ name: 'report.data.date', params: { date: editOrder.order.date } }" class="btn btn-secondary">
+                    <span class="material-icons align-middle">
+                        reply
+                    </span>
+                    <span class="align-middle">Back</span>
+                </router-link>
+                <button @click="submit" class="btn btn-primary">
+                    <span class="material-icons align-middle">
+                        update
+                    </span>
+                    <span class="align-middle">Update</span>
+                </button>
+            </div>
         </div>
-        <!-- form -->
-        <div class="rui-snippet-preview demo">
-            <form action="">
-                <div class="row vertical-gap sm-gap justify-content-center">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-body mnt-6 mnb-6">
-                                <div class="form-group">
-                                    <label for="customer_name">Customer Name</label>
-                                    <input id="customer_name" class="form-control" type="text" name="customer_name" placeholder="Enter page title" v-model="customers.customer_name" required />
-                                    <p class="text-danger" v-if="errors.customer_name">
-                                        {{ errors.customer_name[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="customer_phone">Customer Phone</label>
-                                    <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Enter page title" v-model="customers.customer_phone" required />
-                                    <p class="text-danger" v-if="errors.customer_phone">
-                                        {{ errors.customer_phone[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="customer_address">Customer Address</label>
-                                    <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Enter page title" v-model="customers.customer_address" required />
-                                    <p class="text-danger" v-if="errors.customer_address">
-                                        {{ errors.customer_address[0] }}
-                                    </p>
-                                </div>
-                                <!-- form ongkir disini -->
-                                <div class="form-group">
-                                    <label for="province">Province</label>
-                                    <select class="form-control" @change="provinceId($event)" v-model="ongkir.province" required>
-                                        <option selected disabled="" value="">Pilih Provinsi</option>
-                                        <option class="py-1" v-for="province in provinces.data" :key="province.id" :value="province.province_id">{{ province.province }}</option>
-                                    </select>
-                                    <p class="text-danger" v-if="errors.province">
-                                        {{ errors.province[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="city">City</label>
-                                    <select class="form-control" @change="cityId($event)" v-model="ongkir.city" required>
-                                        <option selected disabled="" value="">Pilih City</option>
-                                        <option class="py-1" v-for="city in cities.data" :key="city.id" :value="city.city_id">{{ city.city_name }}</option>
-                                    </select>
-                                    <p class="text-danger" v-if="errors.city">
-                                        {{ errors.city[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="district">District</label>
-                                    <select class="form-control" v-model="ongkir.district" required>
-                                        <option selected disabled="" value="">Pilih District</option>
-                                        <option class="py-1" v-for="district in districts.data" :key="district.id" :value="district.subdistrict_id">{{ district.subdistrict_name }}</option>
-                                    </select>
-                                    <p class="text-danger" v-if="errors.district">
-                                        {{ errors.district[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="courier">Courier</label>
-                                    <select class="form-control" v-model="ongkir.courier" @click="submitOngkir" required>
-                                        <option selected disabled="" value="">Pilih Courier</option>
-                                        <option value="jne">JNE</Option>
-                                        <option value="j&t">J&T</Option>
-                                        <option value="ninja">NINJA</Option>
-                                        <option value="anteraja">ANTER AJA</Option>
-                                    </select>
-                                    <p class="text-danger" v-if="errors.courier">
-                                        {{ errors.courier[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="metode">Metode</label>
-                                    <select class="form-control" v-model="ongkir.metode" required>
-                                        <option selected disabled="" value="">Pilih Metode</option>
-                                        <option value="1">COD</Option>
-                                        <option value="0">TRANSFER</Option>
-                                    </select>
-                                    <p class="text-danger" v-if="errors.metode">
-                                        {{ errors.metode[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="ongkir">Ongkir</label>
-                                    <input class="form-control" type="text" :value="getOngkir != undefined ? getOngkir : 'loading...'" disabled required>
-                                </div>
-                                <div class="form-group" v-if="ongkir.metode == 1">
-                                    <label for="biaya">Biaya</label>
-                                    <input class="form-control" v-if="ongkir.courier === 'jne'" type="text" :value="biayaJNE" disabled>
-                                    <input class="form-control" v-if="ongkir.courier === 'j&t'" type="text" :value="biayaJNT" disabled>
-                                    <input class="form-control" v-if="ongkir.courier != 'jne' && ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label for="total">Total</label>
-                                    <input class="form-control" type="text" :value="getTotal" disabled>
-                                </div>
-                                <!-- akhir form ongkir -->
-                                <div class="form-group">
-                                    <label for="waybill">Waybill</label>
-                                    <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Enter page title" v-model="customers.waybill" required />
-                                    <p class="text-danger" v-if="errors.waybill">
-                                        {{ errors.waybill[0] }}
-                                    </p>
-                                </div>
-                                <div class="form-group" :class="{ 'has-error': errors.image }">
-                                    <label for="file-input">Image</label>
-                                    <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
-                                    <p>*Kosongkan jika tidak ingin menambahkan</p>
-                                    <p class="text-danger" v-if="errors.image">
-                                        {{ errors.image[0] }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="customer_name">Customer Name</label>
+                <input id="customer_name" class="form-control" type="text" name="customer_name" placeholder="Enter page title" v-model="customers.customer_name" required />
+                <p class="text-danger" v-if="errors.customer_name">
+                    {{ errors.customer_name[0] }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="customer_phone">Customer Phone</label>
+                <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Enter page title" v-model="customers.customer_phone" required />
+                <p class="text-danger" v-if="errors.customer_phone">
+                    {{ errors.customer_phone[0] }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="customer_address">Customer Address</label>
+                <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Enter page title" v-model="customers.customer_address" required />
+                <p class="text-danger" v-if="errors.customer_address">
+                    {{ errors.customer_address[0] }}
+                </p>
+            </div>
+            <!-- form ongkir disini -->
+            <div class="mb-3">
+                <label for="province">Province</label>
+                <select class="form-control" @change="provinceId($event)" v-model="ongkir.province" required>
+                    <option selected disabled="" value="">Pilih Provinsi</option>
+                    <option class="py-1" v-for="province in provinces.data" :key="province.id" :value="province.province_id">{{ province.province }}</option>
+                </select>
+                <p class="text-danger" v-if="errors.province">
+                    {{ errors.province[0] }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="city">City</label>
+                <select class="form-control" @change="cityId($event)" v-model="ongkir.city" required>
+                    <option selected disabled="" value="">Pilih City</option>
+                    <option class="py-1" v-for="city in cities.data" :key="city.id" :value="city.city_id">{{ city.city_name }}</option>
+                </select>
+                <p class="text-danger" v-if="errors.city">
+                    {{ errors.city[0] }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="district">District</label>
+                <select class="form-control" v-model="ongkir.district" required>
+                    <option selected disabled="" value="">Pilih District</option>
+                    <option class="py-1" v-for="district in districts.data" :key="district.id" :value="district.subdistrict_id">{{ district.subdistrict_name }}</option>
+                </select>
+                <p class="text-danger" v-if="errors.district">
+                    {{ errors.district[0] }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="courier">Courier</label>
+                <select class="form-control" v-model="ongkir.courier" @click="submitOngkir" required>
+                    <option selected disabled="" value="">Pilih Courier</option>
+                    <option value="jne">JNE</Option>
+                    <option value="j&t">J&T</Option>
+                    <option value="ninja">NINJA</Option>
+                    <option value="anteraja">ANTER AJA</Option>
+                </select>
+                <p class="text-danger" v-if="errors.courier">
+                    {{ errors.courier[0] }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="metode">Metode</label>
+                <select class="form-control" v-model="ongkir.metode" required>
+                    <option selected disabled="" value="">Pilih Metode</option>
+                    <option value="1">COD</Option>
+                    <option value="0">TRANSFER</Option>
+                </select>
+                <p class="text-danger" v-if="errors.metode">
+                    {{ errors.metode[0] }}
+                </p>
+            </div>
+            <div class="mb-3">
+                <label for="ongkir">Ongkir</label>
+                <input class="form-control" type="text" :value="getOngkir != undefined ? getOngkir : 'loading...'" disabled required>
+            </div>
+            <div class="mb-3" v-if="ongkir.metode == 1">
+                <label for="biaya">Biaya</label>
+                <input class="form-control" v-if="ongkir.courier === 'jne'" type="text" :value="biayaJNE" disabled>
+                <input class="form-control" v-if="ongkir.courier === 'j&t'" type="text" :value="biayaJNT" disabled>
+                <input class="form-control" v-if="ongkir.courier != 'jne' && ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
+            </div>
+            <div class="mb-3">
+                <label for="total">Total</label>
+                <input class="form-control" type="text" :value="getTotal" disabled>
+            </div>
+            <!-- akhir form ongkir -->
+            <div class="mb-3">
+                <label for="waybill">Waybill</label>
+                <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Enter page title" v-model="customers.waybill" required />
+                <p class="text-danger" v-if="errors.waybill">
+                    {{ errors.waybill[0] }}
+                </p>
+            </div>
+            <div class="mb-3" :class="{ 'has-error': errors.image }">
+                <label for="file-input">Image</label>
+                <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
+                <p>*Kosongkan jika tidak ingin menambahkan</p>
+                <p class="text-danger" v-if="errors.image">
+                    {{ errors.image[0] }}
+                </p>
+            </div>
         </div>
     </div>
 </div>
