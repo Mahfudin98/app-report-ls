@@ -1,104 +1,74 @@
 <template>
-    <div class="rui-snippet-preview demo">
-        <form action="">
-            <div class="row vertical-gap sm-gap justify-content-center">
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
-                                <label for="position_id">Posisi</label>
-                                <select
-                                    name="position_id"
-                                    class="form-control"
-                                    id="position_id"
-                                    v-model="inventoriUsage.position_id"
-                                >
-                                    <option value="" disabled
-                                        >Pilih Posisi</option
-                                    >
-                                    <option v-for="row in positions.data" :key="row.id" :value="row.id">{{row.name}}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="inventory_id">Nama Barang</label>
-                                <select
-                                    name="inventory_id"
-                                    class="form-control"
-                                    id="inventory_id"
-                                    v-model="inventoriUsage.inventory_id"
-                                >
-                                    <option value="" disabled
-                                        >Pilih Barang</option
-                                    >
-                                    <option v-for="row in inventorys.data" :key="row.id" :value="row.id">{{row.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+<div class="row vertical-gap sm-gap justify-content-center">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body mnt-6 mnb-6">
+                <div class="mb-3">
+                    <label for="position_id">Posisi</label>
+                    <select name="position_id" class="form-control" id="position_id" v-model="inventoriUsage.position_id">
+                        <option value="" disabled>Pilih Posisi</option>
+                        <option v-for="row in positions.data" :key="row.id" :value="row.id">{{row.name}}</option>
+                    </select>
                 </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
-                                <label for="jumlah">Jumlah Barang</label>
-                                <input
-                                    id="jumlah"
-                                    class="form-control"
-                                    type="number"
-                                    name="jumlah"
-                                    placeholder="Enter page title"
-                                    v-model="inventoriUsage.jumlah"
-                                    required
-                                />
-                                <p class="text-danger" v-if="errors.jumlah">
-                                    {{ errors.jumlah[0] }}
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <label for="kondisi">Kondisi</label>
-                                <select
-                                    name="kondisi"
-                                    class="form-control"
-                                    id="kondisi"
-                                    v-model="inventoriUsage.kondisi"
-                                >
-                                    <option value="" disabled
-                                        >Pilih Kondisi</option
-                                    >
-                                    <option :value="1">Baik</option>
-                                    <option :value="0">Buruk</option>
-                                </select>
-                                <p class="text-danger" v-if="errors.kondisi">
-                                    {{ errors.kondisi[0] }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body mnt-6 mnb-6">
-                            <div class="form-group">
-                                <label for="keterngan">Keterangan</label>
-                                <textarea
-                                    class="form-control"
-                                    v-model="inventoriUsage.keterngan"
-                                    id="keterngan"
-                                ></textarea>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mb-3">
+                    <label for="inventory_id">Nama Barang</label>
+                    <select name="inventory_id" class="form-control" id="inventory_id" v-model="inventoriUsage.inventory_id">
+                        <option value="" disabled>Pilih Barang</option>
+                        <option v-for="row in inventorys.data" :key="row.id" :value="row.id">{{row.name}}</option>
+                    </select>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body mnt-6 mnb-6">
+                <div class="mb-3">
+                    <label for="jumlah">Jumlah Barang</label>
+                    <input id="jumlah" class="form-control" type="number" name="jumlah" placeholder="Enter page title" v-model="inventoriUsage.jumlah" required />
+                    <p class="text-danger" v-if="errors.jumlah">
+                        {{ errors.jumlah[0] }}
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <label for="kondisi">Kondisi</label>
+                    <select name="kondisi" class="form-control" id="kondisi" v-model="inventoriUsage.kondisi">
+                        <option value="" disabled>Pilih Kondisi</option>
+                        <option :value="1">Baik</option>
+                        <option :value="0">Buruk</option>
+                    </select>
+                    <p class="text-danger" v-if="errors.kondisi">
+                        {{ errors.kondisi[0] }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body mnt-6 mnb-6">
+                <div class="mb-3">
+                    <label for="keterngan">Keterangan</label>
+                    <textarea class="form-control" v-model="inventoriUsage.keterngan" id="keterngan"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
+
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import {
+    mapState,
+    mapActions,
+    mapMutations
+} from "vuex";
 import DatePicker from "vue2-datepicker";
 export default {
     name: "ReportADVForm",
-    components: { DatePicker },
+    components: {
+        DatePicker
+    },
     created() {
         this.getPositions();
         this.getInventorys();
@@ -156,7 +126,9 @@ export default {
                         keterngan: ""
                     };
 
-                    this.$router.push({ name: "inventory.usage" });
+                    this.$router.push({
+                        name: "inventory.usage"
+                    });
                 });
             } else if (this.$route.name == "adv.report.edit") {
                 this.SET_ID_UPDATE(this.$route.params.id);
@@ -168,7 +140,9 @@ export default {
                         kondisi: "",
                         keterngan: ""
                     };
-                    this.$router.push({ name: "adv.report.data" });
+                    this.$router.push({
+                        name: "adv.report.data"
+                    });
                 });
             }
         }

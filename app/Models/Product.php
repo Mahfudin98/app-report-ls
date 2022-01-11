@@ -24,19 +24,19 @@ class Product extends Model
     public function getTypePembelianLabelAttribute()
     {
         if ($this->type_pembelian == 0) {
-            return '<span class="badge badge-pill badge-brand">Ecer</span>';
+            return '<span class="badge bg-primary rounded-pill">Ecer</span>';
         } elseif ($this->type_pembelian == 1) {
-            return '<span class="badge badge-pill badge-brand">Paket Komplit</span>';
+            return '<span class="badge bg-primary rounded-pill">Paket Komplit</span>';
         }
-        return '<span class="badge badge-pill badge-brand">Paket Hemat</span>';
+        return '<span class="badge bg-primary rounded-pill">Paket Hemat</span>';
     }
 
     public function getTypeProductLabelAttribute()
     {
         if ($this->type_product == 0) {
-            return '<span class="badge badge-pill badge-brand">BPOM</span>';
+            return '<span class="badge bg-primary rounded-pill">BPOM</span>';
         }
-        return '<span class="badge badge-pill badge-brand">FARMA</span>';
+        return '<span class="badge bg-primary rounded-pill">FARMA</span>';
     }
 
 }

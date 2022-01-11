@@ -1,46 +1,31 @@
 <template>
-    <main>
-        <product-add />
-        <div class="rui-page-content">
-            <div class="container-fluid">
-                <div
-                    class="d-flex justify-content-between align-items-center mb-20"
-                >
-                    <div class="row xs-gap">
-                        <div class="col-12">
-                            <div class="input-group">
-                                <button
-                                    type="button"
-                                    class="btn btn-clean btn-uniform btn-grey-5"
-                                    data-toggle="button"
-                                    aria-pressed="false"
-                                >
-                                    <span
-                                        style="font-size: 17px;"
-                                        class="rui-icon fas fa-search"
-                                    ></span>
-                                </button>
-                                <input
-                                    type="search"
-                                    class="form-control form-control-clean"
-                                    placeholder="Type to search..."
-                                    data-toggle="input"
-                                    autocomplete="off"
-                                    v-model="search"
-                                />
-                            </div>
-                        </div>
+<div class="row">
+    <product-add />
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-20">
+            <div class="row xs-gap">
+                <div class="col-12">
+                    <div class="input-group input-group-navbar">
+                        <input type="text" class="form-control" placeholder="Search…" aria-label="Search" v-model="search">
+                        <button class="btn" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search align-middle">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
                     </div>
-                    <button
-                        type="button"
-                        class="btn btn-brand btn-long"
-                        v-b-modal.addModal
-                    >
-                        <span class="icon"
-                            ><span class="rui-icon fas fa-plus"></span></span
-                        ><span class="text">Add Product</span>
-                    </button>
                 </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-long" v-b-modal.addModal>
+                <span class="material-icons align-middle">
+                    add_circle_outline
+                </span>
+                <span class="align-middle">Add Product</span>
+            </button>
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-body">
                 <div class="table-responsive">
                     <b-table :items="products.data" :fields="fields" show-empty>
                         <template #cell(index)="data">
@@ -56,86 +41,65 @@
                             Rp. {{ row.item.price | formatNumber }}
                         </template>
                         <template #cell(action)="row">
-                            <div class="btn-group dropdown dropdown-triangle">
-                                <button
-                                    class="btn btn-brand btn-long dropdown-toggle"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <span class="text">Action</span>
-                                    <span class="icon">
-                                        <span class="fas fa-angle-down"></span>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu nav">
-                                    <li>
-                                        <router-link
-                                            class="nav-link"
-                                            :to="{
-                                                name: 'product.edit',
-                                                params: { id: row.item.id }
-                                            }"
-                                        >
-                                            <span
-                                                data-feather="plus-circle"
-                                                class="fas fa-edit"
-                                            ></span
-                                            ><span>Edit</span
-                                            ><span
-                                                class="rui-nav-circle"
-                                            ></span>
-                                        </router-link>
-                                    </li>
-                                    <li>
-                                        <a
-                                            class="nav-link"
-                                            @click="deleteProduct(row.item.id)"
-                                        >
-                                            <span
-                                                data-feather="x-circle"
-                                                class="fas fa-trash"
-                                            ></span>
-                                            <span>Delete</span>
-                                            <span class="rui-nav-circle"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <b-dropdown id="dropdown-1" text="Action" variant="primary" class="m-md-2">
+                                <b-dropdown-item>
+                                    <router-link class="nav-link" :to="{name: 'product.edit', params: { id: row.item.id }}">
+                                        <span class="material-icons align-middle">
+                                            edit
+                                        </span>
+                                        <span class="align-middle">Edit</span>
+                                    </router-link>
+                                </b-dropdown-item>
+                                <b-dropdown-item>
+                                    <a class="nav-link" @click="deleteProduct(row.item.id)">
+                                        <span class="material-icons align-middle">
+                                            delete
+                                        </span>
+                                        <span class="align-middle">Hapus</span>
+                                    </a>
+                                </b-dropdown-item>
+                            </b-dropdown>
                         </template>
                     </b-table>
                 </div>
+            </div>
+            <div class="card-footer">
                 <div class="row">
                     <div class="col-md-6">
                         <p v-if="products.data">
-                            <i class="fa fa-bars"></i>
-                            {{ products.data.length }} item dari
-                            {{ products.meta.total }} total data
+                            <span class="material-icons align-middle">
+                                menu
+                            </span>
+                            <span class="align-middle">
+                                {{ products.data.length }} item dari
+                                {{ products.meta.total }} total data
+                            </span>
                         </p>
                     </div>
                     <div class="col-md-6">
                         <div class="pull-right">
-                            <b-pagination
-                                v-model="page"
-                                :total-rows="products.meta.total"
-                                :per-page="products.meta.per_page"
-                                aria-controls="products"
-                                v-if="products.data && products.data.length > 0"
-                            ></b-pagination>
+                            <b-pagination v-model="page" :total-rows="products.meta.total" :per-page="products.meta.per_page" aria-controls="products" v-if="products.data && products.data.length > 0"></b-pagination>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</div>
 </template>
+
 <script>
-import { mapActions, mapState } from "vuex";
+import {
+    mapActions,
+    mapState
+} from "vuex";
 import ProductAdd from "./ProductAdd.vue";
 import VueMomentsAgo from "vue-moments-ago";
 export default {
-    components: { ProductAdd, VueMomentsAgo },
+    components: {
+        ProductAdd,
+        VueMomentsAgo
+    },
     created() {
         this.getProducts();
     },
@@ -143,15 +107,38 @@ export default {
     data() {
         return {
             search: "",
-            fields: [
-                { key: "index", label: "#" },
-                { key: "name", label: "Name" },
-                { key: "type_pembelian", label: "Type Pembelian" },
-                { key: "type_product", label: "Type Product" },
-                { key: "price", label: "Harga" },
-                { key: "weight", label: "Berat (Gram)" },
-                { key: "stock", label: "Stock" },
-                { key: "action", label: "Aksi" }
+            fields: [{
+                    key: "index",
+                    label: "#"
+                },
+                {
+                    key: "name",
+                    label: "Name"
+                },
+                {
+                    key: "type_pembelian",
+                    label: "Type Pembelian"
+                },
+                {
+                    key: "type_product",
+                    label: "Type Product"
+                },
+                {
+                    key: "price",
+                    label: "Harga"
+                },
+                {
+                    key: "weight",
+                    label: "Berat (Gram)"
+                },
+                {
+                    key: "stock",
+                    label: "Stock"
+                },
+                {
+                    key: "action",
+                    label: "Aksi"
+                }
             ]
         };
     },

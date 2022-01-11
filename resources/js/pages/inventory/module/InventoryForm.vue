@@ -1,24 +1,22 @@
 <template>
-    <div class="input-group mb-3">
-        <!-- <span class="input-group-text" id="basic-addon2">Add New Inventory</span> -->
-        <input
-            class="form-control"
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Nama Barang"
-            v-model="inventory.name"
-        />
-        <button @click.prevent="submit" class="btn btn-brand">
-            <span class="icon">
-                <i class="fas fa-save"></i>
-            </span>
-            <span class="text">Save Inventory</span>
-        </button>
-    </div>
+<div class="input-group mb-3">
+    <!-- <span class="input-group-text" id="basic-addon2">Add New Inventory</span> -->
+    <input class="form-control" type="text" name="name" id="name" placeholder="Nama Barang" v-model="inventory.name" />
+    <button @click.prevent="submit" class="btn btn-primary">
+        <span class="material-icons align-middle">
+            save
+        </span>
+        <span class="align-middle">Save Inventory</span>
+    </button>
+</div>
 </template>
+
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
+import {
+    mapState,
+    mapMutations,
+    mapActions
+} from "vuex";
 export default {
     name: "FormInventory",
     computed: {
