@@ -38,10 +38,11 @@
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg> View
                     </router-link>
-                    <a class="btn btn-primary btn-sm" href="#">
+                    <a class="btn btn-primary btn-sm" v-bind:href="'https://wa.me/' + row.phone" target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg> Message</a>
+                        </svg> Message
+                    </a>
                 </div>
                 <br />
                 <div v-if="$can('edit teams')">

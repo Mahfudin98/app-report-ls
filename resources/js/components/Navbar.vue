@@ -15,10 +15,16 @@
                     </a>
                     <a class="nav-link d-none d-sm-inline-block" href="#">
                         <img v-if="authenticated.image != null" class="avatar img-fluid rounded me-1" :src="'../storage/teams/' + authenticated.image" :alt="authenticated.name" />
+                        <img v-if="authenticated.image == null" class="avatar img-fluid rounded me-1" src="https://picsum.photos/250/250/?image=54" />
                         <span class="text-dark">{{authenticated.name}}</span>
                     </a>
                 </template>
-                <b-dropdown-item href="#">Profile</b-dropdown-item>
+                <b-dropdown-item :to="{name: 'teams.show', params: {slug: authenticated.slug}}" v-if="authenticated.role != 0">
+                    <span class="material-icons align-middle">
+                        account_circle
+                    </span>
+                    <span class="align-middle">Profile</span>
+                </b-dropdown-item>
                 <b-dropdown-item href="#" @click="logoutPost">
                     <span class="material-icons align-middle">
                         logout

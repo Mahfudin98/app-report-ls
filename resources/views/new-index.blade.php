@@ -7,7 +7,7 @@
 	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
 	<meta name="author" content="AdminKit">
 	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-    <title>Document</title>
+    <title>App - Report</title>
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link class="js-stylesheet" href="{{ asset('css/light.css') }}" rel="stylesheet">
