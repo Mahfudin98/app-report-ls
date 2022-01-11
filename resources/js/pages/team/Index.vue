@@ -8,7 +8,7 @@
             </div>
 
             <div class="col-auto ms-auto text-end mt-n1">
-                <router-link class="btn btn-primary" v-if="authenticated.role == 0 || $can('create teams')" :to="{ name: 'teams.add' }">
+                <router-link class="btn btn-primary" v-if="authenticated.role == 0 || $can('create teams') || $route.name == 'teams.data'" :to="{ name: 'teams.add' }">
                     <span class="material-icons align-middle">
                         add_circle_outline
                     </span>

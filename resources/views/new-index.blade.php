@@ -10,8 +10,8 @@
     <title>Document</title>
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    {{-- <link class="js-stylesheet" href="{{ asset('css/light.css') }}" rel="stylesheet"> --}}
-    <link class="js-stylesheet" href="{{ asset('css/dark.css') }}" rel="stylesheet">
+    <link class="js-stylesheet" href="{{ asset('css/light.css') }}" rel="stylesheet">
+    {{-- <link rel="stylesheet" class="js-stylesheet" href="{{ asset('/css/dark.css') }}"> --}}
 	<script src="{{ asset('js/settings.js') }}"></script>
 	<style>
 		body {
@@ -25,13 +25,13 @@
 </head>
 <body>
     <div id="app">
-        <app></app>
+        {{-- <app></app> --}}
     </div>
 
     <script src="{{asset('js/app.js')}}"></script>
     <script src="{{asset('js/manifest.js')}}"></script>
     <script src="{{asset('js/vendor.js')}}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="{{asset('js/custom.js')}}"></script>
 
 </body>
 </html>

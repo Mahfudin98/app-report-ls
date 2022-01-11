@@ -43,9 +43,10 @@ const app = new Vue({
     Swal,
     feather,
     el: "#app",
-    components: {
-        App
-    },
+    render: h => h(App),
+    // components: {
+    //     App
+    // },
     computed: {
         ...mapGetters(['isAuth'])
     },

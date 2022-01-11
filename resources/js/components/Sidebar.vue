@@ -12,19 +12,19 @@
         <ul class="sidebar-nav">
             <li :class="this.$route.name == 'home' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'home' }">
-                    <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+                    <i class="material-icons align-middle">home</i> <span class="align-middle">Dashboard</span>
                 </router-link>
             </li>
             <!--Analisis Product-->
             <li :class="this.$route.name == 'product.chart' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'product.chart' }">
-                    <i class="align-middle" data-feather="trending-up"></i> <span class="align-middle">Product Analisis</span>
+                    <i class="material-icons align-middle">trending_up</i> <span class="align-middle">Product Analisis</span>
                 </router-link>
             </li>
             <!-- report -->
             <li :class="this.$route.name == 'cs.report.data' || this.$route.name == 'adv.report.data' || this.$route.name == 'report.data.date' ? 'sidebar-item active' : 'sidebar-item'">
                 <a v-b-toggle="'collapse-2'" class="sidebar-link">
-                    <i class="align-middle" data-feather="layers"></i> <span class="align-middle">Report</span>
+                    <i class="material-icons align-middle">layers</i> <span class="align-middle">Report</span>
                 </a>
                 <!-- <b-button v-b-toggle="'collapse-2'" class="m-1">Toggle Collapse</b-button> -->
                 <b-collapse id="collapse-2">
@@ -41,19 +41,19 @@
             <!-- return -->
             <li v-if="$can('read reports returns')" :class="this.$route.name == 'return.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'return.data' }">
-                    <i class="align-middle" data-feather="trending-down"></i> <span class="align-middle">Report Return</span>
+                    <i class="material-icons align-middle">trending_down</i> <span class="align-middle">Report Return</span>
                 </router-link>
             </li>
             <!-- target -->
             <li v-if="authenticated.role == 0 || $can('read teams')" :class="this.$route.name == 'target.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'target.data' }">
-                    <i class="align-middle" data-feather="target"></i> <span class="align-middle">Target</span>
+                    <i class="material-icons align-middle">track_changes</i> <span class="align-middle">Target</span>
                 </router-link>
             </li>
             <!-- web static -->
             <li v-if="$can('read projects')" :class="this.$route.name == 'project.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'project.data' }">
-                    <i class="align-middle" data-feather="globe"></i> <span class="align-middle">Web Statistik</span>
+                    <i class="material-icons align-middle">insights</i> <span class="align-middle">Web Statistik</span>
                 </router-link>
             </li>
             <!-- content -->
@@ -106,43 +106,43 @@
             <!-- teams -->
             <li v-if="$can('read teams')" :class="this.$route.name == 'teams.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'teams.data' }">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Team</span>
+                    <i class="material-icons align-middle">people</i> <span class="align-middle">Team</span>
                 </router-link>
             </li>
             <!-- inventory -->
             <li v-if="$can('read inventories')" :class="this.$route.name == 'inventory.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'inventory.data' }">
-                    <i class="align-middle" data-feather="package"></i> <span class="align-middle">Inventories</span>
+                    <i class="material-icons align-middle">inventory_2</i> <span class="align-middle">Inventories</span>
                 </router-link>
             </li>
             <!-- customer data -->
             <li v-if="$can('read inventories')" :class="this.$route.name == 'customer.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'customer.data' }">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Data Customer</span>
+                    <i class="material-icons align-middle">support_agent</i> <span class="align-middle">Data Customer</span>
                 </router-link>
             </li>
             <!-- position -->
             <li v-if="$can('read positions')" :class="this.$route.name == 'position.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'position.data' }">
-                    <i class="align-middle" data-feather="tag"></i> <span class="align-middle">Position</span>
+                    <i class="material-icons align-middle">picture_in_picture</i> <span class="align-middle">Position</span>
                 </router-link>
             </li>
             <!-- product -->
             <li v-if="$can('read products')" :class="this.$route.name == 'product.data' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'product.data' }">
-                    <i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Product</span>
+                    <i class="material-icons align-middle">production_quantity_limits</i> <span class="align-middle">Product</span>
                 </router-link>
             </li>
             <!-- permissions -->
             <li v-if="authenticated.role == 0 || $can('create teams')" :class="this.$route.name == 'role.permissions' ? 'sidebar-item active' : 'sidebar-item'">
                 <router-link class="sidebar-link" :to="{ name: 'role.permissions' }">
-                    <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+                    <i class="material-icons align-middle">engineering</i> <span class="align-middle">Settings</span>
                 </router-link>
             </li>
 
         </ul>
 
-        <div class="sidebar-cta">
+        <!-- <div class="sidebar-cta">
             <div class="sidebar-cta-content">
                 <strong class="d-inline-block mb-2">Upgrade to Pro</strong>
                 <div class="mb-3 text-sm">
@@ -152,7 +152,7 @@
                     <a href="upgrade-to-pro.html" class="btn btn-primary">Upgrade to Pro</a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </nav>
 </template>
