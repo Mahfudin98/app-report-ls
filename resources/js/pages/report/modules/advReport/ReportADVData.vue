@@ -11,6 +11,12 @@
                         </div>
                     </div>
                 </div>
+                <router-link class="btn btn-primary" v-if="$can('create reports adv')" :to="{ name: 'adv.report.add' }">
+                    <span class="material-icons align-middle">
+                        add_circle_outline
+                    </span>
+                    <span class="align-middle">New Report</span>
+                </router-link>
             </div>
         </div>
         <div class="card-body">
@@ -32,12 +38,15 @@
                         {{ row.item.date }}
                     </template>
                     <template #cell(created_at)="row">
-                        <vue-moments-ago prefix="posted" suffix="ago" :date="row.item.created_at" lang="en" />
+                        <vue-moments-ago prefix="posted" suffix="ago" :date="row.item.created_at" />
                     </template>
                     <template #cell(view)="data">
                         <button @click="data.toggleDetails" class="btn btn-primary btn-long btn-round">
                             <span class="align-middle">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
                             </span>
                             <span class="align-middle">View Detail</span>
                         </button>
@@ -87,7 +96,10 @@
                                                 <div class="col">
                                                     <router-link :to="{name: 'adv.report.view', params: { start: row.item.date_start, end: row.item.date_end}}" class="btn btn-primary">
                                                         <span class="align-middle">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
                                                         </span>
                                                         <span class="align-middle">View Detail</span>
                                                     </router-link>
@@ -108,7 +120,7 @@
         </div>
     </div>
     <!-- for manager -->
-    <div class="card" v-if="$can('read reports adv')">
+    <div class="card" v-if="$can('read projects')">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center mb-20">
                 <div class="row xs-gap">

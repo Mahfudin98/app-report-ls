@@ -32,6 +32,17 @@
             <div class="card-body mnt-6 mnb-6">
                 <section v-for="(row, index) in pages" :key="index">
                     <div class="mb-3">
+                        <label for="page">Page Name</label>
+                        <input class="form-control" id="page" required type="text" placeholder="Nama Page" v-model="row.page" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label for="count">Total View</label>
+                        <input class="form-control" id="count" required type="number" placeholder="Jumlah Total View" v-model="row.count" />
+                    </div>
+                </section>
+                <!--
+                <section v-for="(row, index) in pages" :key="index">
+                    <div class="mb-3">
                         <label for="page" class="text-white">Page Name</label>
                         <input class="form-control" id="page" required type="text" placeholder="Nama Page" v-model="row.page" />
                     </div>
@@ -48,12 +59,13 @@
                         </button>
                     </div>
                 </section>
-                <button class="btn btn-brand" type="button" @click="addPages">
+                <button class="btn btn-primary" type="button" @click="addPages">
                     <span class="icon">
                         <i class="fas fa-plus"></i>
                     </span>
                     <span class="text">Add Pages</span>
                 </button>
+                -->
             </div>
         </div>
     </div>
@@ -78,7 +90,13 @@ export default {
                 date: '',
                 image: ''
             },
-            pages: []
+            pages: [{
+                page: 'Home',
+                count: ''
+            }, {
+                page: 'Aesthetcic Clinic',
+                count: ''
+            }]
         };
     },
     computed: {

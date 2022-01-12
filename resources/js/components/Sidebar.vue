@@ -22,7 +22,7 @@
                 </router-link>
             </li>
             <!-- report -->
-            <li :class="this.$route.name == 'cs.report.data' || this.$route.name == 'adv.report.data' || this.$route.name == 'report.data.date' ? 'sidebar-item active' : 'sidebar-item'">
+            <li v-if="$can('read reports cs') || $can('read reports adv')" :class="this.$route.name == 'cs.report.data' || this.$route.name == 'adv.report.data' || this.$route.name == 'report.data.date' ? 'sidebar-item active' : 'sidebar-item'">
                 <a v-b-toggle="'collapse-2'" class="sidebar-link">
                     <i class="material-icons align-middle">layers</i> <span class="align-middle">Report</span>
                 </a>
