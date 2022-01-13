@@ -200,9 +200,11 @@ class ReportController extends Controller
             $bulan = Carbon::createFromFormat('Y-m-d', $request->date)->month;
             $details = DetailOrder::where('date', $request->date)->where('user_id', $user->id)->sum('subtotal');
             $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
-            $target->update([
-                'omset' => $target->omset + $details
-            ]);
+            if ($target != null) {
+                $target->update([
+                    'omset' => $target->omset + $details
+                ]);
+            }
             $order = Order::find($request->order_id);
             $order->update([
                 'ongkir'            => $request->ongkir,
@@ -245,9 +247,11 @@ class ReportController extends Controller
             $detail = DetailOrder::find($id);
             $bulan = Carbon::createFromFormat('Y-m-d', $detail->date)->month;
             $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
-            $target->update([
-                'omset' => $target->omset - $detail->subtotal
-            ]);
+            if ($target != null) {
+                $target->update([
+                    'omset' => $target->omset - $detail->subtotal
+                ]);
+            }
             $detail->update([
                 'product_id' => $request->product_id,
                 'price' => $request->price,
@@ -255,9 +259,11 @@ class ReportController extends Controller
                 'subtotal' => $request->qty * $request->price,
             ]);
             //edit this
-            $target->update([
-                'omset' => $target->omset + ($request->qty * $request->price)
-            ]);
+            if ($target != null) {
+                $target->update([
+                    'omset' => $target->omset + ($request->qty * $request->price)
+                ]);
+            }
             //to this
             return response()->json(['status' => 'success'], 200);
         } catch (\Throwable $e) {
@@ -272,9 +278,11 @@ class ReportController extends Controller
         $details = DetailOrder::where('id', $id)->sum('subtotal');
         $bulan = Carbon::createFromFormat('Y-m-d', $detail->date)->month;
         $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
-        $target->update([
-            'omset' => $target->omset - $details
-        ]);
+        if ($target != null) {
+            $target->update([
+                'omset' => $target->omset - $details
+            ]);
+        }
         $detail->delete();
         return response()->json(['status' => 'success']);
     }
@@ -325,9 +333,11 @@ class ReportController extends Controller
         $details = DetailOrder::where('order_id', $id)->sum('subtotal');
         $bulan = Carbon::createFromFormat('Y-m-d', $order->date)->month;
         $target = Target::whereMonth('start_date', $bulan)->where('user_id', $user->parent_id)->first();
-        $target->update([
-            'omset' => $target->omset - $details
-        ]);
+        if ($target != null) {
+            $target->update([
+                'omset' => $target->omset - $details
+            ]);
+        }
         File::delete(storage_path('app/public/orders/' . $order->image));
         $order->delete();
         $detail = DetailOrder::where('order_id', $id)->delete();
