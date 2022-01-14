@@ -153,4 +153,21 @@ class ReportWebController extends Controller
 
         return $data;
     }
+
+    public function donutBar()
+    {
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
+
+        $web = ReportPage::where('date', 'LIKE', '%' . $filter . '%')->groupBy('page')->selectRaw('*, sum(count) as sum')->get();
+        $data = [];
+        foreach ($web as $row) {
+            $data[] = [
+                'name' => $row->page,
+                'total' => $row->sum
+            ];
+        }
+        return $data;
+    }
 }

@@ -3,7 +3,8 @@ import $axios from '../api'
 const state = () => ({
     reportWebs: [],
     webBar: [],
-    viewReportWebs: []
+    viewReportWebs: [],
+    donutChart: []
 })
 
 const mutations = {
@@ -17,6 +18,10 @@ const mutations = {
 
     ASSIGN_VIEW_REPORT_WEB(state, payload) {
         state.viewReportWebs = payload
+    },
+
+    ASSIGN_DOUNT_CHART(state, payload) {
+        state.donutChart = payload
     }
 }
 
@@ -77,6 +82,16 @@ const actions = {
             $axios.get(`/chart-web?month=${payload.month}&year=${payload.year}`)
                 .then((response) => {
                     commit('ASSIGN_WEB_BAR_DATA', response.data)
+                    resolve(response.data)
+                })
+        })
+    },
+
+    getChartDonutWeb({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            $axios.get(`/donut-web?month=${payload.month}&year=${payload.year}`)
+                .then((response) => {
+                    commit('ASSIGN_DOUNT_CHART', response.data)
                     resolve(response.data)
                 })
         })
