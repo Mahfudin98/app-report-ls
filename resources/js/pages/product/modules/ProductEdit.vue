@@ -1,32 +1,34 @@
 <template>
-    <div class="rui-page-content">
-        <div class="container-fluid">
-            <div
-                class="d-flex justify-content-between align-items-center mb-20"
-            >
-                <router-link
-                    :to="{ name: 'product.data' }"
-                    class="btn btn-secondary"
-                >
-                    <span class="icon">
-                        <span class="fas fa-arrow-alt-circle-left"></span>
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center mb-20">
+                <router-link :to="{ name: 'product.data' }" class="btn btn-secondary">
+                    <span class="material-icons align-middle">
+                        reply
                     </span>
-                    <span class="text">Back</span>
+                    <span class="align-middle">Back</span>
                 </router-link>
-                <button @click.prevent="submit" class="btn btn-brand">
-                    <span class="icon">
-                        <i class="fas fa-save"></i>
+                <button @click.prevent="submit" class="btn btn-primary">
+                    <span class="material-icons align-middle">
+                        update
                     </span>
-                    <span class="text">Save Update</span>
+                    <span class="align-middle">Update</span>
                 </button>
             </div>
+        </div>
+        <div class="card-body">
             <form-product></form-product>
         </div>
     </div>
+</div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import {
+    mapActions,
+    mapState
+} from "vuex";
 import ProductForm from "./ProductForm.vue";
 export default {
     name: "EditProduct",
@@ -45,7 +47,9 @@ export default {
                     showConfirmButton: false,
                     timer: 2000
                 });
-                this.$router.push({ name: "product.data" });
+                this.$router.push({
+                    name: "product.data"
+                });
             });
         }
     },

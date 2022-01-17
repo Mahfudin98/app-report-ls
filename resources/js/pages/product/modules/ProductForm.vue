@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="name">Nama Product</label>
             <input
                 class="form-control"
@@ -13,7 +13,7 @@
                 required
             />
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="price">Harga Product</label>
             <input
                 class="form-control"
@@ -26,7 +26,7 @@
                 required
             />
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="weight">Berat Product (Gram)</label>
             <input
                 class="form-control"
@@ -39,7 +39,7 @@
                 required
             />
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="stock">Stock</label>
             <input
                 class="form-control"
@@ -51,7 +51,7 @@
                 required
             />
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tipe_pembelian">Tipe Pembelian</label>
             <select
                 id="tipe_pembelian"
@@ -66,7 +66,7 @@
                 <option value="2">Paket Hemat</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tipe_product">Tipe Product</label>
             <select
                 class="form-control"
@@ -78,6 +78,21 @@
                 <option selected="" value="" disabled="">Silahkan Pilih</option>
                 <option value="0">BPOM</option>
                 <option value="1">Farma</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="origin_order">Origin Order</label>
+            <select
+                class="form-control"
+                id="origin_order"
+                required
+                v-model="product.origin_order"
+                :disabled="authenticated.position_id == 8"
+            >
+                <option selected="" value="" disabled="">Silahkan Pilih</option>
+                <option value="Shopee">Shopee</option>
+                <option value="Lazada">Lazada</option>
+                <option value="Iklan">Iklan</option>
             </select>
         </div>
     </main>

@@ -52,7 +52,8 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'weight' => 'required|integer',
             'type_pembelian' => 'required',
-            'type_product' => 'required'
+            'type_product' => 'required',
+            'origin_order' => 'required'
         ]);
 
         Product::create([
@@ -62,7 +63,8 @@ class ProductController extends Controller
             'weight' => $request->weight,
             'stock' => 0,
             'type_pembelian' => $request->type_pembelian,
-            'type_product' => $request->type_product
+            'type_product' => $request->type_product,
+            'origin_order' => $request->origin_order
         ]);
 
         return response()->json(['status' => 'success'], 200);
@@ -106,7 +108,8 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'weight' => 'required|integer',
             'type_pembelian' => 'required',
-            'type_product' => 'required'
+            'type_product' => 'required',
+            'origin_order' => 'required'
         ]);
         $product = Product::find($id);
         $product->update([
@@ -116,7 +119,8 @@ class ProductController extends Controller
             'weight' => $request->weight,
             'stock' => $request->stock,
             'type_pembelian' => $request->type_pembelian,
-            'type_product' => $request->type_product
+            'type_product' => $request->type_product,
+            'origin_order' => $request->origin_order
         ]);
 
         return response()->json(['status' => 'success'], 200);

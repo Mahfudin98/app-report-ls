@@ -9,7 +9,8 @@ const state = () => ({
         weight: '',
         stock: '',
         type_pembelian: '',
-        type_product: ''
+        type_product: '',
+        origin_order: ''
     },
     bar: [],
     lists: [],
@@ -33,7 +34,8 @@ const mutations = {
             stock: payload.stock,
             weight: payload.weight,
             type_pembelian: payload.type_pembelian,
-            type_product: payload.type_product
+            type_product: payload.type_product,
+            origin_order: payload.origin_order
         }
     },
 
@@ -44,7 +46,8 @@ const mutations = {
             stock: '',
             weight: '',
             type_pembelian: '',
-            type_product: ''
+            type_product: '',
+            origin_order: ''
         }
     },
 

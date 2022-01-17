@@ -136,6 +136,10 @@ export default {
                     label: "Stock"
                 },
                 {
+                    key: "origin_order",
+                    label: "Origin Order"
+                },
+                {
                     key: "action",
                     label: "Aksi"
                 }
