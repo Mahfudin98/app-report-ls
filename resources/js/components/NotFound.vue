@@ -1,17 +1,22 @@
 <template>
-    <div class="rui-main">
-        <div class="rui-page-error container">
-            <div class="row text-center">
-                <div class="col-12">
-                    <h1 class="mnb-30">404</h1>
-                    <p class="display-2 mb-50 text-grey-5">Page Not Found</p>
-                    <div>
-                        <router-link :to="{ name: 'home' }" class="btn btn-brand btn-long">
-                            Back Home
+<main class="d-flex w-100 h-100">
+    <div class="container d-flex flex-column">
+        <div class="row vh-100">
+            <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+                <div class="d-table-cell align-middle">
+
+                    <div class="text-center">
+                        <h1 class="display-1 font-weight-bold">404</h1>
+                        <p class="h1">Page not found.</p>
+                        <p class="h2 font-weight-normal mt-3 mb-4">The page you are looking for might have been removed.</p>
+                        <router-link :to="{ name: 'home' }" class="btn btn-primary btn-lg">
+                            Return to website
                         </router-link>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+</main>
 </template>

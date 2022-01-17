@@ -288,7 +288,7 @@ const router = new Router({
                     meta: { title: "View Web Statistik" }
                 },
                 {
-                    path: "/add",
+                    path: "add",
                     name: "project.add",
                     component: AddProject,
                     meta: { title: "Add Web Statistik" }
@@ -446,7 +446,7 @@ const router = new Router({
                     meta: { title: "Manage Target" }
                 },
                 {
-                    path: "/add",
+                    path: "add",
                     name: "target.add",
                     component: AddTarget,
                     meta: { title: "Manage Target" }

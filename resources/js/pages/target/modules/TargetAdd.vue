@@ -9,12 +9,20 @@
                     </span>
                     <span class="align-middle">Back</span>
                 </router-link>
-                <button @click.prevent="submit" class="btn btn-primary">
+                <b-overlay :show="busy" rounded opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block float-right" @hidden="onHidden">
+                    <button ref="button" :disabled="busy" @click="onClick" class="btn btn-primary">
+                        <span class="material-icons align-middle">
+                            save
+                        </span>
+                        <span class="align-middle">Save</span>
+                    </button>
+                </b-overlay>
+                <!-- <button @click.prevent="submit" class="btn btn-primary">
                     <span class="material-icons align-middle">
                         save
                     </span>
                     <span class="align-middle">Save</span>
-                </button>
+                </button> -->
             </div>
         </div>
         <div class="card-body">
@@ -33,9 +41,40 @@ import {
 import TargetForm from "./TargetForm.vue";
 export default {
     name: "AddTarget",
+    data() {
+        return {
+            busy: false,
+            timeout: null
+        }
+    },
     methods: {
         submit() {
             this.$refs.targetForm.submit();
+        },
+        clearTimeout() {
+            if (this.timeout) {
+                clearTimeout(this.timeout)
+                this.timeout = null
+            }
+        },
+        setTimeout(callback) {
+            this.clearTimeout()
+            this.timeout = setTimeout(() => {
+                this.clearTimeout()
+                callback()
+            }, 10000)
+        },
+        onHidden() {
+            // Return focus to the button once hidden
+            this.$refs.button.focus()
+        },
+        onClick() {
+            this.busy = true;
+            // Simulate an async request
+            this.setTimeout(() => {
+                this.busy = false
+            });
+            this.submit();
         }
     },
     components: {

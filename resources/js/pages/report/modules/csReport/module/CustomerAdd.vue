@@ -123,17 +123,17 @@
                     </div>
                 </div>
                 <div class="col-sm-12" v-if="customers.waybill != ''">
-                    <div class="card">
+                    <div class="card bg-primary">
                         <div class="card-body mnt-6 mnb-6">
                             <h5 class="card-title h2">Order</h5>
                             <section v-for="(row, index) in order" :key="index">
                                 <div class="mb-3">
                                     <label for="order" class="text-white">Total Order</label>
-                                    <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="customers.qty[index]" />
+                                    <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="orders.qty[index]" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="produk" class="text-white">Produk</label>
-                                    <select id="product" class="form-control" v-model="customers.product_id[index]" @click="submitOngkir" required>
+                                    <select id="product" class="form-control" v-model="orders.product_id[index]" @click="submitOngkir" required>
                                         <option selected disabled="" value="">Pilih Produk</option>
                                         <option v-for="row in products.data" :key="row.id" :value="row">{{ row.name }}
                                             <p v-html="
@@ -209,6 +209,10 @@ export default {
                 image: "",
                 ongkir_discount: 0,
                 // for order
+                // product_id: [""],
+                // qty: [""]
+            },
+            orders: {
                 product_id: [""],
                 qty: [""]
             },
@@ -243,25 +247,32 @@ export default {
             costs: state => state.costs
         }),
         pricesOrder() {
-            var result = this.customers.product_id;
+            var result = this.orders.product_id;
             var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].price);
             });
             return res;
         },
+        qtyOrder() {
+            var result = this.orders;
+            var res = Object.keys(result).map(function (key) {
+                return parseInt(result[key].qty);
+            });
+            return res;
+        },
         idOrder() {
-            var result = this.customers.product_id;
+            var result = this.orders.product_id;
             var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].id);
             });
             return res;
         },
         weightOrder() {
-            var result = this.customers.product_id;
+            var result = this.orders.product_id;
             var res = Object.keys(result).map(function (key) {
                 return parseInt(result[key].weight);
             });
-            var qtys = this.customers.qty;
+            var qtys = this.orders.qty;
             var resQty = Object.keys(qtys).map(function (key) {
                 return parseInt(qtys[key]);
             });
@@ -279,27 +290,32 @@ export default {
             }
         },
         biayaCOD() {
-            var qty = this.customers.qty;
-            var resQty = Object.keys(qty).map(function (key) {
-                return parseInt(qty[key]);
-            });
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let price = this.pricesOrder[i];
+                jum += parseInt(qty) * parseInt(price);
+            }
+            // return jum;
+            // const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
             if (this.getOngkir != undefined) {
-                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
-                const biaya = (3 / 100) * parseInt(harga);
+                const biaya = (3 / 100) * parseInt(jum);
 
                 return biaya;
             } else {
                 return 0;
             }
+            return jumlah;
         },
         biayaJNT() {
-            var qty = this.customers.qty;
-            var resQty = Object.keys(qty).map(function (key) {
-                return parseInt(qty[key]);
-            });
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let price = this.pricesOrder[i];
+                jum += parseInt(qty) * parseInt(price);
+            }
             if (this.getOngkir != undefined) {
-                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
-                const biaya = (parseInt(harga) * 3) / 100;
+                const biaya = (parseInt(jum) * 3) / 100;
 
                 return biaya;
             } else {
@@ -307,13 +323,14 @@ export default {
             }
         },
         biayaJNE() {
-            var qty = this.customers.qty;
-            var resQty = Object.keys(qty).map(function (key) {
-                return parseInt(qty[key]);
-            });
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let price = this.pricesOrder[i];
+                jum += parseInt(qty) * parseInt(price);
+            }
             if (this.getOngkir != undefined) {
-                const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
-                const biaya = ((parseInt(harga) + this.getOngkir) * 3) / 100;
+                const biaya = ((parseInt(jum) + this.getOngkir) * 3) / 100;
 
                 return biaya;
             } else {
@@ -321,17 +338,22 @@ export default {
             }
         },
         getTotal() {
-            const harga = this.pricesOrder.reduce((acc, item) => acc + item);
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let price = this.pricesOrder[i];
+                jum += parseInt(qty) * parseInt(price);
+            }
             if (this.ongkir.metode == 1) {
                 if (this.getOngkir != undefined) {
                     if (this.ongkir.courier === 'jne') {
-                        const total = this.getOngkir + parseInt(harga) + this.biayaJNE;
+                        const total = this.getOngkir + parseInt(jum) + this.biayaJNE;
                         return total;
                     } else if (this.ongkir.courier === 'j&t') {
-                        const total = this.getOngkir + parseInt(harga) + this.biayaJNT;
+                        const total = this.getOngkir + parseInt(jum) + this.biayaJNT;
                         return total;
                     } else {
-                        const total = this.getOngkir + parseInt(harga) + this.biayaCOD;
+                        const total = this.getOngkir + parseInt(jum) + this.biayaCOD;
                         return total;
                     }
                 } else {
@@ -339,7 +361,7 @@ export default {
                 }
             } else {
                 if (this.getOngkir != undefined) {
-                    const total = parseInt(harga) + this.getOngkir;
+                    const total = parseInt(jum) + this.getOngkir;
                     return total;
                 } else {
                     return 0;
@@ -358,7 +380,7 @@ export default {
             });
         },
         removeParent(index) {
-            (this.customers = {
+            (this.orders = {
                 product_id: [""],
                 qty: [""]
             }),
@@ -419,8 +441,8 @@ export default {
             }
 
             // array order
-            for (var i = 0; i < this.customers.qty.length; i++) {
-                let qty = this.customers.qty[i];
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
                 let product_id = this.idOrder[i];
                 let price = this.pricesOrder[i];
                 form.append("qty[" + i + "]", qty);
@@ -437,6 +459,11 @@ export default {
                     image: "",
                     ongkir_discount: 0,
                     // for order
+                    // product_id: [""],
+                    // total_order: [""]
+                };
+
+                this.orders = {
                     product_id: [""],
                     total_order: [""]
                 };

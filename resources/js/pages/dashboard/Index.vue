@@ -63,24 +63,28 @@
                     <div class="card-header">
                         <h5 class="card-title mb-0">List Omset CS</h5>
                     </div>
-                    <table class="table table-hover my-0">
-                        <tbody>
-                            <tr v-for="row in omsets" :key="row.total">
-                                <td>
-                                    <div class="d-flex align-items-start">
-                                        <img v-show="row.image != null" :src="'../storage/teams/' + row.image" :alt="row.name" width="36" height="36" class="rounded-circle me-2" alt="Vanessa Tucker">
-                                        <div class="flex-grow-1">
-                                            <strong> {{ row.labels }}</strong><br />
-                                            <small class="text-muted">{{ row.position }}</small><br />
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-end">
-                                    Rp. {{ row.total | formatNumber }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="position-relative">
+                        <div class="chat-messages p-4">
+                            <table class="table table-hover my-0">
+                                <tbody>
+                                    <tr v-for="row in omsets" :key="row.total">
+                                        <td>
+                                            <div class="d-flex align-items-start">
+                                                <img v-show="row.image != null" :src="'../storage/teams/' + row.image" :alt="row.name" width="36" height="36" class="rounded-circle me-2" alt="Vanessa Tucker">
+                                                <div class="flex-grow-1">
+                                                    <strong> {{ row.labels }}</strong><br />
+                                                    <small class="text-muted">{{ row.position }}</small><br />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-end">
+                                            Rp. {{ row.total | formatNumber }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -128,7 +132,7 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="col-12 col-lg-4 col-xxl-3 d-flex">
                 <div class="card flex-fill w-100">
                     <div class="card-header">
