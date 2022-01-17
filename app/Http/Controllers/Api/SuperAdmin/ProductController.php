@@ -137,7 +137,7 @@ class ProductController extends Controller
 
     public function allProduct()
     {
-        $products = Product::orderBy('created_at', 'DESC');
+        $products = Product::where('origin_order', '!=', null)->orderBy('created_at', 'DESC');
 
         return new ProductCollection($products->get());
     }

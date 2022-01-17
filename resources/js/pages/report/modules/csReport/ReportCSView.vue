@@ -74,123 +74,131 @@
                     </div>
                     <div class="card-body px-4 pt-2">
                         <div class="accordion" role="tablist">
-                            <b-table borderless :items="reportcs.order" :fields="data" show-empty>
-                                <template #cell(action)="data">
-                                    <button @click="data.toggleDetails" class="btn btn-primary btn-long btn-round">
-                                        {{ data.item.customer_name }} [<span class="text-warning">{{ data.item.waybill }}</span>]<span v-html="data.item.status_label"></span>
-                                    </button>
-                                </template>
-                                <template #row-details="row">
-                                    <b-card no-body class="overflow-hidden" style="max-width: 540px;">
-                                        <b-row no-gutters>
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h5 class="card-title">
-                                                        <span class="material-icons align-middle">
-                                                            settings
-                                                        </span>
-                                                        <span class="align-middle">Setting</span>
-                                                    </h5>
-                                                    <div class="mt-3">
-                                                        <b-button-group>
-                                                            <router-link :to="{ name: 'cs.report.edit.order', params: { id: row.item.id } }" class="btn btn-warning text-dark">
-                                                                <span class="material-icons">
-                                                                    drive_file_rename_outline
-                                                                </span>
-                                                            </router-link>
-                                                            <button class="btn btn-danger" @click="deleteOrder(row.item.id)">
-                                                                <span class="material-icons">
-                                                                    delete
-                                                                </span>
-                                                            </button>
-                                                            <router-link :to="{ name: 'cs.report.add.product.order', params: { id: row.item.id } }" class="btn btn-primary">
-                                                                <span class="material-icons">
-                                                                    add_circle_outline
-                                                                </span>
-                                                            </router-link>
-                                                        </b-button-group>
+                            <div class="table-responsive">
+                                <b-table borderless :items="reportcs.order" :fields="data" show-empty>
+                                    <template #cell(action)="data">
+                                        <button @click="data.toggleDetails" class="btn btn-primary btn-long btn-round">
+                                            {{ data.item.customer_name }} [<span class="text-warning">{{ data.item.waybill }}</span>]<span v-html="data.item.status_label"></span>
+                                        </button>
+                                    </template>
+                                    <template #row-details="row">
+                                        <b-card no-body class="overflow-hidden" style="max-width: 540px;">
+                                            <b-row no-gutters>
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="card-title">
+                                                            <span class="material-icons align-middle">
+                                                                settings
+                                                            </span>
+                                                            <span class="align-middle">Setting</span>
+                                                        </h5>
+                                                        <div class="mt-3">
+                                                            <b-button-group>
+                                                                <router-link :to="{ name: 'cs.report.edit.order', params: { id: row.item.id } }" class="btn btn-warning text-dark">
+                                                                    <span class="material-icons">
+                                                                        drive_file_rename_outline
+                                                                    </span>
+                                                                </router-link>
+                                                                <button class="btn btn-danger" @click="deleteOrder(row.item.id)">
+                                                                    <span class="material-icons">
+                                                                        delete
+                                                                    </span>
+                                                                </button>
+                                                                <router-link :to="{ name: 'cs.report.add.product.order', params: { id: row.item.id } }" class="btn btn-primary">
+                                                                    <span class="material-icons">
+                                                                        add_circle_outline
+                                                                    </span>
+                                                                </router-link>
+                                                            </b-button-group>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <b-col md="12" v-if="row.item.image != null">
+                                                            <b-card-img :src="'../storage/orders/' + row.item.image" alt="Image" class="rounded-0"></b-card-img>
+                                                        </b-col>
+                                                        <b-col md="12">
+                                                            <b-card-body>
+                                                                <table class="table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>Ongkir</th>
+                                                                            <td>Rp. {{ row.item.ongkir | formatNumber }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Potongan Ongkir</th>
+                                                                            <td>Rp. {{ row.item.ongkir_discount | formatNumber }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Metode</th>
+                                                                            <td><span class="badge bg-primary rounded-pill">{{ row.item.metode == 1 ? 'COD' : 'Transfer' }}</span></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Kurir</th>
+                                                                            <td><span class="badge bg-primary rounded-pill">{{ row.item.courier }}</span></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Biaya</th>
+                                                                            <td>Rp. {{ row.item.metode == 1 ? row.item.biaya : 0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Total</th>
+                                                                            <td>Rp. {{ row.item.total | formatNumber }}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </b-card-body>
+                                                        </b-col>
                                                     </div>
                                                 </div>
-                                                <div class="card-body">
-                                                    <b-col md="12" v-if="row.item.image != null">
-                                                        <b-card-img :src="'../storage/orders/' + row.item.image" alt="Image" class="rounded-0"></b-card-img>
-                                                    </b-col>
-                                                    <b-col md="12">
-                                                        <b-card-body>
-                                                            <table class="table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th>Ongkir</th>
-                                                                        <td>Rp. {{ row.item.ongkir | formatNumber }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Potongan Ongkir</th>
-                                                                        <td>Rp. {{ row.item.ongkir_discount | formatNumber }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Metode</th>
-                                                                        <td><span class="badge bg-primary rounded-pill">{{ row.item.metode == 1 ? 'COD' : 'Transfer' }}</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Kurir</th>
-                                                                        <td><span class="badge bg-primary rounded-pill">{{ row.item.courier }}</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Biaya</th>
-                                                                        <td>Rp. {{ row.item.metode == 1 ? row.item.biaya : 0 }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Total</th>
-                                                                        <td>Rp. {{ row.item.total | formatNumber }}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </b-card-body>
-                                                    </b-col>
-                                                </div>
+                                            </b-row>
+                                        </b-card>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <b-table :items="row.item.order_detail" :fields="fields" show-empty>
+                                                    <template #cell(index)="data">
+                                                        {{ data.index + 1 }}
+                                                    </template>
+                                                    <template #cell(product_name)="rows">
+                                                        <p>{{ rows.item.product.name}}</p>
+                                                    </template>
+                                                    <template #cell(origin)="rows">
+                                                        <p>{{ rows.item.product.origin_order}}</p>
+                                                    </template>
+                                                    <template #cell(price)="rows">
+                                                        Rp. {{ rows.item.price | formatNumber }}
+                                                    </template>
+                                                    <template #cell(product_discount)="rows">
+                                                        Rp. {{ rows.item.product_discount | formatNumber }}
+                                                    </template>
+                                                    <template #cell(subtotal)="rows">
+                                                        Rp. {{ rows.item.subtotal | formatNumber }}
+                                                    </template>
+                                                    <template #cell(action)="rows">
+                                                        <b-dropdown id="dropdown-1" text="Action" variant="primary" class="m-md-2">
+                                                            <b-dropdown-item>
+                                                                <router-link class="nav-link" :to="{ name: 'cs.report.edit.product.order', params: { id: rows.item.id } }">
+                                                                    <span class="material-icons align-middle">
+                                                                        edit
+                                                                    </span>
+                                                                    <span class="align-middle">Edit</span>
+                                                                </router-link>
+                                                            </b-dropdown-item>
+                                                            <b-dropdown-item>
+                                                                <a class="nav-link" @click="deleteProduct(rows.item.id)">
+                                                                    <span class="material-icons align-middle">
+                                                                        delete
+                                                                    </span>
+                                                                    <span class="align-middle">Hapus</span>
+                                                                </a>
+                                                            </b-dropdown-item>
+                                                        </b-dropdown>
+                                                    </template>
+                                                </b-table>
                                             </div>
-                                        </b-row>
-                                    </b-card>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <b-table :items="row.item.order_detail" :fields="fields" show-empty>
-                                                <template #cell(index)="data">
-                                                    {{ data.index + 1 }}
-                                                </template>
-                                                <template #cell(product_name)="rows">
-                                                    <p>{{ rows.item.product.name}}</p>
-                                                </template>
-                                                <template #cell(price)="rows">
-                                                    Rp. {{ rows.item.price | formatNumber }}
-                                                </template>
-                                                <template #cell(subtotal)="rows">
-                                                    Rp. {{ rows.item.subtotal | formatNumber }}
-                                                </template>
-                                                <template #cell(action)="rows">
-                                                    <b-dropdown id="dropdown-1" text="Action" variant="primary" class="m-md-2">
-                                                        <b-dropdown-item>
-                                                            <router-link class="nav-link" :to="{ name: 'cs.report.edit.product.order', params: { id: rows.item.id } }">
-                                                                <span class="material-icons align-middle">
-                                                                    edit
-                                                                </span>
-                                                                <span class="align-middle">Edit</span>
-                                                            </router-link>
-                                                        </b-dropdown-item>
-                                                        <b-dropdown-item>
-                                                            <a class="nav-link" @click="deleteProduct(rows.item.id)">
-                                                                <span class="material-icons align-middle">
-                                                                    delete
-                                                                </span>
-                                                                <span class="align-middle">Hapus</span>
-                                                            </a>
-                                                        </b-dropdown-item>
-                                                    </b-dropdown>
-                                                </template>
-                                            </b-table>
                                         </div>
-                                    </div>
-                                </template>
-                            </b-table>
+                                    </template>
+                                </b-table>
+                            </div>
                         </div>
                     </div>
                     <!-- <ul class="list-group list-group-flush">
@@ -525,8 +533,16 @@ export default {
                     label: "Product Name"
                 },
                 {
+                    key: "origin",
+                    label: "Origin Order"
+                },
+                {
                     key: "price",
                     label: "Price"
+                },
+                {
+                    key: "product_discount",
+                    label: "Potongan Harga"
                 },
                 {
                     key: "qty",

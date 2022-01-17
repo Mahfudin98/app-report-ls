@@ -127,10 +127,10 @@
                                 <label for="produk" class="text-white">Produk</label>
                                 <select id="product" class="form-control" v-model="customers.product_id[index]" @click="submitOngkir" required>
                                     <option selected disabled="" value="">Pilih Produk</option>
-                                    <option v-for="row in products.data" :key="row.id" :value="row">{{ row.name }}
-                                        <p v-html="
-                                                    row.type_pembelian_label
-                                                "></p>
+                                    <option v-for="row in products.data" :key="row.id" :value="row">
+                                        {{ row.name }}
+                                        <p v-html="row.type_pembelian_label"></p>
+                                        [ {{ row.origin_order }} ]
                                         ({{ row.price }})
                                     </option>
                                 </select>

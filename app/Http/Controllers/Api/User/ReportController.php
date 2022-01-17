@@ -146,7 +146,8 @@ class ReportController extends Controller
                     'price' => $data['price'][$item],
                     'qty' => $data['qty'][$item],
                     'date' => $request->date,
-                    'subtotal' => $data['qty'][$item] * $data['price'][$item]
+                    'product_discount' => $request['product_discount'][$item],
+                    'subtotal' => $data['qty'][$item] * $data['price'][$item] - $request['product_discount'][$item]
                 );
                 $detail = DetailOrder::create($product);
             }
@@ -191,7 +192,8 @@ class ReportController extends Controller
                     'price' => $data['price'][$item],
                     'qty' => $data['qty'][$item],
                     'date' => $request->date,
-                    'subtotal' => $data['qty'][$item] * $data['price'][$item],
+                    'product_discount' => $request['product_discount'][$item],
+                    'subtotal' => $data['qty'][$item] * $data['price'][$item] - $request['product_discount'][$item],
                     'status' => $request->status
                 );
                 $detail = DetailOrder::create($product);
@@ -256,7 +258,8 @@ class ReportController extends Controller
                 'product_id' => $request->product_id,
                 'price' => $request->price,
                 'qty' => $request->qty,
-                'subtotal' => $request->qty * $request->price,
+                'product_discount' => $request->product_discount,
+                'subtotal' => $request->qty * $request->price - $request->product_discount,
             ]);
             //edit this
             if ($target != null) {

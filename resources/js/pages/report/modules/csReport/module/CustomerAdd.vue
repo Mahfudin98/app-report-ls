@@ -136,12 +136,16 @@
                                     <select id="product" class="form-control" v-model="orders.product_id[index]" @click="submitOngkir" required>
                                         <option selected disabled="" value="">Pilih Produk</option>
                                         <option v-for="row in products.data" :key="row.id" :value="row">{{ row.name }}
-                                            <p v-html="
-                                                    row.type_pembelian_label
-                                                "></p>
+                                            <p v-html="row.type_pembelian_label"></p>
+                                            [ {{ row.origin_order }} ]
                                             ({{ row.price }})
                                         </option>
                                     </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="potongan" class="text-white">Potongan Harga</label>
+                                    <input class="form-control" required type="number" placeholder="Masukan Potongan" v-model="orders.product_discount[index]" />
+                                    <p>*Isi 0 jika tidak ada Potongan Harga</p>
                                 </div>
                                 <br />
                                 <button class="btn btn-danger" type="button" @click="removeParent(index)">
@@ -152,6 +156,7 @@
                                 </button>
                             </section>
                         </div>
+                        </br>
                         <div class="card-footer">
                             <button class="btn btn-primary" type="button" @click="addProduct">
                                 <span class="material-icons align-middle">
@@ -214,7 +219,8 @@ export default {
             },
             orders: {
                 product_id: [""],
-                qty: [""]
+                qty: [""],
+                product_discount: [""],
             },
             order: [],
             // ongkir
@@ -293,8 +299,9 @@ export default {
             let jum = 0;
             for (var i = 0; i < this.orders.qty.length; i++) {
                 let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
                 let price = this.pricesOrder[i];
-                jum += parseInt(qty) * parseInt(price);
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount);
             }
             // return jum;
             // const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
@@ -311,8 +318,9 @@ export default {
             let jum = 0;
             for (var i = 0; i < this.orders.qty.length; i++) {
                 let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
                 let price = this.pricesOrder[i];
-                jum += parseInt(qty) * parseInt(price);
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount);
             }
             if (this.getOngkir != undefined) {
                 const biaya = (parseInt(jum) * 3) / 100;
@@ -326,8 +334,9 @@ export default {
             let jum = 0;
             for (var i = 0; i < this.orders.qty.length; i++) {
                 let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
                 let price = this.pricesOrder[i];
-                jum += parseInt(qty) * parseInt(price);
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount);
             }
             if (this.getOngkir != undefined) {
                 const biaya = ((parseInt(jum) + this.getOngkir) * 3) / 100;
@@ -341,8 +350,9 @@ export default {
             let jum = 0;
             for (var i = 0; i < this.orders.qty.length; i++) {
                 let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
                 let price = this.pricesOrder[i];
-                jum += parseInt(qty) * parseInt(price);
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount);
             }
             if (this.ongkir.metode == 1) {
                 if (this.getOngkir != undefined) {
@@ -370,7 +380,7 @@ export default {
         },
 
         checkVal: function () {
-            return this.getOngkir != undefined ? false : true;
+            return this.getOngkir != undefined && this.orders.product_discount != "" ? false : true;
         }
     },
     methods: {
@@ -382,7 +392,8 @@ export default {
         removeParent(index) {
             (this.orders = {
                 product_id: [""],
-                qty: [""]
+                qty: [""],
+                product_discount: [""]
             }),
             this.order.splice(index, 1);
         },
@@ -443,11 +454,13 @@ export default {
             // array order
             for (var i = 0; i < this.orders.qty.length; i++) {
                 let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
                 let product_id = this.idOrder[i];
                 let price = this.pricesOrder[i];
                 form.append("qty[" + i + "]", qty);
                 form.append("product_id[" + i + "]", product_id);
                 form.append("price[" + i + "]", price);
+                form.append("product_discount[" + i + "]", discount);
             }
 
             this.submitCustomer(form).then(() => {
@@ -465,7 +478,8 @@ export default {
 
                 this.orders = {
                     product_id: [""],
-                    total_order: [""]
+                    qty: [""],
+                    product_discount: [0],
                 };
 
                 this.ongkir = {
