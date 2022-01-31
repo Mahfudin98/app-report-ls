@@ -25,30 +25,24 @@ export default {
             var ratioArray = [];
             var labelsArray = [];
 
-            for ( var i = 0; i < length; i++ ) {
-            // Then push our data to the new arrays
-            labelsArray.push(array[i] ? array[i].name : '');
-            ratioArray.push(array[i] ? array[i].total : '');
+            for (var i = 0; i < length; i++) {
+                // Then push our data to the new arrays
+                labelsArray.push(array[i] ? array[i].name : "");
+                ratioArray.push(array[i] ? array[i].total : "");
             }
             this.renderChart(
                 {
                     labels: labelsArray,
                     datasets: [
                         {
-                            // label: ratioArray + "%",
+                            // labels: labelsArray,
                             data: ratioArray,
-                            backgroundColor: ratioArray.map(
-                                d =>
-                                    "rgba(" +
-                                    Math.floor(Math.random() * 255) +
-                                    "," +
-                                    Math.floor(Math.random() * 255) +
-                                    "," +
-                                    Math.floor(Math.random() * 255) +
-                                    ", 0.8)"
-                            ),
-                            borderColor: "rgba(94, 119, 255, 1)",
-                            borderWidth: 1
+                            backgroundColor: [
+                                window.theme.warning,
+                                window.theme.primary
+                            ],
+                            borderColor: window.theme.white,
+                            borderWidth: 5
                         }
                     ]
                 },
