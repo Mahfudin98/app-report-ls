@@ -126,7 +126,9 @@ class ReportWebController extends Controller
 
     public function view($date)
     {
-        $report = ReportWeb::with(['page'])->where('date', $date)->first();
+        $report = ReportWeb::with(['page'])
+            ->where('date', $date)
+            ->first();
         return response()->json(['data' => $report], 200);
     }
 
@@ -137,17 +139,20 @@ class ReportWebController extends Controller
         $filter = $year . '-' . $mounth;
 
         $parse = Carbon::parse($filter);
-        $array_date = range($parse->startOfMonth()->format('d'), $parse->endOfMonth()->format('d'));
+        $array_date = range(
+            $parse->startOfMonth()->format('d'),
+            $parse->endOfMonth()->format('d')
+        );
 
         $web = ReportWeb::where('date', 'LIKE', '%' . $filter . '%')->get();
         $data = [];
         foreach ($array_date as $row) {
-            $f_date = strlen($row) == 1 ? 0 . $row:$row;
+            $f_date = strlen($row) == 1 ? 0 . $row : $row;
             $date = $filter . '-' . $f_date;
             $total = $web->firstWhere('date', $date);
             $data[] = [
                 'labels' => $date,
-                'total' => $total ? $total->total:0
+                'total' => $total ? $total->total : 0,
             ];
         }
 
@@ -160,12 +165,15 @@ class ReportWebController extends Controller
         $mounth = request()->month;
         $filter = $year . '-' . $mounth;
 
-        $web = ReportPage::where('date', 'LIKE', '%' . $filter . '%')->groupBy('page')->selectRaw('*, sum(count) as sum')->get();
+        $web = ReportPage::where('date', 'LIKE', '%' . $filter . '%')
+            ->groupBy('page')
+            ->selectRaw('*, sum(count) as sum')
+            ->get();
         $data = [];
         foreach ($web as $row) {
             $data[] = [
                 'name' => $row->page,
-                'total' => $row->sum
+                'total' => $row->sum,
             ];
         }
         return $data;

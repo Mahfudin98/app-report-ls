@@ -1,11 +1,11 @@
 <template>
     <div class="row">
-        <div class="col-12 col-lg-12 col-xxl-12">
-            <div class="card flex-fill">
+        <div class="col-12 col-md-8 col-xxl-3 d-flex">
+            <div class="card flex-fill w-100">
                 <div class="card-header">
-                    <h2>Bar Chart</h2>
+                    <h5 class="card-title mb-0">Bar Chart</h5>
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Bulan</label>
                                 <select v-model="month" class="form-control">
@@ -24,7 +24,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Tahun</label>
                                 <select v-model="year" class="form-control">
@@ -37,6 +37,7 @@
                                 </select>
                             </div>
                         </div>
+                        <!--
                         <div class="col-md-2">
                             <label v-if="$can('create projects')">
                                 Setting <b-icon icon="gear-fill"></b-icon>
@@ -62,9 +63,10 @@
                                 </router-link>
                             </div>
                         </div>
+                        -->
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex w-100">
                     <div class="col-lg-12">
                         <div class="rui-widget p-0">
                             <!-- for chart -->
@@ -79,47 +81,45 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-xxl-3 d-flex">
+        <div class="col-12 col-md-4 col-xxl-3 d-flex">
             <div class="card flex-fill w-100">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Donat Chart</h5>
                 </div>
-                <div class="card-body d-flex w-100">
-                    <div class="align-self-center chart chart-lg">
-                        <donat-chart
-                            v-if="donutChart.length > 0"
-                            :data="donutChart"
-                            :options="chartOptions"
-                            :labels="donutChart"
-                        />
+                <div class="card-body d-flex">
+                    <div class="align-self-center w-100">
+                        <div class="py-3">
+                            <div class="chart chart-xs">
+                                <donat-chart
+                                    v-if="donutChart.length > 0"
+                                    :data="donutChart"
+                                    :options="chartOptions"
+                                    :labels="donutChart"
+                                />
+                            </div>
+                        </div>
+
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr
+                                    v-for="(rows, index) in donutChart"
+                                    :key="index"
+                                >
+                                    <td>
+                                        <h5>
+                                            <i
+                                                class="fab fa-chrome text-primary fa-fw"
+                                            ></i>
+                                            {{ rows.name }}
+                                        </h5>
+                                    </td>
+                                    <td class="text-end">
+                                        {{ rows.total }} Views
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 col-xxl-3 d-flex">
-            <div class="card flex-fill w-100">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Description</h5>
-                </div>
-                <div class="card-body d-flex w-100">
-                    <table class="table mb-0">
-                        <tbody>
-                            <tr
-                                v-for="(rows, index) in donutChart"
-                                :key="index"
-                            >
-                                <td>
-                                    <h5>
-                                        <i
-                                            class="fab fa-chrome text-primary fa-fw"
-                                        ></i>
-                                        {{ rows.name }}
-                                    </h5>
-                                </td>
-                                <td class="text-end">{{ rows.total }} Views</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
