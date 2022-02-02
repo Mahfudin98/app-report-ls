@@ -23,7 +23,11 @@ class ProductController extends Controller
         $products = Product::orderBy('created_at', 'DESC');
 
         if (request()->q != '') {
-            $products = $products->where('name', 'LIKE', '%' . request()->q . '%');
+            $products = $products->where(
+                'name',
+                'LIKE',
+                '%' . request()->q . '%'
+            );
         }
 
         return new ProductCollection($products->paginate(10));
@@ -53,7 +57,7 @@ class ProductController extends Controller
             'weight' => 'required|integer',
             'type_pembelian' => 'required',
             'type_product' => 'required',
-            'origin_order' => 'required'
+            'origin_order' => 'required',
         ]);
 
         Product::create([
@@ -64,7 +68,7 @@ class ProductController extends Controller
             'stock' => 0,
             'type_pembelian' => $request->type_pembelian,
             'type_product' => $request->type_product,
-            'origin_order' => $request->origin_order
+            'origin_order' => $request->origin_order,
         ]);
 
         return response()->json(['status' => 'success'], 200);
@@ -91,7 +95,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::find($id);
-        return response()->json(['status' => 'success', 'data' => $product], 200);
+        return response()->json(
+            ['status' => 'success', 'data' => $product],
+            200
+        );
     }
 
     /**
@@ -109,7 +116,7 @@ class ProductController extends Controller
             'weight' => 'required|integer',
             'type_pembelian' => 'required',
             'type_product' => 'required',
-            'origin_order' => 'required'
+            'origin_order' => 'required',
         ]);
         $product = Product::find($id);
         $product->update([
@@ -120,7 +127,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'type_pembelian' => $request->type_pembelian,
             'type_product' => $request->type_product,
-            'origin_order' => $request->origin_order
+            'origin_order' => $request->origin_order,
         ]);
 
         return response()->json(['status' => 'success'], 200);
@@ -141,7 +148,10 @@ class ProductController extends Controller
 
     public function allProduct()
     {
-        $products = Product::where('origin_order', '!=', null)->orderBy('created_at', 'DESC');
+        $products = Product::where('origin_order', '!=', null)->orderBy(
+            'created_at',
+            'DESC'
+        );
 
         return new ProductCollection($products->get());
     }
@@ -153,11 +163,16 @@ class ProductController extends Controller
         $filter = $year . '-' . $mounth;
 
         $data = [];
-        $order = DetailOrder::with(['product'])->where('date', 'LIKE', '%' . $filter . '%')->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
+        $order = DetailOrder::with(['product'])
+            ->where('date', 'LIKE', '%' . $filter . '%')
+            ->groupBy('product_id')
+            ->selectRaw('*, sum(qty) as sum')
+            ->orderBy('sum', 'DESC')
+            ->get();
         foreach ($order as $rows) {
             $data[] = [
-                'labels' => substr($rows->product->name, 0, 10). '...',
-                'total' => $rows->sum
+                'labels' => substr($rows->product->name, 0, 10) . '...',
+                'total' => $rows->sum,
             ];
         }
 
@@ -169,7 +184,12 @@ class ProductController extends Controller
         $year = request()->year;
         $mounth = request()->month;
         $filter = $year . '-' . $mounth;
-        $order = DetailOrder::with(['product'])->where('date', 'LIKE', '%' . $filter . '%')->groupBy('product_id')->selectRaw('*, sum(qty) as sum')->orderBy('sum', 'DESC')->get();
+        $order = DetailOrder::with(['product'])
+            ->where('date', 'LIKE', '%' . $filter . '%')
+            ->groupBy('product_id')
+            ->selectRaw('*, sum(qty) as sum')
+            ->orderBy('sum', 'DESC')
+            ->get();
 
         return response()->json(['data' => $order], 200);
     }
@@ -181,11 +201,20 @@ class ProductController extends Controller
         $filter = $year . '-' . $mounth;
 
         $product = DB::table('products')
-            ->join('detail_orders', 'products.id', '=', 'detail_orders.product_id')
-            ->select('products.type_product',
-                     'detail_orders.qty',
-                     DB::raw('YEAR(detail_orders.date) year, MONTH(detail_orders.date) month'))
-            ->groupBy('products.type_product')
+            ->join(
+                'detail_orders',
+                'products.id',
+                '=',
+                'detail_orders.product_id'
+            )
+            ->select(
+                'products.origin_order',
+                'detail_orders.qty',
+                DB::raw(
+                    'YEAR(detail_orders.date) year, MONTH(detail_orders.date) month'
+                )
+            )
+            ->groupBy('products.origin_order')
             ->groupBy('month', 'year')
             ->where('detail_orders.date', 'LIKE', '%' . $filter . '%')
             ->selectRaw('detail_orders.qty, sum(qty) as sum')
@@ -194,8 +223,8 @@ class ProductController extends Controller
         $data = [];
         foreach ($product as $row) {
             $data[] = [
-                'labels' => $row->type_product == 0 ? 'BPOM' : 'Farma',
-                'total' => $row->sum
+                'labels' => $row->origin_order,
+                'total' => $row->sum,
             ];
         }
 

@@ -1,7 +1,5 @@
 <script>
-import {
-    Doughnut
-} from "vue-chartjs";
+import { Doughnut } from "vue-chartjs";
 
 export default {
     extends: Doughnut,
@@ -29,21 +27,25 @@ export default {
 
             for (var i = 0; i < length; i++) {
                 // Then push our data to the new arrays
-                labelsArray.push(array[i] ? array[i].labels : '');
-                ratioArray.push(array[i] ? array[i].total : '');
+                labelsArray.push(array[i] ? array[i].labels : "");
+                ratioArray.push(array[i] ? array[i].total : "");
             }
-            this.renderChart({
+            this.renderChart(
+                {
                     labels: labelsArray,
-                    datasets: [{
-                        // label: ratioArray + "%",
-                        data: ratioArray,
-                        backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)'
-                        ],
-                        borderColor: "rgba(94, 119, 255, 1)",
-                        borderWidth: 1
-                    }]
+                    datasets: [
+                        {
+                            // label: ratioArray + "%",
+                            data: ratioArray,
+                            backgroundColor: [
+                                "rgb(255, 215, 0)",
+                                "rgb(54, 162, 235)",
+                                "rgb(255, 99, 132)"
+                            ],
+                            borderColor: "rgba(94, 119, 255, 1)",
+                            borderWidth: 1
+                        }
+                    ]
                 },
                 this.options
             );

@@ -75,7 +75,11 @@
                         {{ data.index + 1 }}
                     </template>
                     <template #cell(type)="row">
-                        <span v-html="row.item.product.type_product_label"></span>
+                        <!-- <span v-html="row.item.product.type_product_label"></span> -->
+                        <span v-if="row.item.product.origin_order == 'Shopee'" class="badge bg-danger rounded-pill">Shopee</span>
+                        <span v-if="row.item.product.origin_order == 'Lazada'" class="badge bg-info rounded-pill">Lazada</span>
+                        <span v-if="row.item.product.origin_order == 'Iklan'" class="badge bg-warning rounded-pill">Iklan</span>
+                        <span v-if="row.item.product.origin_order == null" class="badge bg-secondary rounded-pill">Belum Diatur</span>
                     </template>
                 </b-table>
             </div>
