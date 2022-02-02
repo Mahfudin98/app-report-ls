@@ -117,6 +117,29 @@
                                         {{ rows.total }} Views
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <h5>
+                                            <i
+                                                class="fas fa-chart-pie text-warning fa-fw"
+                                            ></i>
+                                            <strong>Total Views</strong>
+                                        </h5>
+                                    </td>
+                                    <td class="text-end">
+                                        <strong>
+                                            {{
+                                                donutChart.reduce(
+                                                    (acc, item) =>
+                                                        acc +
+                                                        parseInt(item.total),
+                                                    0
+                                                )
+                                            }}
+                                            Views
+                                        </strong>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
