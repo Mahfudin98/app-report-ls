@@ -1,29 +1,109 @@
 <template>
+    <!--
   <div class="page-loader" v-if="!isloaded">
     <div class="cube"></div>
     <div class="cube"></div>
     <div class="cube"></div>
     <div class="cube"></div>
   </div>
+  -->
+    <div class="page-loader" v-if="!isloaded">
+        <img
+            class="elementToAnimate"
+            src="https://app-r.lsskincare.id/images/logo.png"
+            width="100"
+        />
+    </div>
 </template>
 
 <script>
-  export default {
+export default {
     data: () => {
-      return {
-        isloaded: false
-      }
+        return {
+            isloaded: false
+        };
     },
     mounted() {
-        setTimeout(() => this.isloaded = true, 1000);
-    },
-  }
+        setTimeout(() => (this.isloaded = true), 3000);
+    }
+};
 </script>
 
+// //<style lang="scss" scoped>
+// $colors: #8cc271,
+// #69beeb,
+// #f5aa39,
+// #e9643b;
+
+// // -----------------------------------------------------
+// .page-loader {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     width: 100vw;
+//     height: 100vh;
+//     background-color: #292f38;
+//     z-index: 999;
+// }
+
+// // -----------------------------------------------------
+// .cube {
+//     width: 40px;
+//     height: 40px;
+//     margin-right: 10px;
+
+//     @for $i from 1 through length($colors) {
+//         &:nth-child(#{$i}) {
+//             background-color: nth($colors, $i);
+//         }
+//     }
+
+//     &:first-child {
+//         animation: left 1s infinite;
+//     }
+
+//     &:last-child {
+//         animation: right 1s infinite 0.5s;
+//     }
+// }
+
+// // -----------------------------------------------------
+// @keyframes left {
+//     40% {
+//         transform: translateX(-60px);
+//     }
+
+//     50% {
+//         transform: translateX(0);
+//     }
+// }
+
+// @keyframes right {
+//     40% {
+//         transform: translateX(60px);
+//     }
+
+//     50% {
+//         transform: translateX(0);
+//     }
+// }
+//
+</style>
+
 <style lang="scss" scoped>
-   $colors: #8CC271, #69BEEB, #F5AA39, #E9643B;
-  // -----------------------------------------------------
-  .page-loader {
+.targetElement {
+    color: var(--text);
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    font-size: 65px;
+    transform-origin: center center;
+}
+
+.page-loader {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,39 +114,20 @@
     height: 100vh;
     background-color: #292f38;
     z-index: 999;
-  }
-  // -----------------------------------------------------
-  .cube{
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    @for $i from 1 through length($colors) {
-      &:nth-child(#{$i}) {
-        background-color: nth($colors, $i);
-      }
+}
+
+/* Copy this @keyframes block to your CSS*/
+@keyframes yourAnimation {
+    0.0% {
     }
-    &:first-child {
-      animation: left 1s infinite;
+
+    49.9% {
+        opacity: 0;
     }
-    &:last-child {
-      animation: right 1s infinite .5s;
-    }
-  }
-  // -----------------------------------------------------
-  @keyframes left {
-    40% {
-      transform: translateX(-60px);
-    }
-    50% {
-      transform: translateX(0);
-    }
-  }
-  @keyframes right {
-    40% {
-      transform: translateX(60px);
-    }
-    50% {
-      transform: translateX(0);
-    }
-  }
+}
+
+/* Add the animation: property to whichever element you want to animate */
+.elementToAnimate {
+    animation: yourAnimation 3s ease 0s infinite normal none;
+}
 </style>
