@@ -53,17 +53,22 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/cs-reports/customers', [ReportController::class, 'addCustomerCS'])->name('store.report.cs');
     Route::post('/cs-reports/add', [ReportController::class, 'addReportCS'])->name('store.report.cs.add');
     Route::get('/add-product-form/{id}', [ReportController::class, 'addProductForm'])->name('add.product.form');
-    Route::post('/add-product-form',[ReportController::class, 'submitProductOrder'])->name('add.product.submit');
+    Route::post('/add-product-form', [ReportController::class, 'submitProductOrder'])->name('add.product.submit');
     Route::get('/edit-product-form/{id}', [ReportController::class, 'editProductForm'])->name('edit.product.form');
-    Route::post('/update-product-form/{id}',[ReportController::class, 'updateProductOrder'])->name('add.product.update');
-    Route::delete('/delete-product-order/{id}',[ReportController::class, 'deleteOrderProduct'])->name('delete.order.product');
+    Route::post('/update-product-form/{id}', [ReportController::class, 'updateProductOrder'])->name('add.product.update');
+    Route::delete('/delete-product-order/{id}', [ReportController::class, 'deleteOrderProduct'])->name('delete.order.product');
     Route::get('/list-user-cs', [ReportController::class, 'listUserCS'])->name('list.user.cs');
     Route::get('/list-user-all-cs', [ReportController::class, 'listAllUserCS'])->name('list.user.all.cs');
     Route::get('/view-report-order', [ReportController::class, 'viewOrderReport'])->name('view.order.report.id');
     Route::post('/cs-reports/update/{id}', [ReportController::class, 'updateReportCS'])->name('update.reportcs');
     Route::get('/edit-order/{id}', [ReportController::class, 'editOrder'])->name('edit.form.order');
     Route::post('/update-order/{id}', [ReportController::class, 'updateOrder'])->name('update.csreport.order');
-    Route::delete('/delete-order/{id}',[ReportController::class, 'deleteOrder'])->name('delete.order.csreport');
+    Route::delete('/delete-order/{id}', [ReportController::class, 'deleteOrder'])->name('delete.order.csreport');
+    // for leader
+    Route::get('/calendar/{id}', [ReportController::class, 'calendar'])->name('calendar.report.cs');
+    Route::get('/cs-reports/{id}/{date}', [ReportController::class, 'indexDateCSView'])->name('index.report.cs.date.view');
+    Route::post('/cs-reports/add/leader', [ReportController::class, 'addReportCSLeader'])->name('store.report.cs.add.leader');
+    Route::post('/cs-reports/customers/leader', [ReportController::class, 'addCustomerCSLeader'])->name('store.report.cs.leader');
     // adv report
     Route::get('/adv-reports', [ReportController::class, 'indexADV'])->name('index.report.adv');
     Route::get('/order', [ReportController::class, 'getOrder'])->name('get.order');

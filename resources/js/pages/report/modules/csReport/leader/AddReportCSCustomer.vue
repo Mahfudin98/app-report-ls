@@ -1,0 +1,566 @@
+<template>
+<b-modal id="addCustomer" title="Add Customers">
+    <!-- <customer-form ref="customerForm" /> -->
+    <div class="container-fluid p-0">
+        <form action="">
+            <div class="row vertical-gap sm-gap justify-content-center">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body mnt-6 mnb-6">
+                            <div class="mb-3">
+                                <label for="customer_name">Customer Name</label>
+                                <input id="customer_name" class="form-control" type="text" name="customer_name" placeholder="Nama Customer" v-model="customers.customer_name" required />
+                                <p>*Nama tidak boleh menggunakan karakter (*/-.\_+=)</p>
+                                <p class="text-danger" v-if="errors.customer_name">
+                                    {{ errors.customer_name[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="customers.customer_name != ''">
+                                <label for="customer_phone">Customer Phone</label>
+                                <input id="customer_phone" class="form-control" type="tel" name="customer_phone" placeholder="Nomor HP Customer" v-model="customers.customer_phone" required />
+                                <p class="text-danger" v-if="errors.customer_phone">
+                                    {{ errors.customer_phone[0] }}
+                                </p>
+                            </div>
+                            <!-- form ongkir disini -->
+                            <div class="mb-3" v-if="customers.customer_phone != ''">
+                                <label for="province">Province</label>
+                                <select class="form-control" @change="provinceId($event)" v-model="ongkir.province">
+                                    <option selected disabled="" value="">Pilih Provinsi</option>
+                                    <option class="py-1" v-for="province in provinces.data" :key="province.id" :value="province.province_id">{{ province.province }}</option>
+                                </select>
+                                <p class="text-danger" v-if="errors.province">
+                                    {{ errors.province[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.province != ''">
+                                <label for="city">City</label>
+                                <select class="form-control" @change="cityId($event)" v-model="ongkir.city">
+                                    <option selected disabled="" value="">Pilih City</option>
+                                    <option class="py-1" v-for="city in cities.data" :key="city.id" :value="city.city_id">{{ city.city_name }}</option>
+                                </select>
+                                <p class="text-danger" v-if="errors.city">
+                                    {{ errors.city[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.city != ''">
+                                <label for="district">District</label>
+                                <select class="form-control" v-model="ongkir.district">
+                                    <option selected disabled="" value="">Pilih District</option>
+                                    <option class="py-1" v-for="district in districts.data" :key="district.id" :value="district.subdistrict_id">{{ district.subdistrict_name }}</option>
+                                </select>
+                                <p class="text-danger" v-if="errors.district">
+                                    {{ errors.district[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.district != ''">
+                                <label for="courier">Courier</label>
+                                <select class="form-control" v-model="ongkir.courier">
+                                    <option selected disabled="" value="">Pilih Courier</option>
+                                    <option value="jne">JNE</Option>
+                                    <option value="jnt">J&T</Option>
+                                    <option value="ninja">NINJA</Option>
+                                    <option value="anteraja">ANTER AJA</Option>
+                                </select>
+                                <p class="text-danger" v-if="errors.courier">
+                                    {{ errors.courier[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.courier != ''">
+                                <label for="metode">Metode</label>
+                                <select class="form-control" v-model="ongkir.metode">
+                                    <option selected disabled="" value="">Pilih Metode</option>
+                                    <option value="1">COD</Option>
+                                    <option value="0">TRANSFER</Option>
+                                </select>
+                                <p class="text-danger" v-if="errors.metode">
+                                    {{ errors.metode[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.metode != ''">
+                                <label for="ongkir">Ongkir</label>
+                                <input class="form-control" type="text" :value="getOngkir != undefined ? getOngkir : 'loading...'" disabled>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.metode == 1">
+                                <label for="biaya">Biaya</label>
+                                <input class="form-control" v-if="ongkir.courier === 'jne'" type="text" :value="biayaJNE" disabled>
+                                <input class="form-control" v-if="ongkir.courier === 'j&t'" type="text" :value="biayaJNT" disabled>
+                                <input class="form-control" v-if="ongkir.courier != 'jne' && ongkir.courier != 'j&t'" type="text" :value="biayaCOD" disabled>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.metode != ''">
+                                <label for="total">Total</label>
+                                <input class="form-control" type="text" :value="getTotal" disabled>
+                            </div>
+                            <div class="mb-3" v-if="ongkir.metode != ''">
+                                <label for="ongkir_discount">Potongan Ongkir</label>
+                                <input id="ongkir_discount" class="form-control" type="number" name="ongkir_discount" placeholder="Masukan Potongan Ongkir misal : 5000" v-model="customers.ongkir_discount" :disabled="getOngkir == undefined" />
+                                <p>*Biarkan 0 jika tidak ada Potongan</p>
+                            </div>
+                            <!-- akhir form ongkir -->
+                            <div class="mb-3" v-if="ongkir.metode != ''">
+                                <label for="customer_address">Customer Address</label>
+                                <input id="customer_address" class="form-control" type="text" name="customer_address" placeholder="Alamat Customer" v-model="customers.customer_address" required />
+                                <p class="text-danger" v-if="errors.customer_address">
+                                    {{ errors.customer_address[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="customers.customer_address != ''">
+                                <label for="waybill">Waybill</label>
+                                <input id="waybill" class="form-control" type="text" name="waybill" placeholder="Waybill" v-model="customers.waybill" required />
+                                <p class="text-danger" v-if="errors.waybill">
+                                    {{ errors.waybill[0] }}
+                                </p>
+                            </div>
+                            <div class="mb-3" v-if="customers.waybill != ''" :class="{ 'has-error': errors.image }">
+                                <label for="file-input">Image</label>
+                                <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input" />
+                                <p>*Kosongkan jika tidak ingin menambahkan</p>
+                                <p class="text-danger" v-if="errors.image">
+                                    {{ errors.image[0] }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" v-if="customers.waybill != ''">
+                    <div class="card bg-primary">
+                        <div class="card-body mnt-6 mnb-6">
+                            <h5 class="card-title h2">Order</h5>
+                            <section v-for="(row, index) in order" :key="index">
+                                <div class="mb-3">
+                                    <label for="order" class="text-white">Total Order</label>
+                                    <input class="form-control" required type="number" placeholder="Jumlah Order Product" v-model="orders.qty[index]" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="produk" class="text-white">Produk</label>
+                                    <select id="product" class="form-control" v-model="orders.product_id[index]" @click="submitOngkir" required>
+                                        <option selected disabled="" value="">Pilih Produk</option>
+                                        <option v-for="row in products.data" :key="row.id" :value="row">{{ row.name }}
+                                            <p v-html="row.type_pembelian_label"></p>
+                                            [ {{ row.origin_order }} ]
+                                            ({{ row.price }})
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="potongan" class="text-white">Potongan Harga</label>
+                                    <input class="form-control" required type="number" placeholder="Masukan Potongan" v-model="orders.product_discount[index]" />
+                                    <p>*Isi 0 jika tidak ada Potongan Harga</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="potongan" class="text-white">Tambahan Harga</label>
+                                    <input class="form-control" required type="number" placeholder="Masukan Tambahan" v-model="orders.penambahan[index]" />
+                                    <p>*Isi 0 jika tidak ada Tambahan Harga</p>
+                                </div>
+                                <br />
+                                <button class="btn btn-danger" type="button" @click="removeParent(index)">
+                                    <span class="material-icons align-middle">
+                                        delete
+                                    </span>
+                                    <span class="align-middle">Remove Product</span>
+                                </button>
+                            </section>
+                        </div>
+                        </br>
+                        <div class="card-footer">
+                            <button class="btn btn-primary" type="button" @click="addProduct">
+                                <span class="material-icons align-middle">
+                                    add_circle_outline
+                                </span>
+                                <span class="align-middle">Add Product</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <template #modal-footer>
+        <div class="w-100">
+            <!-- <b-button variant="primary" size="sm" class="float-left" @click="submit" :disabled="checkVal">
+                Simpan
+            </b-button> -->
+            <b-overlay :show="busy" rounded opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block float-right" @hidden="onHidden">
+                <button ref="button" :disabled="busy || checkVal" @click="onClick" class="btn btn-primary">
+                    <span class="material-icons align-middle">
+                        save
+                    </span>
+                    <span class="align-middle">Save</span>
+                </button>
+            </b-overlay>
+        </div>
+    </template>
+</b-modal>
+</template>
+
+<script>
+import {
+    mapState,
+    mapActions,
+    mapMutations
+} from "vuex";
+import axios from 'axios';
+export default {
+    name: "ReportCSFormLeader",
+    created() {
+        this.getAllProducts();
+        this.viewDetailCsReport({
+            id: this.$route.params.id,
+            date: this.$route.params.date
+        });
+        this.getProvinces();
+        this.getCities();
+        this.getDistricts();
+        this.editTeam(this.$route.params.id).then(res => {
+                this.team = {
+                    parent_id: res.data.parent_id,
+                };
+            });
+    },
+    data() {
+        return {
+            customers: {
+                customer_name: "",
+                customer_phone: "",
+                customer_address: "",
+                waybill: "",
+                image: "",
+                ongkir_discount: 0,
+                // for order
+                // product_id: [""],
+                // qty: [""]
+            },
+            orders: {
+                product_id: [""],
+                qty: [""],
+                product_discount: [""],
+                penambahan: [""],
+            },
+            order: [],
+            // ongkir
+            ongkir: {
+                province: '',
+                city: '',
+                district: '',
+                courier: '',
+                metode: '',
+            },
+            busy: false,
+            timeout: null,
+            team: {
+                parent_id: "",
+            }
+        };
+    },
+    beforeDestroy() {
+        this.clearTimeout()
+    },
+    computed: {
+        ...mapState(["errors"]),
+        ...mapState("csReport", {
+            viewDetail: state => state.viewDetail
+        }),
+        ...mapState("product", {
+            products: state => state.products
+        }),
+        ...mapState("ongkir", {
+            provinces: state => state.provinces,
+            cities: state => state.cities,
+            districts: state => state.districts,
+            costs: state => state.costs
+        }),
+        ...mapState("user", {
+            users: state => state.users
+        }),
+        pricesOrder() {
+            var result = this.orders.product_id;
+            var res = Object.keys(result).map(function (key) {
+                return parseInt(result[key].price);
+            });
+            return res;
+        },
+        qtyOrder() {
+            var result = this.orders;
+            var res = Object.keys(result).map(function (key) {
+                return parseInt(result[key].qty);
+            });
+            return res;
+        },
+        idOrder() {
+            var result = this.orders.product_id;
+            var res = Object.keys(result).map(function (key) {
+                return parseInt(result[key].id);
+            });
+            return res;
+        },
+        weightOrder() {
+            var result = this.orders.product_id;
+            var res = Object.keys(result).map(function (key) {
+                return parseInt(result[key].weight);
+            });
+            var qtys = this.orders.qty;
+            var resQty = Object.keys(qtys).map(function (key) {
+                return parseInt(qtys[key]);
+            });
+            var sum = res.map(function (num, idx) {
+                return num * resQty[idx];
+            })
+            return sum.reduce((acc, item) => acc + item);
+        },
+        getOngkir() {
+            if (this.customers.ongkir_discount != "" && this.customers.ongkir_discount != 0) {
+                var total = this.costs.data - parseInt(this.customers.ongkir_discount)
+                return total
+            } else {
+                return this.costs.data
+            }
+        },
+        biayaCOD() {
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
+                let penambahan = this.orders.penambahan[i];
+                let price = this.pricesOrder[i];
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount) + parseInt(penambahan);
+            }
+            // return jum;
+            // const harga = this.pricesOrder.reduce((acc, item) => acc + item) * resQty.reduce((acc, item) => acc + item);
+            if (this.getOngkir != undefined) {
+                const biaya = (3 / 100) * parseInt(jum);
+
+                return biaya;
+            } else {
+                return 0;
+            }
+            return jumlah;
+        },
+        biayaJNT() {
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
+                let penambahan = this.orders.penambahan[i];
+                let price = this.pricesOrder[i];
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount) + parseInt(penambahan);
+            }
+            if (this.getOngkir != undefined) {
+                const biaya = (parseInt(jum) * 3) / 100;
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        biayaJNE() {
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
+                let price = this.pricesOrder[i];
+                let penambahan = this.orders.penambahan[i];
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount) + parseInt(penambahan);
+            }
+            if (this.getOngkir != undefined) {
+                const biaya = ((parseInt(jum) + this.getOngkir) * 3) / 100;
+
+                return biaya;
+            } else {
+                return 0;
+            }
+        },
+        getTotal() {
+            let jum = 0;
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
+                let penambahan = this.orders.penambahan[i];
+                let price = this.pricesOrder[i];
+                jum += parseInt(qty) * parseInt(price) - parseInt(discount) + parseInt(penambahan);
+            }
+            if (this.ongkir.metode == 1) {
+                if (this.getOngkir != undefined) {
+                    if (this.ongkir.courier === 'jne') {
+                        const total = this.getOngkir + parseInt(jum) + this.biayaJNE;
+                        return total;
+                    } else if (this.ongkir.courier === 'j&t') {
+                        const total = this.getOngkir + parseInt(jum) + this.biayaJNT;
+                        return total;
+                    } else {
+                        const total = this.getOngkir + parseInt(jum) + this.biayaCOD;
+                        return total;
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                if (this.getOngkir != undefined) {
+                    const total = parseInt(jum) + this.getOngkir;
+                    return total;
+                } else {
+                    return 0;
+                }
+            }
+        },
+
+        checkVal: function () {
+            return this.getOngkir != undefined && this.orders.product_discount != "" && this.orders.penambahan != "" ? false : true;
+        }
+    },
+    methods: {
+        addProduct: function () {
+            this.order.push({
+                value: ""
+            });
+        },
+        removeParent(index) {
+            (this.orders = {
+                product_id: [""],
+                qty: [""],
+                product_discount: [""],
+                penambahan: ["",]
+            }),
+            this.order.splice(index, 1);
+        },
+        // onchange
+        provinceId(event) {
+            this.getCities(event.target.value);
+        },
+        cityId(event) {
+            this.getDistricts(event.target.value);
+        },
+        // end
+        ...mapActions("product", ["getAllProducts"]),
+        ...mapActions("csReport", ["viewDetailCsReport", "submitCustomerLeader"]),
+        ...mapActions("ongkir", ["getProvinces", "getCities", "getDistricts", "submitCost"]),
+        ...mapActions("team", ["editTeam"]),
+        uploadImage(event) {
+            this.customers.image = event.target.files[0];
+        },
+        submitOngkir() {
+            let form = new FormData();
+            form.append("destination", this.ongkir.district);
+            form.append("weight", this.weightOrder);
+            form.append("courier", this.ongkir.courier);
+            this.submitCost(form).then(() => {
+                this.costs
+            })
+        },
+        submit() {
+            let form = new FormData();
+
+            // parent
+            form.append("parent_id", this.team.parent_id);
+            // end
+            form.append("cs_report_id", this.viewDetail.id);
+            form.append("customer_name", this.customers.customer_name);
+            form.append("customer_phone", this.customers.customer_phone);
+            form.append("customer_address", this.customers.customer_address);
+            form.append("waybill", this.customers.waybill);
+            form.append("image", this.customers.image);
+            form.append("date", this.$route.params.date);
+            form.append("user_id", this.viewDetail.user_id);
+            form.append("ongkir_discount", this.customers.ongkir_discount);
+            // ongkir
+            form.append("ongkir", this.getOngkir);
+            form.append("metode", this.ongkir.metode);
+            form.append("total", this.getTotal);
+            form.append("courier", this.ongkir.courier);
+            form.append("province", this.ongkir.province);
+            form.append("city", this.ongkir.city);
+            form.append("district_id", this.ongkir.district);
+            form.append("weight", this.weightOrder);
+
+            if (this.ongkir.metode == 1) {
+                if (this.ongkir.courier === 'jne') {
+                    form.append("biaya", this.biayaJNE);
+                } else if (this.ongkir.courier === 'j&t') {
+                    form.append("biaya", this.biayaJNT);
+                } else {
+                    form.append("biaya", this.biayaCOD);
+                }
+            }
+
+            // array order
+            for (var i = 0; i < this.orders.qty.length; i++) {
+                let qty = this.orders.qty[i];
+                let discount = this.orders.product_discount[i];
+                let penambahan = this.orders.penambahan[i];
+                let product_id = this.idOrder[i];
+                let price = this.pricesOrder[i];
+                // form.append("user_id", this.$route.params.id);
+                form.append("qty[" + i + "]", qty);
+                form.append("product_id[" + i + "]", product_id);
+                form.append("price[" + i + "]", price);
+                form.append("product_discount[" + i + "]", discount);
+                form.append("penambahan[" + i + "]", penambahan);
+            }
+
+            this.submitCustomerLeader(form).then(() => {
+                this.customers = {
+                    chat: "",
+                    transaksi: "",
+                    omset: "",
+                    date: "",
+                    image: "",
+                    ongkir_discount: 0,
+                    // for order
+                    // product_id: [""],
+                    // total_order: [""]
+                };
+
+                this.orders = {
+                    product_id: [""],
+                    qty: [""],
+                    product_discount: [0],
+                    penambahan: [0]
+                };
+
+                this.ongkir = {
+                    province: '',
+                    city: '',
+                    district: '',
+                    courier: '',
+                    metode: '',
+                };
+
+                this.$swal({
+                    background: "#FFFFFF",
+                    title: "Ditambah!",
+                    text: "Data Berhasil ditambah!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
+        },
+        // button
+        clearTimeout() {
+            if (this.timeout) {
+                clearTimeout(this.timeout)
+                this.timeout = null
+            }
+        },
+        setTimeout(callback) {
+            this.clearTimeout()
+            this.timeout = setTimeout(() => {
+                this.clearTimeout()
+                callback()
+            }, 10000)
+        },
+        onHidden() {
+            // Return focus to the button once hidden
+            this.$refs.button.focus()
+        },
+        onClick() {
+            this.busy = true;
+            // Simulate an async request
+            this.setTimeout(() => {
+                this.busy = false
+            });
+            this.submit();
+            window.location.reload();
+        }
+    }
+};
+</script>
