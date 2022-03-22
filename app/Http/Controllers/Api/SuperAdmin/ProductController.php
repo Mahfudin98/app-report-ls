@@ -236,7 +236,7 @@ class ProductController extends Controller
 
     public function exportProduk(Request $request)
     {
-        $order = $this->listChartProduct();
-        return Excel::download(new ProductExport($order, request()->month, request()->year), 'omset'.request()->month.'-'.request()->year.'.xlsx');
+        $order = $this->chartProduct();
+        return Excel::download(new ProductExport($order, request()->month, request()->year), 'produk'.request()->month.'-'.request()->year.'.xlsx');
     }
 }
