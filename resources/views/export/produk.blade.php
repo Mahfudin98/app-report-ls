@@ -9,6 +9,7 @@
         <tr>
             <th>Produk</th>
             <th>Total</th>
+            <th>Type</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
             <tr>
                 <td>{{ $row['labels'] }}</td>
                 <td>{{ $row['total'] }}</td>
+                <td>{{ $row['type'] }}</td>
             </tr>
         @endforeach
     </tbody>

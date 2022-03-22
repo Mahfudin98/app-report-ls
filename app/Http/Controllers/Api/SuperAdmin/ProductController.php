@@ -234,9 +234,33 @@ class ProductController extends Controller
         return $data;
     }
 
+    public function chartProductExport()
+    {
+        $year = request()->year;
+        $mounth = request()->month;
+        $filter = $year . '-' . $mounth;
+
+        $data = [];
+        $order = DetailOrder::with(['product'])
+            ->where('date', 'LIKE', '%' . $filter . '%')
+            ->groupBy('product_id')
+            ->selectRaw('*, sum(qty) as sum')
+            ->orderBy('sum', 'DESC')
+            ->get();
+        foreach ($order as $rows) {
+            $data[] = [
+                'labels' => $rows->product->name,
+                'total' => $rows->sum,
+                'type' => $rows->product->type_pembelian_label,
+            ];
+        }
+
+        return $data;
+    }
+
     public function exportProduk(Request $request)
     {
-        $order = $this->chartProduct();
+        $order = $this->chartProductExport();
         return Excel::download(new ProductExport($order, request()->month, request()->year), 'produk'.request()->month.'-'.request()->year.'.xlsx');
     }
 }
