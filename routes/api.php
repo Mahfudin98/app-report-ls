@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('export', [DashboardController::class, 'exportData'])->name('export.omset');
+Route::get('export/product', [ProductController::class, 'exportProduk'])->name('export.produk');
 Route::get('export/customer', [DashboardController::class, 'exportDataCustomers'])->name('export.customers');
 Route::get('export/target', [DashboardController::class, 'targetExport'])->name('export.target');
 Route::post('/login', [LoginController::class, 'login'])->name('login');

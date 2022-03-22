@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\SuperAdmin;
 
+use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
 use Illuminate\Http\Request;
@@ -10,6 +11,8 @@ use Carbon\Carbon;
 use App\Models\CsReport;
 use App\Models\DetailOrder;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade As PDF;
 
 class ProductController extends Controller
 {
@@ -229,5 +232,11 @@ class ProductController extends Controller
         }
 
         return $data;
+    }
+
+    public function exportProduk(Request $request)
+    {
+        $order = $this->listChartProduct();
+        return Excel::download(new ProductExport($order, request()->month, request()->year), 'omset'.request()->month.'-'.request()->year.'.xlsx');
     }
 }
