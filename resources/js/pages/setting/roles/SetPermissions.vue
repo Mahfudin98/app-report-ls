@@ -119,12 +119,8 @@ import {
     mapState,
     mapMutations
 } from "vuex";
-import Label from "../../../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Label.vue";
 
 export default {
-    components: {
-        Label
-    },
     name: "SetPermission",
     data() {
         return {

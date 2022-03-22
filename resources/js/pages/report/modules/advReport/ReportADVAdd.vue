@@ -30,7 +30,6 @@ import {
     mapState,
     mapMutations
 } from "vuex";
-import Button from '../../../../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Button.vue';
 import ReportADVForm from "./ReportADVForm.vue";
 export default {
     name: "AddReportCS",
@@ -40,8 +39,7 @@ export default {
         }
     },
     components: {
-        "form-report-adv": ReportADVForm,
-        Button
+        "form-report-adv": ReportADVForm
     }
 };
 </script>
